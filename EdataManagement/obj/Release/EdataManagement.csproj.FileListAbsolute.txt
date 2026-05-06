@@ -1,0 +1,38 @@
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\x64\7z.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\x86\7z.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\1012 Send E-data 48-98 Direct V3.6.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\BusinessData.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\INIFileParser.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\MySql.Data.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\Renci.SshNet.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\SevenZipExtractor.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.Mvc.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\Google.Protobuf.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.Razor.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.WebPages.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.WebPages.Deployment.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\BusinessData.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\INIFileParser.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\MySql.Data.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\Renci.SshNet.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.Razor.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.WebPages.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\Microsoft.Web.Infrastructure.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Release\System.Web.WebPages.Deployment.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.csproj.AssemblyReference.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.csproj.SuggestedBindingRedirects.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.csproj.ResolveComReference.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.emailUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.frmEmail.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.frmMain.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Properties.Resources.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.ftpUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.csproj.GenerateResource.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.csproj.CoreCompileInputs.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataMan.60F4B2DC.Up2Date
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\1012 Send E-data 48-98 Direct V3.6.0.pdb
