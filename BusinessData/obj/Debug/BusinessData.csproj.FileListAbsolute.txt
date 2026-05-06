@@ -1,0 +1,336 @@
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\bin\BusinessData.dll
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\bin\BusinessData.pdb
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\bin\MySql.Data.dll
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\obj\Debug\BusinessData.csprojResolveAssemblyReference.cache
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\41284701\Desktop\UTL.RepTimeStamp\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\bin\BusinessData.dll
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\bin\BusinessData.pdb
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\bin\MySql.Data.dll
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\obj\Debug\BusinessData.csprojResolveAssemblyReference.cache
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\41284701\Desktop\FiTel.Security\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\41284701\Desktop\FiTel Train\FiTel.Security\BusinessData\bin\BusinessData.dll
+C:\Users\41284701\Desktop\FiTel Train\FiTel.Security\BusinessData\bin\BusinessData.pdb
+C:\Users\41284701\Desktop\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.csprojResolveAssemblyReference.cache
+C:\Users\41284701\Desktop\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\41284701\Desktop\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.pdb
+\\192.168.0.80\09_active\Comm\06-Engineering\11 Programmer\10-Training\19_05_2018\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.csprojResolveAssemblyReference.cache
+\\192.168.0.80\09_active\Comm\06-Engineering\11 Programmer\10-Training\19_05_2018\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.dll
+\\192.168.0.80\09_active\Comm\06-Engineering\11 Programmer\10-Training\19_05_2018\FiTel Train\FiTel.Security\BusinessData\obj\Debug\BusinessData.pdb
+D:\00_Personal_Jaturong\Software project\FiTel.Security\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\00_Personal_Jaturong\Software project\FiTel.Security\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\00_Personal_Jaturong\Software project\FiTel.Security\BusinessData\obj\Debug\BusinessData.dll
+D:\00_Personal_Jaturong\Software project\FiTel.Security\BusinessData\obj\Debug\BusinessData.pdb
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.dll
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.pdb
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\bin\BusinessData.dll
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\bin\BusinessData.pdb
+D:\00_Personal_Jaturong\Software project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+D:\Project\FFT_Order_Management\BusinessData\bin\BusinessData.dll
+D:\Project\FFT_Order_Management\BusinessData\bin\BusinessData.pdb
+D:\Project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\Project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\Project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+D:\Project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.dll
+D:\Project\FFT_Order_Management\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\bin\BusinessData.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\bin\BusinessData.pdb
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\code\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\code\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\Desktop\code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\Desktop\code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\Desktop\code\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\FFT_OrderManagement ver 1.0.0 (Beta)\code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\TFBAssembling\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\ClsEmployeesCenterManagement\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\1_Class Library\EmployeesCenterManagement\1.0.0\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\bin\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\bin\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\ResonatorTest\BusinessData\obj\Debug\BusinessData.pdb
+D:\2__My Project\ResonatorTest\BusinessData\bin\BusinessData.dll
+D:\2__My Project\ResonatorTest\BusinessData\bin\BusinessData.pdb
+D:\2__My Project\ResonatorTest\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\2__My Project\ResonatorTest\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\2__My Project\ResonatorTest\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+D:\2__My Project\ResonatorTest\BusinessData\obj\Debug\BusinessData.dll
+D:\2__My Project\ResonatorTest\BusinessData\obj\Debug\BusinessData.pdb
+D:\SendEdataForFTTH\BusinessData\bin\BusinessData.dll
+D:\SendEdataForFTTH\BusinessData\bin\BusinessData.pdb
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.Helpers.dll
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.dll
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.Razor.dll
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.Razor.dll
+D:\SendEdataForFTTH\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.Deployment.dll
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.xml
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.Helpers.xml
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.Razor.xml
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.Razor.xml
+D:\SendEdataForFTTH\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+D:\SendEdataForFTTH\BusinessData\bin\System.Web.WebPages.Deployment.xml
+D:\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+D:\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.dll
+D:\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.pdb
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\BusinessData.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\BusinessData.pdb
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.Helpers.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.Razor.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.Helpers.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.Razor.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\000\000 2021\1030_SendEdataForFTTHProduct VER 1.2.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.Razor.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.WebPages.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.Helpers.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.Razor.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\obj\Debug\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.2.1\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\BusinessData.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.Razor.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.WebPages.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.Helpers.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.Razor.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.2.2\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Helpers.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Test Program\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Helpers.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Helpers.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.Razor.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Razor.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\System.Web.WebPages.Deployment.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\bin\BusinessData.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.pdb
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\bin\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\bin\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\bin\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\bin\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\bin\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\bin\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\bin\BusinessData.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.dll
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\bin\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\bin\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\BusinessData\obj\Debug\BusinessData.pdb
+D:\project\test\Edata Management\BusinessData\bin\BusinessData.dll
+D:\project\test\Edata Management\BusinessData\bin\BusinessData.pdb
+D:\project\test\Edata Management\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\project\test\Edata Management\BusinessData\obj\Debug\BusinessData.csproj.CopyComplete
+D:\project\test\Edata Management\BusinessData\obj\Debug\BusinessData.dll
+D:\project\test\Edata Management\BusinessData\obj\Debug\BusinessData.pdb
+D:\project\test\Edata Management\BusinessData\obj\Debug\BusinessData.csprojAssemblyReference.cache
+D:\project\qa\on going\Edata Management\BusinessData\bin\BusinessData.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\BusinessData.pdb
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.Helpers.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.WebPages.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.Razor.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.WebPages.Deployment.dll
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.WebPages.xml
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.Helpers.xml
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.Razor.xml
+D:\project\qa\on going\Edata Management\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+D:\project\qa\on going\Edata Management\BusinessData\bin\System.Web.WebPages.Deployment.xml
+D:\project\qa\on going\Edata Management\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+D:\project\qa\on going\Edata Management\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+D:\project\qa\on going\Edata Management\BusinessData\obj\Debug\BusinessData.dll
+D:\project\qa\on going\Edata Management\BusinessData\obj\Debug\BusinessData.pdb
+D:\project\qa\on going\Edata Management\BusinessData\obj\Debug\Business.395DD182.Up2Date
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\BusinessData.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\BusinessData.pdb
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.Razor.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.WebPages.Deployment.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.WebPages.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.Helpers.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.Razor.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\Microsoft.Web.Infrastructure.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\bin\System.Web.WebPages.Deployment.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\Business.395DD182.Up2Date
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\BusinessData.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\BusinessData.pdb

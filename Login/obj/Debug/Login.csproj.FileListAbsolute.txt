@@ -1,0 +1,840 @@
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.frmLogin.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.Properties.Resources.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\MySql.Data.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\bin\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\Login.exe.config
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\Login.exe
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\Login.pdb
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\BusinessData.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\MySql.Data.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\bin\Debug\BusinessData.pdb
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.exe
+C:\Users\kittayod.pet\Desktop\FFT_OrderManagement\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\InputManagement\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\InputManagement\Login\obj\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\BusinessData.dll
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\MySql.Data.dll
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\jaturong.kie\source\repos\Input\Login\bin\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\Input\Login\obj\Debug\Login.pdb
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\Login.exe.config
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\Login.exe
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\Login.pdb
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\BusinessData.dll
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\MySql.Data.dll
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\kittayod.pet\Desktop\Input\Login\bin\Debug\BusinessData.pdb
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.exe
+C:\Users\kittayod.pet\Desktop\Input\Login\obj\Debug\Login.pdb
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\Login.exe
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\MySql.Data.dll
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\jaturong.kie\Desktop\Input\Login\bin\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.exe
+C:\Users\jaturong.kie\Desktop\Input\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2019-11-29\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2019-12-01\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-01-15\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-01-27\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-02-07\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\PROJECT\Input 2020-02-14\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input 2020-02-14\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Project\Input 2020-03-13\Login\obj\Debug\Login.pdb
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.exe
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.exe
+C:\Users\jaturong.kie\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\Login.exe.config
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\Login.pdb
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.exe
+C:\Users\anawat.mon\Desktop\Project\Input(Beta)\Code\Login\obj\Debug\Login.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.exe
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Razor.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Razor.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Microsoft.Web.Infrastructure.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Deployment.dll
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Razor.xml
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Razor.xml
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.xml
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Microsoft.Web.Infrastructure.xml
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Deployment.xml
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Razor.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Razor.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Microsoft.Web.Infrastructure.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Deployment.dll
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Razor.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Razor.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Microsoft.Web.Infrastructure.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.Deployment.xml
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\210908 1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pdb
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.exe.config
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.exe
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\Login.pdb
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.exe
+C:\Users\seree.chi\Desktop\1030_SendEdataForFTTHProduct Version 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\01_PROGRAM_SEND_E-DATA\Pre-Making\1030_SendEdataForFTTHProduct VER 1.3.0\Code\Login\obj\Debug\Login.pdb
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe.config
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.pdb
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\MySql.Data.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.pdb
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csprojAssemblyReference.cache
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.exe
+E:\00__Request\QA\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe.config
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 1.4.0\Code\Login\obj\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\Login.exe.config
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\MySql.Data.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\bin\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\chamber\Code\Login\obj\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\Login.exe.config
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\MySql.Data.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\bin\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\chamber\Done\SendEdataForFTTH\Login\obj\Debug\Login.pdb
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.csproj.AssemblyReference.cache
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.exe
+\\192.168.2.100\12_qa\04_E-Data\01_PROGRAM_SEND_E-DATA\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\Login.exe.config
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\Login.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\BusinessData.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\System.Web.Mvc.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\MySql.Data.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\System.Web.WebPages.dll
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\bin\Debug\BusinessData.pdb
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.csproj.AssemblyReference.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.frmChangePass_Main.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.frmEnter_OTP.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.frmLogin_Main.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.Properties.Resources.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.frmSuccess.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Create.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Forgot.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_Password.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pageEnter_User.resources
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.csproj.GenerateResource.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.csproj.CopyComplete
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.exe
+C:\Users\nattamon.sri\Desktop\1030_SendEdataForFTTHProduct VER 2.0.0\SendEdataForFTTH\Login\obj\Debug\Login.pdb
+D:\project\test\Edata Management\Login\bin\Debug\Login.exe.config
+D:\project\test\Edata Management\Login\bin\Debug\Login.exe
+D:\project\test\Edata Management\Login\bin\Debug\Login.pdb
+D:\project\test\Edata Management\Login\bin\Debug\BusinessData.dll
+D:\project\test\Edata Management\Login\bin\Debug\System.Web.Mvc.dll
+D:\project\test\Edata Management\Login\bin\Debug\MySql.Data.dll
+D:\project\test\Edata Management\Login\bin\Debug\System.Web.WebPages.dll
+D:\project\test\Edata Management\Login\bin\Debug\BusinessData.pdb
+D:\project\test\Edata Management\Login\obj\Debug\Login.frmChangePass_Main.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.frmEnter_OTP.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.frmLogin_Main.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.Properties.Resources.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.frmSuccess.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageBefore_ChangPassword.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_ConfirmPass.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_Create.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_Forgot.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_Password.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_ChangePassword.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.pageEnter_User.resources
+D:\project\test\Edata Management\Login\obj\Debug\Login.csproj.GenerateResource.cache
+D:\project\test\Edata Management\Login\obj\Debug\Login.csproj.CoreCompileInputs.cache
+D:\project\test\Edata Management\Login\obj\Debug\Login.csproj.CopyComplete
+D:\project\test\Edata Management\Login\obj\Debug\Login.exe
+D:\project\test\Edata Management\Login\obj\Debug\Login.pdb
+D:\project\test\Edata Management\Login\obj\Debug\Login.csprojAssemblyReference.cache

@@ -1,0 +1,236 @@
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+D:\project\test\Edata Management\EdataManagement\bin\Debug\Renci.SshNet.dll
+D:\project\test\Edata Management\EdataManagement\bin\Debug\System.Web.Mvc.dll
+D:\project\test\Edata Management\EdataManagement\bin\Debug\MySql.Data.dll
+D:\project\test\Edata Management\EdataManagement\bin\Debug\System.Web.WebPages.dll
+D:\project\test\Edata Management\EdataManagement\bin\Debug\BusinessData.pdb
+D:\project\test\Edata Management\EdataManagement\bin\Debug\Renci.SshNet.xml
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.CopyComplete
+D:\project\test\Edata Management\EdataManagement\bin\Debug\1114 Upload E-data Fabrinet server V1.0.0.exe.config
+D:\project\test\Edata Management\EdataManagement\bin\Debug\1114 Upload E-data Fabrinet server V1.0.0.exe
+D:\project\test\Edata Management\EdataManagement\bin\Debug\1114 Upload E-data Fabrinet server V1.0.0.pdb
+D:\project\test\Edata Management\EdataManagement\obj\Debug\1114 Upload E-data Fabrinet server V1.0.0.exe
+D:\project\test\Edata Management\EdataManagement\obj\Debug\1114 Upload E-data Fabrinet server V1.0.0.pdb
+D:\project\test\Edata Management\EdataManagement\obj\Debug\EdataManagement.csprojAssemblyReference.cache
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\BusinessData.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\MySql.Data.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\Renci.SshNet.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.Mvc.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\BusinessData.pdb
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\Renci.SshNet.xml
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.WebPages.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.Razor.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.WebPages.xml
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.Razor.xml
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\x64\7z.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\x86\7z.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\SevenZipExtractor.dll
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\INIFileParser.dll
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\INIFileParser.xml
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe.config
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe
+D:\project\qa\on going\Edata Management\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.pdb
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.4.0.pdb
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\Interop.Outlook.dll
+D:\project\qa\on going\Edata Management\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\x64\7z.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\x86\7z.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe.config
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.4.0.pdb
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\BusinessData.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\INIFileParser.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\MySql.Data.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\Renci.SshNet.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\SevenZipExtractor.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.Mvc.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.WebPages.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.Razor.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\BusinessData.pdb
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\INIFileParser.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\Renci.SshNet.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.WebPages.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.Razor.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\Interop.Outlook.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.4.0.exe
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.4.0 checkIP\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.4.0.pdb
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\x64\7z.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\x86\7z.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.5.0.exe.config
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.5.0.exe
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.5.0.pdb
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\BusinessData.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\INIFileParser.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\MySql.Data.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Renci.SshNet.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\SevenZipExtractor.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Mvc.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Razor.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\BusinessData.pdb
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\INIFileParser.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Renci.SshNet.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Razor.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\Interop.Outlook.dll
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.5.0.exe
+D:\project\qa\on going\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.5.0.pdb
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.SuggestedBindingRedirects.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\x64\7z.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\x86\7z.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\BusinessData.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\INIFileParser.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\MySql.Data.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Renci.SshNet.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\SevenZipExtractor.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Mvc.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Google.Protobuf.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Razor.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\BusinessData.pdb
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\INIFileParser.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\MySql.Data.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Renci.SshNet.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.Razor.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x64\7z.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x86\7z.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\BusinessData.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\INIFileParser.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\SevenZipExtractor.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Mvc.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Google.Protobuf.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Razor.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\BusinessData.pdb
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\INIFileParser.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Razor.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.SuggestedBindingRedirects.cache
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+\\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x64\7z.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x86\7z.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\BusinessData.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\INIFileParser.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\SevenZipExtractor.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Mvc.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Google.Protobuf.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Razor.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.dll
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\BusinessData.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\INIFileParser.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Razor.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Microsoft.Web.Infrastructure.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.WebPages.Deployment.xml
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.SuggestedBindingRedirects.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.frmMain.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Properties.Resources.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.ftpUserControl.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb

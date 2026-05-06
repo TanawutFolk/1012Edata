@@ -1,0 +1,13 @@
+D:\project\test\stfpDEMO\bin\Debug\stfpDEMO.exe.config
+D:\project\test\stfpDEMO\bin\Debug\stfpDEMO.exe
+D:\project\test\stfpDEMO\bin\Debug\stfpDEMO.pdb
+D:\project\test\stfpDEMO\bin\Debug\Renci.SshNet.dll
+D:\project\test\stfpDEMO\bin\Debug\Renci.SshNet.xml
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.csproj.AssemblyReference.cache
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.frmMain.resources
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.Properties.Resources.resources
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.csproj.GenerateResource.cache
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.csproj.CoreCompileInputs.cache
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.csproj.CopyComplete
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.exe
+D:\project\test\stfpDEMO\obj\Debug\stfpDEMO.pdb

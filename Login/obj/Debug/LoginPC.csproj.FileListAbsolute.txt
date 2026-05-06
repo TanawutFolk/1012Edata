@@ -1,0 +1,10 @@
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.csprojAssemblyReference.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.frmLogin.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.Properties.Resources.resources
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.csproj.GenerateResource.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\LoginPC.csproj.CoreCompileInputs.cache
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.exe.config
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\bin\Debug\Login.pdb
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.exe
+C:\Users\jaturong.kie\source\repos\FFT_OrderManagement\LoginPC\obj\Debug\Login.pdb
