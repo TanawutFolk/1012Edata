@@ -1936,14 +1936,11 @@ namespace EdataManagement.Utilities
                                 return emailProp;
                             }
 
-                            List<string> folderPatternsToSearch = new List<string>();
+                            string folderNameToSearch = !string.IsNullOrEmpty(shipProp.subFolder)
+                                ? $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}"
+                                : $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
-                            if (!string.IsNullOrEmpty(shipProp.subFolder))
-                            {
-                                folderPatternsToSearch.Add($"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}");
-                            }
-
-                            folderPatternsToSearch.Add($"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})");
+                            string fileNameToSearch = $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
                             rpWord.shipDate = emailProp.shipDate;
                             rpWord.formatDate = _emailCon.allFormatDate();
@@ -1959,123 +1956,100 @@ namespace EdataManagement.Utilities
                             string lastCheckedFolder = "";
                             string foundOrderFolder = "";
 
-                            foreach (string searchPattern in folderPatternsToSearch)
+                            List<string> matchedOrderFolders = new List<string>();
+
+                            // 1. เช็คกรณี emailProp.folderCustomer เองคือ folder ที่ต้องการแล้ว
+                            if (Path.GetFileName(emailProp.folderCustomer.TrimEnd('\\'))
+                                .Equals(folderNameToSearch, StringComparison.OrdinalIgnoreCase))
                             {
-                                List<string> matchedOrderFolders = new List<string>();
+                                matchedOrderFolders.Add(emailProp.folderCustomer.TrimEnd('\\'));
+                            }
 
-                                // 1. เช็คกรณี emailProp.folderCustomer เองคือ folder ที่ต้องการแล้ว
-                                if (Path.GetFileName(emailProp.folderCustomer.TrimEnd('\\'))
-                                    .Equals(searchPattern, StringComparison.OrdinalIgnoreCase))
+                            // 2. scan ลงไปทุก folder ย่อย โดย match ชื่อ folder แบบเท่ากันเท่านั้น
+                            matchedOrderFolders.AddRange(
+                                Directory.GetDirectories(emailProp.folderCustomer, "*", SearchOption.AllDirectories)
+                                    .Where(dir => Path.GetFileName(dir)
+                                        .Equals(folderNameToSearch, StringComparison.OrdinalIgnoreCase))
+                            );
+
+                            matchedOrderFolders = matchedOrderFolders
+                                .Distinct(StringComparer.OrdinalIgnoreCase)
+                                .ToList();
+
+                            foreach (string orderFolder in matchedOrderFolders)
+                            {
+                                foundOrderFolder = orderFolder;
+
+                                // โครงสร้างจริง:
+                                // ...\OrderFolder\OrderFolder\Excel.xlsx
+                                string doubleNestedPath = Path.Combine(orderFolder, folderNameToSearch);
+
+                                // fallback:
+                                // ...\OrderFolder\Excel.xlsx
+                                string singlePath = orderFolder;
+
+                                string[] pathsToCheck = new string[]
                                 {
-                                    matchedOrderFolders.Add(emailProp.folderCustomer.TrimEnd('\\'));
-                                }
+                                    doubleNestedPath,
+                                    singlePath
+                                };
 
-                                // 2. scan ลงไปทุก folder ย่อย เหมือน logic เวอร์ชันเก่า
-                                matchedOrderFolders.AddRange(
-                                    Directory.GetDirectories(emailProp.folderCustomer, "*", SearchOption.AllDirectories)
-                                        .Where(dir => Path.GetFileName(dir)
-                                            .Equals(searchPattern, StringComparison.OrdinalIgnoreCase))
-                                );
-
-                                // กัน duplicate
-                                matchedOrderFolders = matchedOrderFolders
-                                    .Distinct(StringComparer.OrdinalIgnoreCase)
-                                    .ToList();
-
-                                foreach (string orderFolder in matchedOrderFolders)
+                                foreach (string targetDir in pathsToCheck)
                                 {
-                                    foundOrderFolder = orderFolder;
+                                    lastCheckedFolder = targetDir;
 
-                                    // โครงสร้างจริง:
-                                    // ...\OrderFolder\OrderFolder\Excel.xlsx
-                                    string doubleNestedPath = Path.Combine(orderFolder, searchPattern);
+                                    if (!Directory.Exists(targetDir))
+                                        continue;
 
-                                    // fallback:
-                                    // ...\OrderFolder\Excel.xlsx
-                                    string singlePath = orderFolder;
-
-                                    string[] pathsToCheck = new string[]
-                                    {
-                                        doubleNestedPath,
-                                        singlePath
-                                    };
-
-                                    foreach (string targetDir in pathsToCheck)
-                                    {
-                                        lastCheckedFolder = targetDir;
-
-                                        if (!Directory.Exists(targetDir))
-                                            continue;
-
-                                        string[] filesInFolder = Directory.GetFiles(targetDir)
-                                            .Where(f =>
-                                            {
-                                                string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
-
-                                                bool isExcel =
-                                                    f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase) ||
-                                                    f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
-
-                                                bool matchDate =
-                                                    fileNameNoExt.StartsWith($"{datePrefix}-", StringComparison.OrdinalIgnoreCase);
-
-                                                bool matchPart =
-                                                    fileNameNoExt.EndsWith($"({shortPartNo})", StringComparison.OrdinalIgnoreCase);
-
-                                                return isExcel && matchDate && matchPart;
-                                            })
-                                            .ToArray();
-
-                                        // fallback แบบเวอร์ชันเก่า:
-                                        // ถ้าไม่เจอจาก date + part ให้หยิบ Excel ใน folder นั้น
-                                        if (filesInFolder.Length == 0)
+                                    string[] filesInFolder = Directory.GetFiles(targetDir)
+                                        .Where(f =>
                                         {
-                                            filesInFolder = Directory.GetFiles(targetDir)
-                                                .Where(f =>
-                                                    f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase) ||
-                                                    f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
-                                                .OrderByDescending(f =>
-                                                    Path.GetFileNameWithoutExtension(f)
-                                                        .IndexOf("PO-", StringComparison.OrdinalIgnoreCase) >= 0)
-                                                .ToArray();
-                                        }
+                                            string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
 
-                                        if (filesInFolder.Length > 0)
-                                        {
-                                            dtFile.Rows.Add(targetDir, filesInFolder[0]);
-                                            fileFound = true;
-                                            break;
-                                        }
+                                            bool isExcel =
+                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase) ||
+                                                f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
+
+                                            bool matchFileName =
+                                                fileNameNoExt.Equals(fileNameToSearch, StringComparison.OrdinalIgnoreCase);
+
+                                            return isExcel && matchFileName;
+                                        })
+                                        .ToArray();
+
+                                    if (filesInFolder.Length > 0)
+                                    {
+                                        dtFile.Rows.Add(targetDir, filesInFolder[0]);
+                                        fileFound = true;
+                                        break;
                                     }
-
-                                    if (fileFound) break;
                                 }
 
                                 if (fileFound) break;
                             }
 
-                            //if (!fileFound)
-                            //{
-                            //    string errorMessage = $"ไม่พบไฟล์ข้อมูลที่ถูกต้องสำหรับ Order: {shipProp.fecOrderNo}\n" +
-                            //                          $"Part No: {emailProp.partNo}\n" +
-                            //                          $"Short Part No: {shortPartNo}\n" +
-                            //                          $"Sub Folder: {shipProp.subFolder}\n" +
-                            //                          $"วันที่: {datePrefix}\n\n" +
-                            //                          $"พยายามค้นหา Folder Pattern:\n" +
-                            //                          string.Join("\n", folderPatternsToSearch) + "\n\n" +
-                            //                          $"Root ที่ใช้ค้นหา:\n" +
-                            //                          $"{emailProp.folderCustomer}\n\n" +
-                            //                          $"Order Folder ที่เจอ:\n" +
-                            //                          $"{foundOrderFolder}\n\n" +
-                            //                          $"Folder ล่าสุดที่ตรวจสอบ:\n" +
-                            //                          $"{lastCheckedFolder}\n\n" +
-                            //                          $"ไฟล์ที่คาดหวัง:\n" +
-                            //                          $"{datePrefix}-*({shortPartNo}).xls(x)";
+                            if (!fileFound)
+                            {
+                                string errorMessage = $"ไม่พบไฟล์ข้อมูลที่ถูกต้องสำหรับ Order: {shipProp.fecOrderNo}\n" +
+                                                      $"Part No: {emailProp.partNo}\n" +
+                                                      $"Short Part No: {shortPartNo}\n" +
+                                                      $"Sub Folder: {shipProp.subFolder}\n" +
+                                                      $"วันที่: {datePrefix}\n\n" +
+                                                      $"Folder ที่ต้องเจอ:\n" +
+                                                      $"{folderNameToSearch}\n\n" +
+                                                      $"Root ที่ใช้ค้นหา:\n" +
+                                                      $"{emailProp.folderCustomer}\n\n" +
+                                                      $"Order Folder ที่เจอ:\n" +
+                                                      $"{foundOrderFolder}\n\n" +
+                                                      $"Folder ล่าสุดที่ตรวจสอบ:\n" +
+                                                      $"{lastCheckedFolder}\n\n" +
+                                                      $"ไฟล์ที่คาดหวัง:\n" +
+                                                      $"{fileNameToSearch}.xls หรือ {fileNameToSearch}.xlsx";
 
-                            //    MessageBox.Show(errorMessage, "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            //    emailProp.isValid = false;
-                            //    return emailProp;
-                            //}
+                                MessageBox.Show(errorMessage, "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
 
                             if (dtFile.Rows.Count == emailProp.dgvShip.Rows.Count)
                             {
