@@ -25,10 +25,15 @@ namespace EdataManagement.Utilities
         {
             try
             {
+                dataProp = _controls.infoPOAllValue(dataProp);
+
+                if (string.IsNullOrEmpty(dataProp.keyColumn) || string.IsNullOrEmpty(dataProp.valueColumn))
+                {
+                    return string.Empty;
+                }
+
                 xlApp = new Microsoft.Office.Interop.Excel.Application();
                 xlApp.Visible = true;  // แสดง Excel Application , ใช้จริงซ่อน = faluse
-
-                dataProp = _controls.infoPOAllValue(dataProp);
 
                 
                 xlWorkbook = xlApp.Workbooks.Open(dataProp.pathPOall, Type.Missing, true);

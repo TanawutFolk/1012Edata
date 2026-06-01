@@ -42,6 +42,36 @@ namespace EdataManagement.Utilities
 
         FileCls fileCls = new FileCls();
 
+        private string GetCellValue(DataGridViewRow row, params string[] columnNames)
+        {
+            foreach (string columnName in columnNames)
+            {
+                if (row.DataGridView.Columns.Contains(columnName))
+                {
+                    return row.Cells[columnName].Value?.ToString()?.Trim() ?? "";
+                }
+            }
+
+            return "";
+        }
+
+        private string GetPOAllValue(string productID, string pathPO, string variable, string input)
+        {
+            if (string.IsNullOrEmpty(productID) || string.IsNullOrEmpty(pathPO) ||
+                string.IsNullOrEmpty(variable) || string.IsNullOrEmpty(input))
+            {
+                return "";
+            }
+
+            ExcelProperty poAllProp = new ExcelProperty();
+            poAllProp.productID = productID;
+            poAllProp.pathPOall = pathPO;
+            poAllProp.VARIABLE = variable;
+            poAllProp.input = input;
+
+            return excelCls.ExcelValue(poAllProp)?.Trim() ?? "";
+        }
+
         public string strProcessSubject(EmailProperty.replaceWord itemData)
         {
 
@@ -1924,10 +1954,23 @@ namespace EdataManagement.Utilities
                                                  ? emailProp.partNo.Substring(7)
                                                  : emailProp.partNo;
 
-                            if (string.IsNullOrEmpty(shipProp.fecOrderNo) || string.IsNullOrEmpty(shortPartNo))
+                            string specialPO = GetCellValue(dtShipRow, "specialPO", "SpecialPO", "Special_PO", "Special PO");
+                            if (string.IsNullOrEmpty(specialPO))
+                            {
+                                specialPO = GetPOAllValue(rpWord.productID, rpWord.pathPO, "SpecialPO", shipProp.testReportNo);
+                            }
+                            if (string.IsNullOrEmpty(specialPO))
+                            {
+                                specialPO = GetPOAllValue(rpWord.productID, rpWord.pathPO, "Special PO", shipProp.testReportNo);
+                            }
+
+                            string orderNoForFile = !string.IsNullOrEmpty(specialPO) ? specialPO : shipProp.fecOrderNo;
+
+                            if (string.IsNullOrEmpty(shipProp.fecOrderNo) || string.IsNullOrEmpty(orderNoForFile) || string.IsNullOrEmpty(shortPartNo))
                             {
                                 MessageBox.Show($"ข้อมูล FEC Order Number หรือ Part Number ไม่สมบูรณ์ ไม่สามารถค้นหาโฟลเดอร์ได้\n" +
                                                 $"FEC Order No: {shipProp.fecOrderNo}\n" +
+                                                $"Special PO: {specialPO}\n" +
                                                 $"Part No: {shortPartNo}\n" +
                                                 $"ในโฟลเดอร์: {emailProp.folderCustomer}",
                                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1940,7 +1983,7 @@ namespace EdataManagement.Utilities
                                 ? $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}"
                                 : $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
-                            string fileNameToSearch = $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
+                            string fileNameToSearch = $"{datePrefix}-{orderNoForFile}({shortPartNo})";
 
                             rpWord.shipDate = emailProp.shipDate;
                             rpWord.formatDate = _emailCon.allFormatDate();
@@ -2031,6 +2074,7 @@ namespace EdataManagement.Utilities
                             if (!fileFound)
                             {
                                 string errorMessage = $"ไม่พบไฟล์ข้อมูลที่ถูกต้องสำหรับ Order: {shipProp.fecOrderNo}\n" +
+                                                      $"Special PO: {specialPO}\n" +
                                                       $"Part No: {emailProp.partNo}\n" +
                                                       $"Short Part No: {shortPartNo}\n" +
                                                       $"Sub Folder: {shipProp.subFolder}\n" +
