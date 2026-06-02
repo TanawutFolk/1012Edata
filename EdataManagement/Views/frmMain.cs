@@ -57,6 +57,17 @@ namespace EdataManagement
             richTextBoxLog.AppendText(text + Environment.NewLine);
         }
 
+        private string GetDbProductForRun(string productName, string dbProduct)
+        {
+            // Temporary test override. Remove this when 1480 should use info_db_name.DATABASE_NAME again.
+            if (productName == "1480")
+            {
+                return "ddb_test";
+            }
+
+            return dbProduct;
+        }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
 
@@ -87,8 +98,8 @@ namespace EdataManagement
 
             foreach (DataRow dtRow in product.Rows)
             {
-                sp.dbProduct = dtRow["DATABASE_NAME"].ToString();
                 sp.productName = dtRow["PRODUCT_NAME"].ToString();
+                sp.dbProduct = GetDbProductForRun(sp.productName, dtRow["DATABASE_NAME"].ToString());
 
                 if (scon.updateLastData(sp) == true)
                 {
@@ -166,8 +177,8 @@ namespace EdataManagement
 
 
             dataItem.shipdate = selectedDate.ToString("yyyy-MM-dd");
-            dataItem.dbProduct = selectedRowProduct["DATABASE_NAME"].ToString();
             dataItem.productName = selectedRowProduct["PRODUCT_NAME"].ToString();
+            dataItem.dbProduct = GetDbProductForRun(dataItem.productName, selectedRowProduct["DATABASE_NAME"].ToString());
 
             DataTable customer = _controllerShip.searchCustomerShipping(dataItem);
 
@@ -369,7 +380,7 @@ namespace EdataManagement
                 //change alias ให้เป็น key_id ให้หมด โดยที่ไม่ว่าจะเป็น CusCondition_ID , ProductionInstructionNo
                 shipProp.key = (dataGridViewShipping["KEY_ID", e.RowIndex].Value).ToString();
                 shipProp.productName = selectedRowProduct["PRODUCT_NAME"].ToString();
-                shipProp.dbProduct = selectedRowProduct["DATABASE_NAME"].ToString();
+                shipProp.dbProduct = GetDbProductForRun(shipProp.productName, selectedRowProduct["DATABASE_NAME"].ToString());
 
                 string strDelv = _shipCon.getSendMethods(shipProp);
 
@@ -596,8 +607,8 @@ namespace EdataManagement
             shipProp.conn = ConfigurationManager.ConnectionStrings["ConnectionStandAlone"].ConnectionString;
 
             shipProp.shipdate = selectedDate.ToString("yyyy-MM-dd");
-            shipProp.dbProduct = emailProp.selectedRowProduct["DATABASE_NAME"].ToString();
             shipProp.productName = emailProp.selectedRowProduct["PRODUCT_NAME"].ToString();
+            shipProp.dbProduct = GetDbProductForRun(shipProp.productName, emailProp.selectedRowProduct["DATABASE_NAME"].ToString());
             shipProp.productNameInEmail = emailProp.selectedRowProduct["NAME_IN_EMAIL"].ToString();
 
 

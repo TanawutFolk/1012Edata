@@ -1954,23 +1954,10 @@ namespace EdataManagement.Utilities
                                                  ? emailProp.partNo.Substring(7)
                                                  : emailProp.partNo;
 
-                            string specialPO = GetCellValue(dtShipRow, "specialPO", "SpecialPO", "Special_PO", "Special PO");
-                            if (string.IsNullOrEmpty(specialPO))
-                            {
-                                specialPO = GetPOAllValue(rpWord.productID, rpWord.pathPO, "SpecialPO", shipProp.testReportNo);
-                            }
-                            if (string.IsNullOrEmpty(specialPO))
-                            {
-                                specialPO = GetPOAllValue(rpWord.productID, rpWord.pathPO, "Special PO", shipProp.testReportNo);
-                            }
-
-                            string orderNoForFile = !string.IsNullOrEmpty(specialPO) ? specialPO : shipProp.fecOrderNo;
-
-                            if (string.IsNullOrEmpty(shipProp.fecOrderNo) || string.IsNullOrEmpty(orderNoForFile) || string.IsNullOrEmpty(shortPartNo))
+                            if (string.IsNullOrEmpty(shipProp.fecOrderNo) || string.IsNullOrEmpty(shortPartNo))
                             {
                                 MessageBox.Show($"ข้อมูล FEC Order Number หรือ Part Number ไม่สมบูรณ์ ไม่สามารถค้นหาโฟลเดอร์ได้\n" +
                                                 $"FEC Order No: {shipProp.fecOrderNo}\n" +
-                                                $"Special PO: {specialPO}\n" +
                                                 $"Part No: {shortPartNo}\n" +
                                                 $"ในโฟลเดอร์: {emailProp.folderCustomer}",
                                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1983,7 +1970,8 @@ namespace EdataManagement.Utilities
                                 ? $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}"
                                 : $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
-                            string fileNameToSearch = $"{datePrefix}-{orderNoForFile}({shortPartNo})";
+                            string poFilePrefix = $"{datePrefix}-PO-";
+                            string poFileSuffix = $"({shortPartNo})";
 
                             rpWord.shipDate = emailProp.shipDate;
                             rpWord.formatDate = _emailCon.allFormatDate();
@@ -2019,16 +2007,27 @@ namespace EdataManagement.Utilities
                                 .Distinct(StringComparer.OrdinalIgnoreCase)
                                 .ToList();
 
+                            if (matchedOrderFolders.Count == 0)
+                            {
+                                MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้า {folderNameToSearch}",
+                                                "ไม่พบโฟลเดอร์ดาต้า",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Error);
+
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
+
                             foreach (string orderFolder in matchedOrderFolders)
                             {
                                 foundOrderFolder = orderFolder;
 
                                 // โครงสร้างจริง:
-                                // ...\OrderFolder\OrderFolder\Excel.xlsx
+                                // ...\OrderFolder\OrderFolder\Excel.xls
                                 string doubleNestedPath = Path.Combine(orderFolder, folderNameToSearch);
 
                                 // fallback:
-                                // ...\OrderFolder\Excel.xlsx
+                                // ...\OrderFolder\Excel.xls
                                 string singlePath = orderFolder;
 
                                 string[] pathsToCheck = new string[]
@@ -2050,11 +2049,11 @@ namespace EdataManagement.Utilities
                                             string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
 
                                             bool isExcel =
-                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase) ||
-                                                f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
+                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase);
 
                                             bool matchFileName =
-                                                fileNameNoExt.Equals(fileNameToSearch, StringComparison.OrdinalIgnoreCase);
+                                                fileNameNoExt.StartsWith(poFilePrefix, StringComparison.OrdinalIgnoreCase) &&
+                                                fileNameNoExt.EndsWith(poFileSuffix, StringComparison.OrdinalIgnoreCase);
 
                                             return isExcel && matchFileName;
                                         })
@@ -2073,24 +2072,11 @@ namespace EdataManagement.Utilities
 
                             if (!fileFound)
                             {
-                                string errorMessage = $"ไม่พบไฟล์ข้อมูลที่ถูกต้องสำหรับ Order: {shipProp.fecOrderNo}\n" +
-                                                      $"Special PO: {specialPO}\n" +
-                                                      $"Part No: {emailProp.partNo}\n" +
-                                                      $"Short Part No: {shortPartNo}\n" +
-                                                      $"Sub Folder: {shipProp.subFolder}\n" +
-                                                      $"วันที่: {datePrefix}\n\n" +
-                                                      $"Folder ที่ต้องเจอ:\n" +
-                                                      $"{folderNameToSearch}\n\n" +
-                                                      $"Root ที่ใช้ค้นหา:\n" +
-                                                      $"{emailProp.folderCustomer}\n\n" +
-                                                      $"Order Folder ที่เจอ:\n" +
-                                                      $"{foundOrderFolder}\n\n" +
-                                                      $"Folder ล่าสุดที่ตรวจสอบ:\n" +
-                                                      $"{lastCheckedFolder}\n\n" +
-                                                      $"ไฟล์ที่คาดหวัง:\n" +
-                                                      $"{fileNameToSearch}.xls หรือ {fileNameToSearch}.xlsx";
+                                MessageBox.Show($"ไม่พบไฟล์ดาต้า {poFilePrefix}*{poFileSuffix}.xls",
+                                                "ไม่พบไฟล์ดาต้า",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Error);
 
-                                MessageBox.Show(errorMessage, "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 emailProp.isValid = false;
                                 return emailProp;
                             }
