@@ -2007,17 +2007,6 @@ namespace EdataManagement.Utilities
                                 .Distinct(StringComparer.OrdinalIgnoreCase)
                                 .ToList();
 
-                            if (matchedOrderFolders.Count == 0)
-                            {
-                                MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้า {folderNameToSearch}",
-                                                "ไม่พบโฟลเดอร์ดาต้า",
-                                                MessageBoxButtons.OK,
-                                                MessageBoxIcon.Error);
-
-                                emailProp.isValid = false;
-                                return emailProp;
-                            }
-
                             foreach (string orderFolder in matchedOrderFolders)
                             {
                                 foundOrderFolder = orderFolder;
@@ -2049,7 +2038,8 @@ namespace EdataManagement.Utilities
                                             string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
 
                                             bool isExcel =
-                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase);
+                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase); //||
+                                                // f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
 
                                             bool matchFileName =
                                                 fileNameNoExt.StartsWith(poFilePrefix, StringComparison.OrdinalIgnoreCase) &&
@@ -2068,6 +2058,17 @@ namespace EdataManagement.Utilities
                                 }
 
                                 if (fileFound) break;
+                            }
+
+                            if (!fileFound && matchedOrderFolders.Count == 0)
+                            {
+                                MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้า {folderNameToSearch}",
+                                                "ไม่พบโฟลเดอร์ดาต้า",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Error);
+
+                                emailProp.isValid = false;
+                                return emailProp;
                             }
 
                             if (!fileFound)

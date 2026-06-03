@@ -3,15 +3,15 @@
   "WorkspaceRootPath": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\utilities\\emailcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\utilities\\emailcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\emailcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -54,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 110,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -110,7 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "frmMain.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmMain.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmMain.cs",
@@ -123,13 +123,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "App.config",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
               "RelativeDocumentMoniker": "EdataManagement\\App.config",
               "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
               "RelativeToolTip": "EdataManagement\\App.config",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAAC8AAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
               "WhenOpened": "2026-05-06T04:54:47.414Z",
               "EditorCaption": ""
@@ -156,8 +156,7 @@
               "RelativeToolTip": "EdataManagement\\Utilities\\EmailCls.cs",
               "ViewState": "AgIAABwIAAAAAAAAAAAjwMQHAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T04:54:41.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T04:54:41.626Z"
             },
             {
               "$type": "Document",
