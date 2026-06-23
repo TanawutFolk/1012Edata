@@ -42,6 +42,9 @@ namespace EdataManagement.Utilities
 
         FileCls fileCls = new FileCls();
 
+        private const string Case10SpecialPOAllPath = @"\\192.168.2.197\Butterfly1480\10-48-ProductControl\07-Shipping_PO\PO from FEC\Shipping-PO-all.xlsm";
+        private const bool Case10DebugFileSearch = true;
+
         private string GetCellValue(DataGridViewRow row, params string[] columnNames)
         {
             foreach (string columnName in columnNames)
@@ -72,6 +75,104 @@ namespace EdataManagement.Utilities
             return excelCls.ExcelValue(poAllProp)?.Trim() ?? "";
         }
 
+        private string GetCase10SpecialPO(EmailProperty.replaceWord rpWord, string testReportNo)
+        {
+            string specialPO = GetCase10ExcelValueByColumns(Case10SpecialPOAllPath, "N", "V", testReportNo);
+            return NormalizeSpecialPO(specialPO);
+        }
+
+        private string GetCase10ExcelValueByColumns(string pathPOall, string keyColumn, string valueColumn, string input)
+        {
+            Microsoft.Office.Interop.Excel.Application xlApp = null;
+            Microsoft.Office.Interop.Excel.Workbook xlWorkbook = null;
+            Microsoft.Office.Interop.Excel.Worksheet xlWorksheet = null;
+            Microsoft.Office.Interop.Excel.Range xlRange = null;
+
+            try
+            {
+                if (string.IsNullOrEmpty(pathPOall) || string.IsNullOrEmpty(keyColumn) ||
+                    string.IsNullOrEmpty(valueColumn) || string.IsNullOrEmpty(input))
+                {
+                    return "";
+                }
+
+                xlApp = new Microsoft.Office.Interop.Excel.Application();
+                xlApp.Visible = false;
+                xlApp.DisplayAlerts = false;
+
+                xlWorkbook = xlApp.Workbooks.Open(pathPOall, Type.Missing, true);
+                xlWorksheet = xlWorkbook.Sheets[1];
+                xlRange = xlWorksheet.UsedRange;
+
+                var keyColumnRange = xlRange.Columns[Case10ExcelColumnNameToIndex(keyColumn), Type.Missing];
+                var keyCell = keyColumnRange.Find(input, Type.Missing, Microsoft.Office.Interop.Excel.XlFindLookIn.xlValues, Microsoft.Office.Interop.Excel.XlLookAt.xlWhole, Microsoft.Office.Interop.Excel.XlSearchOrder.xlByRows, Microsoft.Office.Interop.Excel.XlSearchDirection.xlNext, false, Type.Missing, Type.Missing);
+
+                if (keyCell != null)
+                {
+                    int rowFound = keyCell.Row;
+                    return (xlRange.Cells[rowFound, Case10ExcelColumnNameToIndex(valueColumn)] as Microsoft.Office.Interop.Excel.Range).Text?.ToString() ?? "";
+                }
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return "";
+            }
+            finally
+            {
+                if (xlRange != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(xlRange);
+                if (xlWorksheet != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorksheet);
+                if (xlWorkbook != null)
+                {
+                    xlWorkbook.Close(false);
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlWorkbook);
+                }
+                if (xlApp != null)
+                {
+                    xlApp.Quit();
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(xlApp);
+                }
+            }
+        }
+
+        private int Case10ExcelColumnNameToIndex(string columnName)
+        {
+            int index = 0;
+
+            foreach (char c in columnName)
+            {
+                index = index * 26 + c - 'A' + 1;
+            }
+
+            return index;
+        }
+        private string NormalizeSpecialPO(string specialPO)
+        {
+            specialPO = specialPO?.Trim() ?? "";
+
+            if (specialPO.StartsWith("PO-", StringComparison.OrdinalIgnoreCase))
+            {
+                specialPO = specialPO.Substring(3).Trim();
+            }
+            else if (specialPO.StartsWith("PO", StringComparison.OrdinalIgnoreCase) && specialPO.Length > 2 && char.IsDigit(specialPO[2]))
+            {
+                specialPO = specialPO.Substring(2).Trim();
+            }
+
+            if (specialPO.EndsWith(".0", StringComparison.OrdinalIgnoreCase))
+            {
+                specialPO = specialPO.Substring(0, specialPO.Length - 2);
+            }
+
+            if (specialPO.Length > 0 && specialPO.All(char.IsDigit) && specialPO.Length < 10)
+            {
+                specialPO = specialPO.PadLeft(10, '0');
+            }
+
+            return specialPO;
+        }
         public string strProcessSubject(EmailProperty.replaceWord itemData)
         {
 
@@ -979,7 +1080,6 @@ namespace EdataManagement.Utilities
                                 break;
                             }
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         dtInfoEmail.Rows.Add(emailProp.toEmailAddresses, emailProp.ccEmailAddresses, emailProp.productName, emailProp.key, rpWord.subject, rpWord.body, emailProp.fileFormatsId);
@@ -1440,7 +1540,6 @@ namespace EdataManagement.Utilities
                             // ดึงไฟล์จากลิสต์โดยใช้ดัชนี
                             dtFile.Rows.Add(shippingPathHSLD, spFile[count]);
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         rpWord.shipDate = emailProp.shipDate;
@@ -1876,7 +1975,6 @@ namespace EdataManagement.Utilities
                             // ดึงไฟล์จากลิสต์โดยใช้ดัชนี
                             dtFile.Rows.Add(shippingPathHSLD, spFile[count]);
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         rpWord.shipDate = emailProp.shipDate;
@@ -1931,6 +2029,10 @@ namespace EdataManagement.Utilities
 
                     case "10":
 
+
+
+                        List<string> case10DebugFileNames = new List<string>();
+
                         foreach (DataGridViewRow dtShipRow in emailProp.dgvShip.Rows)
                         {
                             if (dtShipRow.IsNewRow)
@@ -1972,6 +2074,27 @@ namespace EdataManagement.Utilities
 
                             string poFilePrefix = $"{datePrefix}-PO-";
                             string poFileSuffix = $"({shortPartNo})";
+                            string specialPO = GetCase10SpecialPO(rpWord, shipProp.testReportNo);
+
+                            if (string.IsNullOrEmpty(specialPO))
+                            {
+                                MessageBox.Show($"ไม่พบ Special PO ใน Shipping-PO-all\n" +
+                                                $"Test Report No: {shipProp.testReportNo}\n" +
+                                                $"ไฟล์: {Case10SpecialPOAllPath}",
+                                                "ไม่พบ Special PO",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Error);
+
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
+
+                            string expectedFileName = $"{poFilePrefix}{specialPO}{poFileSuffix}";
+
+                            if (Case10DebugFileSearch)
+                            {
+                                case10DebugFileNames.Add($"{expectedFileName}.xls");
+                            }
 
                             rpWord.shipDate = emailProp.shipDate;
                             rpWord.formatDate = _emailCon.allFormatDate();
@@ -2007,59 +2130,56 @@ namespace EdataManagement.Utilities
                                 .Distinct(StringComparer.OrdinalIgnoreCase)
                                 .ToList();
 
+                            List<string> targetFoldersToCheck = new List<string>();
+
                             foreach (string orderFolder in matchedOrderFolders)
                             {
-                                foundOrderFolder = orderFolder;
-
-                                // โครงสร้างจริง:
-                                // ...\OrderFolder\OrderFolder\Excel.xls
                                 string doubleNestedPath = Path.Combine(orderFolder, folderNameToSearch);
 
-                                // fallback:
-                                // ...\OrderFolder\Excel.xls
-                                string singlePath = orderFolder;
-
-                                string[] pathsToCheck = new string[]
+                                if (Directory.Exists(doubleNestedPath))
                                 {
-                                    doubleNestedPath,
-                                    singlePath
-                                };
-
-                                foreach (string targetDir in pathsToCheck)
-                                {
-                                    lastCheckedFolder = targetDir;
-
-                                    if (!Directory.Exists(targetDir))
-                                        continue;
-
-                                    string[] filesInFolder = Directory.GetFiles(targetDir)
-                                        .Where(f =>
-                                        {
-                                            string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
-
-                                            bool isExcel =
-                                                f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase); //||
-                                                // f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
-
-                                            bool matchFileName =
-                                                fileNameNoExt.StartsWith(poFilePrefix, StringComparison.OrdinalIgnoreCase) &&
-                                                fileNameNoExt.EndsWith(poFileSuffix, StringComparison.OrdinalIgnoreCase);
-
-                                            return isExcel && matchFileName;
-                                        })
-                                        .ToArray();
-
-                                    if (filesInFolder.Length > 0)
-                                    {
-                                        dtFile.Rows.Add(targetDir, filesInFolder[0]);
-                                        fileFound = true;
-                                        break;
-                                    }
+                                    targetFoldersToCheck.Add(doubleNestedPath);
                                 }
-
-                                if (fileFound) break;
+                                else
+                                {
+                                    targetFoldersToCheck.Add(orderFolder);
+                                }
                             }
 
+                            targetFoldersToCheck = targetFoldersToCheck
+                                .Distinct(StringComparer.OrdinalIgnoreCase)
+                                .ToList();
+
+                            foreach (string targetDir in targetFoldersToCheck)
+                            {
+                                foundOrderFolder = targetDir;
+                                lastCheckedFolder = targetDir;
+
+                                if (!Directory.Exists(targetDir))
+                                    continue;
+
+                                string[] filesInFolder = Directory.GetFiles(targetDir)
+                                    .Where(f =>
+                                    {
+                                        string fileNameNoExt = Path.GetFileNameWithoutExtension(f);
+
+                                        bool isExcel =
+                                            f.EndsWith(".xls", StringComparison.OrdinalIgnoreCase); //||
+                                            // f.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
+                                        bool matchFileName =
+                                            fileNameNoExt.Equals(expectedFileName, StringComparison.OrdinalIgnoreCase);
+
+                                        return isExcel && matchFileName;
+                                    })
+                                    .ToArray();
+
+                                if (filesInFolder.Length > 0)
+                                {
+                                    dtFile.Rows.Add(targetDir, filesInFolder[0]);
+                                    fileFound = true;
+                                    break;
+                                }
+                            }
                             if (!fileFound && matchedOrderFolders.Count == 0)
                             {
                                 MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้า {folderNameToSearch}",
@@ -2073,7 +2193,7 @@ namespace EdataManagement.Utilities
 
                             if (!fileFound)
                             {
-                                MessageBox.Show($"ไม่พบไฟล์ดาต้า {poFilePrefix}*{poFileSuffix}.xls",
+                                MessageBox.Show($"ไม่พบไฟล์ดาต้า {expectedFileName}.xls",
                                                 "ไม่พบไฟล์ดาต้า",
                                                 MessageBoxButtons.OK,
                                                 MessageBoxIcon.Error);
@@ -2086,6 +2206,13 @@ namespace EdataManagement.Utilities
                             {
                                 break;
                             }
+                        }
+                        if (Case10DebugFileSearch && case10DebugFileNames.Count > 0)
+                        {
+                            MessageBox.Show("ชื่อไฟล์ที่กำลังหา:\n" + string.Join("\n", case10DebugFileNames),
+                                            "Debug Case 10 - File Search",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Information);
                         }
 
                         emailProp = _emailCon.getEmailAddress(emailProp);
@@ -2353,7 +2480,6 @@ namespace EdataManagement.Utilities
                                 break;
                             }
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         dtInfoEmail.Rows.Add(emailProp.toEmailAddresses, emailProp.ccEmailAddresses, emailProp.productName, emailProp.key, rpWord.subject, rpWord.body, emailProp.fileFormatsId);
@@ -2811,7 +2937,6 @@ namespace EdataManagement.Utilities
                             // ดึงไฟล์จากลิสต์โดยใช้ดัชนี
                             dtFile.Rows.Add(shippingPathHSLD, spFile[count]);
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         rpWord.shipDate = emailProp.shipDate;
@@ -3249,7 +3374,6 @@ namespace EdataManagement.Utilities
                             // ดึงไฟล์จากลิสต์โดยใช้ดัชนี
                             dtFile.Rows.Add(shippingPathHSLD, spFile[count]);
                         }
-
                         emailProp = _emailCon.getEmailAddress(emailProp);
 
                         rpWord.shipDate = emailProp.shipDate;
