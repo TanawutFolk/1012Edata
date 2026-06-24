@@ -43,7 +43,6 @@ namespace EdataManagement.Utilities
         FileCls fileCls = new FileCls();
 
         private const string Case10SpecialPOAllPath = @"\\192.168.2.197\Butterfly1480\10-48-ProductControl\07-Shipping_PO\PO from FEC\Shipping-PO-all.xlsm";
-        private const bool Case10DebugFileSearch = true;
 
         private string GetCellValue(DataGridViewRow row, params string[] columnNames)
         {
@@ -2028,11 +2027,6 @@ namespace EdataManagement.Utilities
                         return emailProp;
 
                     case "10":
-
-
-
-                        List<string> case10DebugFileNames = new List<string>();
-
                         foreach (DataGridViewRow dtShipRow in emailProp.dgvShip.Rows)
                         {
                             if (dtShipRow.IsNewRow)
@@ -2090,11 +2084,6 @@ namespace EdataManagement.Utilities
                             }
 
                             string expectedFileName = $"{poFilePrefix}{specialPO}{poFileSuffix}";
-
-                            if (Case10DebugFileSearch)
-                            {
-                                case10DebugFileNames.Add($"{expectedFileName}.xls");
-                            }
 
                             rpWord.shipDate = emailProp.shipDate;
                             rpWord.formatDate = _emailCon.allFormatDate();
@@ -2215,15 +2204,7 @@ namespace EdataManagement.Utilities
                                 break;
                             }
                         }
-                        if (Case10DebugFileSearch && case10DebugFileNames.Count > 0)
-                        {
-                            MessageBox.Show("ชื่อไฟล์ที่กำลังหา:\n" + string.Join("\n", case10DebugFileNames),
-                                            "Debug Case 10 - File Search",
-                                            MessageBoxButtons.OK,
-                                            MessageBoxIcon.Information);
-                        }
-
-                        emailProp = _emailCon.getEmailAddress(emailProp);
+emailProp = _emailCon.getEmailAddress(emailProp);
 
                         dtInfoEmail.Rows.Add(emailProp.toEmailAddresses,
                                              emailProp.ccEmailAddresses,
