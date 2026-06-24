@@ -95,17 +95,24 @@ namespace EdataManagement.Views
             // ผูก event ต่างๆ
             this.dataGridViewDocs.RowsAdded += DataGridViewDocs_RowsChanged;
             this.dataGridViewDocs.RowsRemoved += DataGridViewDocs_RowsChanged;
-            this.dataGridViewDocs.DataSourceChanged += DataGridViewDocs_RowsChanged;
+            this.dataGridViewDocs.DataBindingComplete += DataGridViewDocs_DataBindingComplete;
 
         }
 
         private void DataGridViewDocs_RowsChanged(object sender, EventArgs e)
         {
-            // ตรวจสอบ NullReferenceException
-            if (dataGridViewDocs == null || dataGridViewDocs.Rows == null)
+            RefreshSendEmailButtonState();
+        }
+
+        private void DataGridViewDocs_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            RefreshSendEmailButtonState();
+        }
+
+        private void RefreshSendEmailButtonState()
+        {
+            if (dataGridViewDocs == null || dataGridViewDocs.Rows == null || !dataGridViewDocs.Columns.Contains("attached"))
             {
-                MessageBox.Show("ไม่พบไฟล์แนบที่ต้องการสำหรับส่งอีเมล์ ใน DataGridView หรือ Rows ที่ต้องการ", "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 bt_sendEmail.Enabled = false;
                 return;
             }
@@ -116,21 +123,11 @@ namespace EdataManagement.Views
                             row.Cells["attached"].Value != null &&
                             !string.IsNullOrWhiteSpace(row.Cells["attached"].Value.ToString()));
 
-            if (!hasData)
-            {
-                MessageBox.Show("ไม่พบไฟล์แนบที่ต้องการสำหรับส่งอีเมล์", "Warning",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                bt_sendEmail.Enabled = false;
-            }
-            else
-            {
-                bt_sendEmail.Enabled = true;
-            }
+            bt_sendEmail.Enabled = hasData;
         }
-
         private void emailUserControl_Load(object sender, EventArgs e)
         {
-            DataGridViewDocs_RowsChanged(null, null);
+            RefreshSendEmailButtonState();
         }
 
 
@@ -152,7 +149,7 @@ namespace EdataManagement.Views
             // Unsubscribe event ก่อน
             this.dataGridViewDocs.RowsAdded -= DataGridViewDocs_RowsChanged;
             this.dataGridViewDocs.RowsRemoved -= DataGridViewDocs_RowsChanged;
-            this.dataGridViewDocs.DataSourceChanged -= DataGridViewDocs_RowsChanged;
+            this.dataGridViewDocs.DataBindingComplete -= DataGridViewDocs_DataBindingComplete;
 
             EmailProperty prop = new EmailProperty();
             EmailProperty.replaceWord rpWord = new EmailProperty.replaceWord();

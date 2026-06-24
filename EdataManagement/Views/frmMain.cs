@@ -273,8 +273,6 @@ namespace EdataManagement
 
             var emailControl = new Views.emailUserControl(this);
 
-            panelDelivery.Controls.Add(emailControl);
-
             // Accessing dataGridViewDocs from emailUserControl
             DataGridView dataGridViewDocs = emailControl.GetDataGridViewDocs();
 
@@ -312,6 +310,8 @@ namespace EdataManagement
             }
 
 
+
+            panelDelivery.Controls.Add(emailControl);
 
             System.Windows.Forms.Label label = emailControl.countOnLabel();
             int countRow = 0;
@@ -847,8 +847,6 @@ namespace EdataManagement
 
             var emailControl = new Views.emailUserControl(this);
 
-            panelDelivery.Controls.Add(emailControl);
-
             // Accessing dataGridViewDocs from emailUserControl
             DataGridView dataGridViewDocs = emailControl.GetDataGridViewDocs();
 
@@ -886,6 +884,8 @@ namespace EdataManagement
             }
 
 
+
+            panelDelivery.Controls.Add(emailControl);
 
             System.Windows.Forms.Label label = emailControl.countOnLabel();
             int countRow = 0;
