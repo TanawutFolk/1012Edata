@@ -2140,10 +2140,6 @@ namespace EdataManagement.Utilities
                                 {
                                     targetFoldersToCheck.Add(doubleNestedPath);
                                 }
-                                else
-                                {
-                                    targetFoldersToCheck.Add(orderFolder);
-                                }
                             }
 
                             targetFoldersToCheck = targetFoldersToCheck
@@ -2184,6 +2180,18 @@ namespace EdataManagement.Utilities
                             {
                                 MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้า {folderNameToSearch}",
                                                 "ไม่พบโฟลเดอร์ดาต้า",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Error);
+
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
+
+
+                            if (!fileFound && targetFoldersToCheck.Count == 0)
+                            {
+                                MessageBox.Show($"ไม่พบโฟลเดอร์ดาต้าชั้นที่ 2 {folderNameToSearch}\\{folderNameToSearch}",
+                                                "ไม่พบโฟลเดอร์ดาต้าชั้นที่ 2",
                                                 MessageBoxButtons.OK,
                                                 MessageBoxIcon.Error);
 
