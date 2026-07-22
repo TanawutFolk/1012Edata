@@ -336,14 +336,6 @@ C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\o
 C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\BusinessData\obj\Debug\BusinessData.pdb
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\BusinessData.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\BusinessData.pdb
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.Razor.dll
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.WebPages.Deployment.dll
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.WebPages.xml
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.Helpers.xml
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.Razor.xml
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\Microsoft.Web.Infrastructure.xml
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\bin\System.Web.WebPages.Deployment.xml
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\obj\Debug\BusinessData.csproj.AssemblyReference.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\obj\Debug\BusinessData.csproj.CoreCompileInputs.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\BusinessData\obj\Debug\Business.395DD182.Up2Date

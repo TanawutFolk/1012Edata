@@ -1690,6 +1690,19 @@ namespace EdataManagement.Utilities
                                      string.Equals(Path.GetFileName(subfolder), dateToMatch, StringComparison.OrdinalIgnoreCase)))
                              .ToList();
 
+                            if (!filteredSubfolders.Any())
+                            {
+                                MessageBox.Show(
+                                    $"ไม่พบโฟลเดอร์ข้อมูลสำหรับ TestReportNo: {shipProp.testReportNo}\n" +
+                                    $"Order: {shipProp.fecOrderNo}\n" +
+                                    $"Sub Folder: {shipProp.subFolder}\n" +
+                                    $"ชื่อโฟลเดอร์ที่ต้องการ: {dateToMatch}\n\n" +
+                                    $"กรุณาตรวจสอบไฟล์ในโฟลเดอร์: {emailProp.folderCustomer}",
+                                    "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
+
                             foreach (string subfolder in filteredSubfolders)
                             {
                                 srcPath[i] = subfolder;
@@ -1764,6 +1777,20 @@ namespace EdataManagement.Utilities
                             return emailProp;
                         }
 
+                        // ด่านที่ 1: หลัง copy เสร็จ เช็คว่าจำนวนโฟลเดอร์ที่เตรียมได้จริงครบตามจำนวน order หรือไม่
+                        // กันกรณีโฟลเดอร์ต้นทางถูกลบ/หายระหว่างเตรียมข้อมูล หรือชื่อโฟลเดอร์ซ้ำจน copy ทับกัน
+                        int stagedFolderCount = Directory.GetDirectories(shippingPathLD).Length;
+                        if (stagedFolderCount != emailProp.dgvShip.Rows.Count)
+                        {
+                            MessageBox.Show(
+                                $"ข้อมูล LD ไม่ครบ! เตรียมได้ {stagedFolderCount} โฟลเดอร์ จากที่ต้องส่งทั้งหมด {emailProp.dgvShip.Rows.Count} order\n\n" +
+                                $"อาจมีโฟลเดอร์ข้อมูลถูกลบหรือหายระหว่างเตรียมข้อมูล กรุณาตรวจสอบแล้วเตรียมใหม่อีกครั้ง\n" +
+                                $"ตำแหน่ง: {shippingPathLD}",
+                                "ข้อมูลไม่ครบ - ยกเลิกการส่ง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            emailProp.isValid = false;
+                            return emailProp;
+                        }
+
                         if (fileCls.fnCopyEData(shippingPathLD, emailProp.shipDate) == false)
                         {
                             MessageBox.Show("ทำการ copy ก่อนเปลี่ยนชื่อไม่สำเร็จ " + shippingPathLD, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1775,7 +1802,7 @@ namespace EdataManagement.Utilities
 
                         foreach (string ffe in folderEdata)
                         {
-                            if(fileCls.CompressFileZip( ffe,  ffe) == false)
+                            if (fileCls.CompressFileZip(ffe, ffe) == false)
                             {
                                 emailProp.isValid = false;
                                 return emailProp;
@@ -1792,6 +1819,25 @@ namespace EdataManagement.Utilities
 
                         if (totalZipFiles == 0)
                         {
+                            emailProp.isValid = false;
+                            return emailProp;
+                        }
+
+                        // ด่านที่ 2 (สุดท้ายก่อนส่ง): นับจำนวนโฟลเดอร์ข้อมูล (order) ที่อยู่ในไฟล์ zip จริง
+                        // ต้องเท่ากับจำนวน order ทั้งหมด ไม่งั้นถือว่าข้อมูลไม่ครบ ห้ามส่งเด็ดขาด
+                        int orderFoldersInZip = 0;
+                        foreach (string zipName in zipFileNames)
+                        {
+                            orderFoldersInZip += fileCls.CountTopLevelFoldersInZip(shippingPathLD + "\\" + zipName);
+                        }
+
+                        if (orderFoldersInZip != emailProp.dgvShip.Rows.Count)
+                        {
+                            MessageBox.Show(
+                                $"ข้อมูล LD ในไฟล์ zip ไม่ครบ! พบข้อมูล {orderFoldersInZip} order จากที่ต้องส่งทั้งหมด {emailProp.dgvShip.Rows.Count} order\n\n" +
+                                $"อาจมีโฟลเดอร์ข้อมูลถูกลบหรือหายระหว่างเตรียม/บีบอัดข้อมูล กรุณาตรวจสอบแล้วเตรียมใหม่อีกครั้ง\n" +
+                                $"ตำแหน่ง: {shippingPathLD}",
+                                "ข้อมูลไม่ครบ - ยกเลิกการส่ง", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             emailProp.isValid = false;
                             return emailProp;
                         }
@@ -2175,7 +2221,7 @@ namespace EdataManagement.Utilities
                                 emailProp.isValid = false;
                                 return emailProp;
                             }
-
+
 
                             if (!fileFound && targetFoldersToCheck.Count == 0)
                             {
@@ -3074,6 +3120,19 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                                  .Where(subfolder =>
                                      string.Equals(Path.GetFileName(subfolder), dateToMatch, StringComparison.OrdinalIgnoreCase)))
                              .ToList();
+
+                            if (!filteredSubfolders.Any())
+                            {
+                                MessageBox.Show(
+                                    $"ไม่พบโฟลเดอร์ข้อมูลสำหรับ TestReportNo: {shipProp.testReportNo}\n" +
+                                    $"Order: {shipProp.fecOrderNo}\n" +
+                                    $"Sub Folder: {shipProp.subFolder}\n" +
+                                    $"ชื่อโฟลเดอร์ที่ต้องการ: {dateToMatch}\n\n" +
+                                    $"กรุณาตรวจสอบไฟล์ในโฟลเดอร์: {emailProp.folderCustomer}",
+                                    "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                emailProp.isValid = false;
+                                return emailProp;
+                            }
 
                             foreach (string subfolder in filteredSubfolders)
                             {

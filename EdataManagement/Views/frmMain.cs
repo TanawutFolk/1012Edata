@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -60,10 +60,10 @@ namespace EdataManagement
         private string GetDbProductForRun(string productName, string dbProduct)
         {
             // Temporary test override. Remove this when 1480 should use info_db_name.DATABASE_NAME again.
-            if (productName == "1480")
-            {
-                return "ddb_test";
-            }
+            //if (productName == "1480")
+            //{
+            //    return "ddb_test";
+            //}
 
             return dbProduct;
         }

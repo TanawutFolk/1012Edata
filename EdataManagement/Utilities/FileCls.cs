@@ -405,6 +405,30 @@ namespace EdataManagement.Utilities
             }
         }
 
+        // นับจำนวนโฟลเดอร์ระดับบนสุดในไฟล์ zip (1 order = 1 โฟลเดอร์)
+        // ใช้ตรวจสอบว่าข้อมูลที่จะส่งครบตามจำนวน order หรือไม่ (อ่านแค่ header ของ zip ไม่ได้แตกไฟล์)
+        public int CountTopLevelFoldersInZip(string zipFilePath)
+        {
+            if (!File.Exists(zipFilePath))
+                return 0;
+
+            HashSet<string> topLevelFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            using (ZipArchive zipArchive = ZipFile.OpenRead(zipFilePath))
+            {
+                foreach (ZipArchiveEntry entry in zipArchive.Entries)
+                {
+                    string[] pathParts = entry.FullName.Split('/');
+                    if (pathParts.Length > 1 && !string.IsNullOrEmpty(pathParts[0]))
+                    {
+                        topLevelFolders.Add(pathParts[0]);
+                    }
+                }
+            }
+
+            return topLevelFolders.Count;
+        }
+
         public string GetZipDirectoryContents(string zipFilePath)
         {
             // สร้าง StringBuilder เพื่อเก็บข้อมูล directory
