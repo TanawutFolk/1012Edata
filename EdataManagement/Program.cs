@@ -1,5 +1,6 @@
 ﻿using EdataManagement.Property;
 using EdataManagement.Utilities;
+using EdataManagement.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace EdataManagement
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+            Application.Run(new frmLogin());
         }
     }
 }

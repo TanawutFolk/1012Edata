@@ -35,3 +35,6 @@ C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataMana
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataMan.60F4B2DC.Up2Date
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\1012 Send E-data 48-98 Direct V3.6.0.exe
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\1012 Send E-data 48-98 Direct V3.6.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.frmLogin.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.Setting.frmSetting.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Release\EdataManagement.Views.frmConfirm.resources
