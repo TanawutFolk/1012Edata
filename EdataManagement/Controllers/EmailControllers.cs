@@ -180,6 +180,38 @@ namespace EdataManagement.Controllers
             return dataItem;
         }
 
+        /// <summary>
+        /// TO or CC addresses of one E-data type (2 Serial List, 3 Wafer) of one product + customer.
+        /// Returns null when the database has no recipient for it yet, so the caller can still
+        /// fall back to Setting\EmailSetting.ini.
+        /// </summary>
+        public List<string> getDocumentEmailAddresses(string productName, string customerName, int documentId, string recipientType)
+        {
+            try
+            {
+                resultData = models.getDocumentEmailAddress(productName, customerName, documentId);
+
+                if (resultData.StatusOnDb != true || resultData.ResultOnDb == null || resultData.ResultOnDb.Rows.Count == 0)
+                {
+                    return null;
+                }
+
+                List<string> addresses = new List<string>();
+                foreach (DataRow row in resultData.ResultOnDb.Rows)
+                {
+                    if (string.Equals(row["recipient_type"].ToString(), recipientType, StringComparison.OrdinalIgnoreCase))
+                    {
+                        addresses.Add(row["EMAIL_ADDRESS"].ToString());
+                    }
+                }
+                return addresses;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", (MessageBoxButtons)MessageBoxButtons.OK, (MessageBoxIcon)MessageBoxIcon.Error);
+                return null;
+            }
+        }
 
     }
 }

@@ -26,6 +26,12 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty getDocumentEmailAddress(string productName, string customerName, int documentId)
+        {
+            _resultData = _services.getDocumentEmailAddress(productName, customerName, documentId);
+            return _resultData;
+        }
+
         public OutputOnDbProperty getSignature(EmailProperty dataItem)
         {
             _resultData = _services.getSignature(dataItem);

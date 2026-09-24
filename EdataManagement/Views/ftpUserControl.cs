@@ -423,6 +423,17 @@ namespace EdataManagement.Views
         {
             List<string> uploadStatusList = new List<string>();
 
+            // not on the production database -> never upload to the customer, see MailSafety
+            if (Utilities.MailSafety.IsTestMode)
+            {
+                foreach (string filePath in fileList)
+                {
+                    uploadStatusList.Add("[TEST - NOT UPLOADED] " + filePath + " -> " + remoteFolderPath + "/" + Path.GetFileName(filePath) +
+                                         "  (DB: " + Utilities.MailSafety.ConfigDatabase + ")");
+                }
+                return uploadStatusList;
+            }
+
             using (SftpClient client = new SftpClient(host, port, username, password))
             {
                 client.Connect();

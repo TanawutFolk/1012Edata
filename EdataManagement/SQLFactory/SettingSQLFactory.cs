@@ -1,4 +1,4 @@
-﻿using EdataManagement.Property;
+using EdataManagement.Property;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -70,6 +70,25 @@ namespace EdataManagement.SQLFactory
             return sql; 
         }
 
+        /// <summary>
+        /// Recipients of one E-data type (info_document: 2 Serial List, 3 Wafer) of one product + customer,
+        /// from key_group_email_document. No row = not moved out of EmailSetting.ini yet.
+        /// </summary>
+        public string getDocumentEmailAddress(string productName, string customerName, int documentId)
+        {
+            sql = "SELECT e.EMAIL_ADDRESS " +
+                  ", CASE WHEN ge.RECIPIENT_ID = 1 THEN 'to' WHEN ge.RECIPIENT_ID = 2 THEN 'cc' ELSE 'unknown' END AS recipient_type " +
+                  "FROM key_group_email_document d " +
+                  "JOIN info_group_email ge ON (ge.GROUP_ID = d.GROUP_ID) " +
+                  "JOIN info_email e ON (e.EMAIL_ID = ge.EMAIL_ID) " +
+                  "WHERE d.PRODUCT_NAME = '" + productName.Replace("'", "''") + "' " +
+                  "AND d.CUSTOMER = '" + customerName.Replace("'", "''") + "' " +
+                  "AND d.DOCUMENT_ID = " + documentId + " " +
+                  "ORDER BY ge.RECIPIENT_ID, e.EMAIL_ADDRESS";
+
+            return sql;
+        }
+
         public string getSignature(EmailProperty dataItem)
         {
             sql = @"SELECT c.SIGNATURE_DETAIL as `Signature`

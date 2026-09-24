@@ -44,6 +44,23 @@ namespace EdataManagement.Utilities
 
         private const string Case10SpecialPOAllPath = @"\\192.168.2.197\Butterfly1480\10-48-ProductControl\07-Shipping_PO\PO from FEC\Shipping-PO-all.xlsm";
 
+        // info_document ids of the E-data types that go out as their own mail
+        private const int DOC_SERIAL_LIST = 2;
+        private const int DOC_WAFER = 3;
+
+        /// <summary>
+        /// TO / CC of a Serial List or Wafer mail: key_group_email_document in the database first
+        /// (editable in Setting, same on every PC); Setting\EmailSetting.ini only when the database
+        /// has nothing for this product + customer + type yet.
+        /// </summary>
+        private List<string> GetDocumentRecipients(ShippingProperty ship, int documentId, string iniSuffix, string recipientType)
+        {
+            List<string> fromDatabase = _emailCon.getDocumentEmailAddresses(ship.productName, ship.customerName, documentId, recipientType);
+            if (fromDatabase != null) return fromDatabase;
+
+            return fileCls.GetEmailAddresses(ship.productName + ship.customerName + iniSuffix, recipientType);
+        }
+
         private string GetCellValue(DataGridViewRow row, params string[] columnNames)
         {
             foreach (string columnName in columnNames)
@@ -78,6 +95,12 @@ namespace EdataManagement.Utilities
         {
             string specialPO = GetCase10ExcelValueByColumns(Case10SpecialPOAllPath, "N", "V", testReportNo);
             return NormalizeSpecialPO(specialPO);
+        }
+
+        // case 12 (SMTC) ใช้ค่าคอลัมน์ V ตามจริง เช่น "SJ 70320745" ไม่ตัด "PO" และไม่เติม 0
+        private string GetCase12SpecialPO(string testReportNo)
+        {
+            return GetCase10ExcelValueByColumns(Case10SpecialPOAllPath, "N", "V", testReportNo)?.Trim() ?? "";
         }
 
         private string GetCase10ExcelValueByColumns(string pathPOall, string keyColumn, string valueColumn, string input)
@@ -712,6 +735,9 @@ namespace EdataManagement.Utilities
             Outlook.Application app = null;
             Outlook.MailItem mail = null;
 
+            // not on the production database -> never send, see MailSafety
+            bool testMode = MailSafety.IsTestMode;
+
             try
             {
                 // 1. สร้าง Object Outlook Application
@@ -720,7 +746,7 @@ namespace EdataManagement.Utilities
 
 
                 // 2. จัดการผู้รับ (To)
-                if (prop.toEmailAddresses != null)
+                if (prop.toEmailAddresses != null && !testMode)
                 {
                     foreach (string toAddress in prop.toEmailAddresses)
                     {
@@ -733,7 +759,7 @@ namespace EdataManagement.Utilities
                 }
 
                 // 3. จัดการผู้รับสำเนา (CC)
-                if (prop.ccEmailAddresses != null)
+                if (prop.ccEmailAddresses != null && !testMode)
                 {
                     foreach (string ccAddress in prop.ccEmailAddresses)
                     {
@@ -749,12 +775,14 @@ namespace EdataManagement.Utilities
                 mail.Recipients.ResolveAll();
 
                 // 5. กำหนดเรื่อง (Subject)
-                mail.Subject = itemData.subject;
+                mail.Subject = testMode ? MailSafety.TEST_SUBJECT_PREFIX + itemData.subject : itemData.subject;
 
                 // 6. กำหนดเนื้อหา (ต้องใช้ HTMLBody)
                 mail.BodyFormat = Outlook.OlBodyFormat.olFormatHTML;
                 // เติม <html> tag เพื่อความสมบูรณ์
-                mail.HTMLBody = "<html><body>Dear Sir/Madam <br><br>" + itemData.body + "</body></html>";
+                // test mode: the recipients it would have gone to are listed on top instead of being added
+                string testNotice = testMode ? MailSafety.IntendedRecipientsHtml(prop.toEmailAddresses, prop.ccEmailAddresses) : "";
+                mail.HTMLBody = "<html><body>" + testNotice + "Dear Sir/Madam <br><br>" + itemData.body + "</body></html>";
 
                 
 
@@ -770,6 +798,13 @@ namespace EdataManagement.Utilities
                             mail.Attachments.Add(strAtt, Outlook.OlAttachmentType.olByValue);
                         }
                     }
+                }
+
+                // 8. test mode: keep it as a draft without recipients - nothing leaves Outlook
+                if (testMode)
+                {
+                    mail.Save();
+                    return true;   // finally still releases the COM objects
                 }
 
                 // 8. ส่งอีเมล
@@ -1563,15 +1598,15 @@ namespace EdataManagement.Utilities
                         rpWord.body = "We attached file(s) of Serial list for Hisilicon in this e-mail";
                         rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
 
-                        emailProp.toEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "to");
-                        if (emailProp.toEmailAddresses.Count == 0 || emailProp.toEmailAddresses == null)
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "cc");
-                        if (emailProp.ccEmailAddresses.Count == 0 || emailProp.ccEmailAddresses == null)
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
@@ -1591,15 +1626,15 @@ namespace EdataManagement.Utilities
 
                         // email productcustomer WAFER
 
-                        emailProp.toEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "WAFER", "to");
-                        if (emailProp.toEmailAddresses.Count == 0 || emailProp.toEmailAddresses == null)
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "to");
+                        if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "WAFER", "cc");
-                        if (emailProp.ccEmailAddresses.Count == 0 || emailProp.ccEmailAddresses == null)
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "cc");
+                        if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
@@ -2044,15 +2079,15 @@ namespace EdataManagement.Utilities
                         rpWord.body = "We attached file(s) of Serial list for Hisilicon in this e-mail";
                         rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
 
-                        emailProp.toEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "to");
-                        if (emailProp.toEmailAddresses.Count == 0 || emailProp.toEmailAddresses == null)
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "cc");
-                        if (emailProp.ccEmailAddresses.Count == 0 || emailProp.ccEmailAddresses == null)
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
@@ -2073,6 +2108,7 @@ namespace EdataManagement.Utilities
                         return emailProp;
 
                     case "10":
+                    case "12": // SMTC : yyMMdd-(PO ตามคอลัมน์ V)(short Part Number) ไม่มี "PO-" และไม่เติม 0
                         foreach (DataGridViewRow dtShipRow in emailProp.dgvShip.Rows)
                         {
                             if (dtShipRow.IsNewRow)
@@ -2112,9 +2148,12 @@ namespace EdataManagement.Utilities
                                 ? $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}"
                                 : $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
-                            string poFilePrefix = $"{datePrefix}-PO-";
+                            bool isCase12 = emailProp.fileFormatsId == "12";
+                            string poFilePrefix = isCase12 ? $"{datePrefix}-" : $"{datePrefix}-PO-";
                             string poFileSuffix = $"({shortPartNo})";
-                            string specialPO = GetCase10SpecialPO(rpWord, shipProp.testReportNo);
+                            string specialPO = isCase12
+                                ? GetCase12SpecialPO(shipProp.testReportNo)
+                                : GetCase10SpecialPO(rpWord, shipProp.testReportNo);
 
                             if (string.IsNullOrEmpty(specialPO))
                             {
@@ -2992,15 +3031,15 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                             dtslFile.Rows.Add(shippingPathSerialList, slFile[count]);
                         }
 
-                        emailProp.toEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "to");
-                        if (emailProp.toEmailAddresses.Count == 0 || emailProp.toEmailAddresses == null)
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "SERIAL_LIST", "cc");
-                        if (emailProp.ccEmailAddresses.Count == 0 || emailProp.ccEmailAddresses == null)
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
@@ -3018,15 +3057,15 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                             dtwfFile.Rows.Add(shippingPathWafer, wfFile[count]);
                         }
 
-                        emailProp.toEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "WAFER", "to");
-                        if (emailProp.toEmailAddresses.Count == 0 || emailProp.toEmailAddresses == null)
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "to");
+                        if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = fileCls.GetEmailAddresses(shipProp.productName + shipProp.customerName + "WAFER", "cc");
-                        if (emailProp.ccEmailAddresses.Count == 0 || emailProp.ccEmailAddresses == null)
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "cc");
+                        if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;

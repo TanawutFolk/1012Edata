@@ -231,3 +231,6 @@ C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataMana
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmConfirm.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmLogin.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.frmSetting.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmError.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.ucEmailSending.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.ucLoginSetting.resources

@@ -35,6 +35,9 @@
             this.dataGridViewShipping = new System.Windows.Forms.DataGridView();
             this.bt_Confirm = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pnClickToSetting = new System.Windows.Forms.Panel();
+            this.picSetting = new System.Windows.Forms.PictureBox();
+            this.lbSetting = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lb_logMsg = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,19 +53,18 @@
             this.bdShipping = new System.Windows.Forms.BindingSource(this.components);
             this.cb_customer = new System.Windows.Forms.ComboBox();
             this.multiSelectCheckBox = new System.Windows.Forms.CheckBox();
-            this.picSetting = new System.Windows.Forms.PictureBox();
-            this.lbSetting = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShipping)).BeginInit();
             this.panel1.SuspendLayout();
+            this.pnClickToSetting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSetting)).BeginInit();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bdShipping)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picSetting)).BeginInit();
             this.SuspendLayout();
             // 
             // richTextBoxLog
             // 
             this.richTextBoxLog.Location = new System.Drawing.Point(997, 124);
-            this.richTextBoxLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.richTextBoxLog.Margin = new System.Windows.Forms.Padding(2);
             this.richTextBoxLog.Name = "richTextBoxLog";
             this.richTextBoxLog.ReadOnly = true;
             this.richTextBoxLog.Size = new System.Drawing.Size(277, 217);
@@ -72,7 +74,7 @@
             // shipCalendar
             // 
             this.shipCalendar.Location = new System.Drawing.Point(9, 179);
-            this.shipCalendar.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.shipCalendar.Margin = new System.Windows.Forms.Padding(7);
             this.shipCalendar.Name = "shipCalendar";
             this.shipCalendar.ShowTodayCircle = false;
             this.shipCalendar.TabIndex = 4;
@@ -86,7 +88,7 @@
             this.dataGridViewShipping.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridViewShipping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewShipping.Location = new System.Drawing.Point(338, 179);
-            this.dataGridViewShipping.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridViewShipping.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewShipping.MultiSelect = false;
             this.dataGridViewShipping.Name = "dataGridViewShipping";
             this.dataGridViewShipping.ReadOnly = true;
@@ -101,7 +103,7 @@
             // bt_Confirm
             // 
             this.bt_Confirm.Location = new System.Drawing.Point(248, 236);
-            this.bt_Confirm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_Confirm.Margin = new System.Windows.Forms.Padding(2);
             this.bt_Confirm.Name = "bt_Confirm";
             this.bt_Confirm.Size = new System.Drawing.Size(69, 48);
             this.bt_Confirm.TabIndex = 12;
@@ -111,14 +113,42 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.lbSetting);
-            this.panel1.Controls.Add(this.picSetting);
+            this.panel1.Controls.Add(this.pnClickToSetting);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Location = new System.Drawing.Point(9, 10);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1265, 61);
             this.panel1.TabIndex = 13;
+            // 
+            // pnClickToSetting
+            // 
+            this.pnClickToSetting.Controls.Add(this.picSetting);
+            this.pnClickToSetting.Controls.Add(this.lbSetting);
+            this.pnClickToSetting.Location = new System.Drawing.Point(1204, 0);
+            this.pnClickToSetting.Name = "pnClickToSetting";
+            this.pnClickToSetting.Size = new System.Drawing.Size(58, 61);
+            this.pnClickToSetting.TabIndex = 5;
+            // 
+            // picSetting
+            // 
+            this.picSetting.ErrorImage = null;
+            this.picSetting.Image = ((System.Drawing.Image)(resources.GetObject("picSetting.Image")));
+            this.picSetting.Location = new System.Drawing.Point(11, 4);
+            this.picSetting.Name = "picSetting";
+            this.picSetting.Size = new System.Drawing.Size(35, 35);
+            this.picSetting.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picSetting.TabIndex = 3;
+            this.picSetting.TabStop = false;
+            // 
+            // lbSetting
+            // 
+            this.lbSetting.AutoSize = true;
+            this.lbSetting.Location = new System.Drawing.Point(10, 42);
+            this.lbSetting.Name = "lbSetting";
+            this.lbSetting.Size = new System.Drawing.Size(40, 13);
+            this.lbSetting.TabIndex = 4;
+            this.lbSetting.Text = "Setting";
             // 
             // label4
             // 
@@ -162,7 +192,7 @@
             // 
             this.panel4.Controls.Add(this.label3);
             this.panel4.Location = new System.Drawing.Point(9, 78);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(227, 49);
             this.panel4.TabIndex = 17;
@@ -199,7 +229,7 @@
             this.cb_product.Items.AddRange(new object[] {
             "1480"});
             this.cb_product.Location = new System.Drawing.Point(6, 131);
-            this.cb_product.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cb_product.Margin = new System.Windows.Forms.Padding(2);
             this.cb_product.Name = "cb_product";
             this.cb_product.Size = new System.Drawing.Size(230, 41);
             this.cb_product.TabIndex = 22;
@@ -209,7 +239,7 @@
             // 
             this.bt_selectOrder.Enabled = false;
             this.bt_selectOrder.Location = new System.Drawing.Point(803, 122);
-            this.bt_selectOrder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bt_selectOrder.Margin = new System.Windows.Forms.Padding(2);
             this.bt_selectOrder.Name = "bt_selectOrder";
             this.bt_selectOrder.Size = new System.Drawing.Size(64, 43);
             this.bt_selectOrder.TabIndex = 24;
@@ -230,7 +260,7 @@
             // tb_path_shipping
             // 
             this.tb_path_shipping.Location = new System.Drawing.Point(475, 86);
-            this.tb_path_shipping.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tb_path_shipping.Margin = new System.Windows.Forms.Padding(2);
             this.tb_path_shipping.Name = "tb_path_shipping";
             this.tb_path_shipping.ReadOnly = true;
             this.tb_path_shipping.Size = new System.Drawing.Size(392, 20);
@@ -285,26 +315,6 @@
             this.multiSelectCheckBox.UseVisualStyleBackColor = true;
             this.multiSelectCheckBox.CheckedChanged += new System.EventHandler(this.multiSelectCheckBox_CheckedChanged);
             // 
-            // picSetting
-            // 
-            this.picSetting.ErrorImage = null;
-            this.picSetting.Image = ((System.Drawing.Image)(resources.GetObject("picSetting.Image")));
-            this.picSetting.Location = new System.Drawing.Point(1212, 7);
-            this.picSetting.Name = "picSetting";
-            this.picSetting.Size = new System.Drawing.Size(35, 35);
-            this.picSetting.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picSetting.TabIndex = 3;
-            this.picSetting.TabStop = false;
-            // 
-            // lbSetting
-            // 
-            this.lbSetting.AutoSize = true;
-            this.lbSetting.Location = new System.Drawing.Point(1210, 45);
-            this.lbSetting.Name = "lbSetting";
-            this.lbSetting.Size = new System.Drawing.Size(40, 13);
-            this.lbSetting.TabIndex = 4;
-            this.lbSetting.Text = "Setting";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,7 +339,7 @@
             this.Controls.Add(this.shipCalendar);
             this.Controls.Add(this.richTextBoxLog);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -338,10 +348,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewShipping)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.pnClickToSetting.ResumeLayout(false);
+            this.pnClickToSetting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSetting)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bdShipping)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picSetting)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -371,6 +383,7 @@
         private System.Windows.Forms.CheckBox multiSelectCheckBox;
         private System.Windows.Forms.PictureBox picSetting;
         private System.Windows.Forms.Label lbSetting;
+        private System.Windows.Forms.Panel pnClickToSetting;
     }
 }
 

@@ -37,6 +37,10 @@ namespace EdataManagement
         EmailProperty emailProp = new EmailProperty();
 
         private Dictionary<int, Color> rowColors = new Dictionary<int, Color>(); // ตัวแปรเก็บสีของแถว
+
+        // Setting shortcut (pnClickToSetting + picSetting + lbSetting)
+        // this file has both System.Windows.Controls and System.Windows.Forms in scope
+        private readonly System.Windows.Forms.ToolTip toolTipSetting = new System.Windows.Forms.ToolTip();
         public DataGridView mainDataGridView => dataGridViewShipping;
 
         public frmMain()
@@ -81,9 +85,12 @@ namespace EdataManagement
             };
             string databaseName = builder["Database"].ToString();
 
-            if (databaseName == "qa_oc_test")
+            // any database but qa_oc: mail is saved as a draft and SFTP is skipped (Utilities.MailSafety)
+            if (Utilities.MailSafety.IsTestMode)
             {
-                label4.Text = label4.Text + " " + databaseName;
+                label4.Text = label4.Text + "   TEST MODE (" + databaseName + ") - no mail / FTP is sent";
+                label4.ForeColor = Color.FromArgb(185, 28, 28);
+                this.Text = "[TEST MODE - " + databaseName + "] " + this.Text;
             }
 
             this.BackColor = Color.FromArgb(255, 249, 220, 222);
@@ -110,6 +117,8 @@ namespace EdataManagement
 
             cb_product.SelectedIndexChanged += cb_product_SelectedIndexChanged;
             //cb_product.SelectedIndex = 0;
+
+            WireSettingShortcut();
 
             UpdatePathText();
 
@@ -340,6 +349,45 @@ namespace EdataManagement
         private void bt_clearAll_Click(object sender, EventArgs e)
         {
             clearDataForm();
+        }
+
+        // pnClickToSetting holds the gear icon + the "Setting" label.
+        // A click on a child control does not bubble up to the panel, so the icon,
+        // the label and the panel itself all get the same handler.
+        private void WireSettingShortcut()
+        {
+            Control[] parts = new Control[] { pnClickToSetting, picSetting, lbSetting };
+
+            foreach (Control part in parts)
+            {
+                part.Cursor = Cursors.Hand;
+                part.Click += pnClickToSetting_Click;
+            }
+
+            toolTipSetting.SetToolTip(pnClickToSetting, "Open Setting (login required)");
+            toolTipSetting.SetToolTip(picSetting, "Open Setting (login required)");
+            toolTipSetting.SetToolTip(lbSetting, "Open Setting (login required)");
+        }
+
+        // Setting is behind a login: employee code must be on the whitelist
+        // (table user_setting_edata) before the screen opens.
+        private void pnClickToSetting_Click(object sender, EventArgs e)
+        {
+            if (Views.frmLogin.CurrentUser == null)
+            {
+                using (Views.frmLogin login = new Views.frmLogin())
+                {
+                    if (login.ShowDialog(this) != DialogResult.OK)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            using (Views.Setting.frmSetting setting = new Views.Setting.frmSetting())
+            {
+                setting.ShowDialog(this);
+            }
         }
 
 

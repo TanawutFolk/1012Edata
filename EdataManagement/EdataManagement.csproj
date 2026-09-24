@@ -106,29 +106,41 @@
     <Compile Include="Controllers\ExcelControllers.cs" />
     <Compile Include="Controllers\MainControllers.cs" />
     <Compile Include="Controllers\SettingControllers.cs" />
+    <Compile Include="Controllers\SettingEmailControllers.cs" />
+    <Compile Include="Controllers\SettingUserControllers.cs" />
+    <Compile Include="Controllers\SecurityCenterControllers.cs" />
     <Compile Include="Controllers\ShippingControllers.cs" />
     <Compile Include="Models\EmailModels.cs" />
     <Compile Include="Models\ExcelModels.cs" />
     <Compile Include="Models\MainModels.cs" />
     <Compile Include="Models\SettingModels.cs" />
+    <Compile Include="Models\SettingEmailModels.cs" />
+    <Compile Include="Models\SettingUserModels.cs" />
     <Compile Include="Models\ShippingModels.cs" />
     <Compile Include="Property\EmailProperty.cs" />
     <Compile Include="Property\ExcelProperty.cs" />
     <Compile Include="Property\MainProperty.cs" />
     <Compile Include="Property\SettingProperty.cs" />
+    <Compile Include="Property\SettingEmailProperty.cs" />
+    <Compile Include="Property\SettingUserProperty.cs" />
     <Compile Include="Property\ShippingProperty.cs" />
     <Compile Include="Services\EmailServices.cs" />
     <Compile Include="Services\ExcelServices.cs" />
     <Compile Include="Services\MainServices.cs" />
     <Compile Include="Services\SettingServices.cs" />
+    <Compile Include="Services\SettingEmailServices.cs" />
+    <Compile Include="Services\SettingUserServices.cs" />
     <Compile Include="Services\ShippingServices.cs" />
     <Compile Include="SQLFactory\EmailSQLFactory.cs" />
     <Compile Include="SQLFactory\ExcelSQLFactory.cs" />
     <Compile Include="SQLFactory\MainSQLFactory.cs" />
     <Compile Include="SQLFactory\SettingSQLFactory.cs" />
+    <Compile Include="SQLFactory\SettingEmailSQLFactory.cs" />
+    <Compile Include="SQLFactory\SettingUserSQLFactory.cs" />
     <Compile Include="SQLFactory\ShippingSQLFactory.cs" />
     <Compile Include="Utilities\ExcelCls.cs" />
     <Compile Include="Utilities\EmailCls.cs" />
+    <Compile Include="Utilities\MailSafety.cs" />
     <Compile Include="Utilities\FileCls.cs" />
     <Compile Include="Utilities\IPChecker.cs" />
     <Compile Include="Views\emailUserControl.cs">
@@ -148,6 +160,12 @@
     </Compile>
     <Compile Include="Views\frmEmail.Designer.cs">
       <DependentUpon>frmEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frmError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frmError.Designer.cs">
+      <DependentUpon>frmError.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frmLogin.cs">
       <SubType>Form</SubType>
@@ -175,6 +193,19 @@
     <Compile Include="Views\Setting\frmSetting.Designer.cs">
       <DependentUpon>frmSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Setting\SettingShared.cs" />
+    <Compile Include="Views\Setting\ucEmailSending.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Setting\ucEmailSending.Designer.cs">
+      <DependentUpon>ucEmailSending.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Setting\ucLoginSetting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Setting\ucLoginSetting.Designer.cs">
+      <DependentUpon>ucLoginSetting.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Views\emailUserControl.resx">
       <DependentUpon>emailUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -184,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmEmail.resx">
       <DependentUpon>frmEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frmError.resx">
+      <DependentUpon>frmError.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
@@ -208,6 +242,14 @@
     <EmbeddedResource Include="Views\Setting\frmSetting.resx">
       <DependentUpon>frmSetting.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Setting\ucEmailSending.resx">
+      <DependentUpon>ucEmailSending.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Setting\ucLoginSetting.resx">
+      <DependentUpon>ucLoginSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="DatabaseScripts\user_setting_edata.sql" />
+    <None Include="DatabaseScripts\log_setting_edata.sql" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

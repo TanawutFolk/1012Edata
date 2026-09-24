@@ -34,6 +34,14 @@ namespace EdataManagement.Services
             return resultData;
         }
 
+        public OutputOnDbProperty getDocumentEmailAddress(string productName, string customerName, int documentId)
+        {
+            strConnection = ConfigurationManager.ConnectionStrings["ConnectionQAOC"].ConnectionString;
+            sql = sqlFactory.getDocumentEmailAddress(productName, customerName, documentId);
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
         public OutputOnDbProperty getSignature(EmailProperty dataItem)
         {
             strConnection = ConfigurationManager.ConnectionStrings["ConnectionQAOC"].ConnectionString;
