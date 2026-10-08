@@ -1,0 +1,15 @@
+unit: settings_login
+bindings:
+  - source_loc: EdataManagement/Views/frmLogin.cs:43
+    framework: Windows Forms
+    binding: btnLogin_Click
+    must_appear_in_target: true
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:80
+    framework: Windows Forms/Bunifu
+    binding: SettingUi.IsAdmin controls permission tab visibility
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:29
+    key: ConnectionLogin
+    purpose: login-related database access
+    must_appear_in_target: true

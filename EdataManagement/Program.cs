@@ -37,7 +37,9 @@ namespace EdataManagement
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain());
+
+            // เปิด frmMain เป็นหน้าแรก
+            Application.Run(new frmLogin());
         }
     }
 }

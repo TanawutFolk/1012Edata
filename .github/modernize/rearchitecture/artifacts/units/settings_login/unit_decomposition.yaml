@@ -1,0 +1,9 @@
+unit: settings_login
+commit: false
+candidate_splits:
+  - name: employee_authentication
+    drivers: [modal login trigger, employee/whitelist branches]
+    rationale: login establishes session identity
+  - name: permission_administration
+    drivers: [ADMIN-only settings tab, CRUD operations]
+    rationale: permission management has a separate external trigger

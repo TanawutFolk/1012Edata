@@ -1,0 +1,15 @@
+unit: settings_specification
+bindings:
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:117
+    framework: Windows Forms/Bunifu
+    binding: lazy creation of ucSpecSetting in panelUCSetting
+    must_appear_in_target: true
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:177
+    framework: Windows Forms
+    binding: Save/Cancel footer delegates to active ISettingPage
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:6
+    key: ConnectionQAOC
+    purpose: settings database
+    must_appear_in_target: true

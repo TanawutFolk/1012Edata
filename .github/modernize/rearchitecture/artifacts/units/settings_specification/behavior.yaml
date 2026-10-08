@@ -1,0 +1,22 @@
+unit: settings_specification
+branches:
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:94
+    condition: non-ADMIN attempts to open login permission tab
+    behavior: deny tab access and show error
+    must_preserve: true
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:190
+    condition: pages contain unsaved changes on close
+    behavior: ask whether to discard or keep editing
+    must_preserve: true
+side_effects:
+  - source_loc: EdataManagement/Services/SettingServices.cs:1
+    effect: save specification fields and audit changes through SQL operations
+    must_preserve: true
+error_paths:
+  - source_loc: EdataManagement/Views/Setting/ucSpecSetting.cs:1
+    trigger: invalid or failed database save
+    outcome: show failure state and retain actionable page state
+    must_preserve: true
+concurrency:
+  model: synchronous modal/settings UI
+  tx_boundary: multi-statement setting updates use BusinessData transaction helpers

@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmError));
             this.picErrorModal = new System.Windows.Forms.PictureBox();
             this.lbErrorModal = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnSavee = new Bunifu.Framework.UI.BunifuFlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.picErrorModal)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,25 +56,49 @@
             this.lbErrorModal.TabIndex = 27;
             this.lbErrorModal.Text = "label1";
             // 
-            // btnSave
+            // btnSavee
             // 
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(102, 229);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(240, 27);
-            this.btnSave.TabIndex = 26;
-            this.btnSave.Text = "Ok";
-            this.btnSave.UseCompatibleTextRendering = true;
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSavee.Activecolor = System.Drawing.Color.Lime;
+            this.btnSavee.BackColor = System.Drawing.Color.Red;
+            this.btnSavee.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSavee.BorderRadius = 0;
+            this.btnSavee.ButtonText = "OK";
+            this.btnSavee.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSavee.DisabledColor = System.Drawing.Color.Gray;
+            this.btnSavee.Iconcolor = System.Drawing.Color.Transparent;
+            this.btnSavee.Iconimage = null;
+            this.btnSavee.Iconimage_right = null;
+            this.btnSavee.Iconimage_right_Selected = null;
+            this.btnSavee.Iconimage_Selected = null;
+            this.btnSavee.IconMarginLeft = 0;
+            this.btnSavee.IconMarginRight = 0;
+            this.btnSavee.IconRightVisible = true;
+            this.btnSavee.IconRightZoom = 0D;
+            this.btnSavee.IconVisible = true;
+            this.btnSavee.IconZoom = 90D;
+            this.btnSavee.IsTab = false;
+            this.btnSavee.Location = new System.Drawing.Point(102, 230);
+            this.btnSavee.Name = "btnSavee";
+            this.btnSavee.Normalcolor = System.Drawing.Color.Red;
+            this.btnSavee.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnSavee.OnHoverTextColor = System.Drawing.Color.White;
+            this.btnSavee.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnSavee.selected = false;
+            this.btnSavee.Size = new System.Drawing.Size(250, 37);
+            this.btnSavee.TabIndex = 29;
+            this.btnSavee.Text = "OK";
+            this.btnSavee.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnSavee.Textcolor = System.Drawing.Color.White;
+            this.btnSavee.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             // 
             // frmError
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(448, 279);
+            this.Controls.Add(this.btnSavee);
             this.Controls.Add(this.picErrorModal);
             this.Controls.Add(this.lbErrorModal);
-            this.Controls.Add(this.btnSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -92,6 +116,6 @@
 
         private System.Windows.Forms.PictureBox picErrorModal;
         private System.Windows.Forms.Label lbErrorModal;
-        private System.Windows.Forms.Button btnSave;
+        private Bunifu.Framework.UI.BunifuFlatButton btnSavee;
     }
 }

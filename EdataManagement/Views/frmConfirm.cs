@@ -44,13 +44,17 @@ namespace EdataManagement.Views
         {
             StartPosition = FormStartPosition.CenterParent;
 
-            btnSave.Text = okText;
-            btnSave.DialogResult = DialogResult.Yes;
-            btnCancle.Text = cancelText;
-            btnCancle.DialogResult = DialogResult.No;
+            btnSavee.ButtonText = okText;
+            btnCancel.ButtonText = cancelText;
 
-            AcceptButton = btnSave;
-            CancelButton = btnCancle;   // Esc closes the borderless form
+            btnSavee.Click += delegate
+            {
+                DialogResult = DialogResult.Yes;
+            };
+            btnCancel.Click += delegate
+            {
+                DialogResult = DialogResult.No;
+            };
 
             // the label is AutoSize in the designer, so a long message would run off
             // the form - give it a fixed box that wraps and grow the form if needed
@@ -59,7 +63,7 @@ namespace EdataManagement.Views
             lbConfirmModal.Bounds = new Rectangle(24, 155, ClientSize.Width - 48, 64);
             lbConfirmModal.Text = message ?? "";
 
-            GrowForText(this, lbConfirmModal, new Control[] { btnSave, btnCancle });
+            GrowForText(this, lbConfirmModal, new Control[] { btnSavee, btnCancel });
 
             Paint += Modal_Paint;
         }
@@ -99,6 +103,23 @@ namespace EdataManagement.Views
         private void Modal_Paint(object sender, PaintEventArgs e)
         {
             PaintBorder(this, e);
+        }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                DialogResult = DialogResult.Yes;
+                return true;
+            }
+
+            if (keyData == Keys.Escape)
+            {
+                DialogResult = DialogResult.No;
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
         }
     }
 }

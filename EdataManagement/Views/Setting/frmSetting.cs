@@ -15,7 +15,8 @@ namespace EdataManagement.Views.Setting
     /// Shell of the Setting screen: header with the tab buttons, the Save / Cancel footer,
     /// and panelUCSetting in between where the page of the chosen tab is shown.
     ///
-    ///   btnSettingEmail -> ucEmailSending       (recipients / groups)
+    ///   btnSettingSpec  -> ucSpecSetting        (send method / file / group / subject / body of each spec,
+    ///                                            and the recipients of its mail)
     ///   btnSettingLogin -> ucLoginSetting       (who may open Setting, ADMIN only)
     ///
     /// A page is created the first time its tab is opened and then kept, so going back to a tab
@@ -29,6 +30,12 @@ namespace EdataManagement.Views.Setting
         public frmSetting()
         {
             InitializeComponent();
+        }
+
+        /// <summary>Every tab button, left to right.</summary>
+        private BunifuFlatButton[] TabButtons
+        {
+            get { return new[] { btnSettingSpec, btnSettingLogin }; }
         }
 
         private ISettingPage ActivePage
@@ -53,7 +60,7 @@ namespace EdataManagement.Views.Setting
 
             FormClosing += frmSetting_FormClosing;
 
-            SelectTab(btnSettingEmail);
+            SelectTab(btnSettingSpec);
         }
 
         /// <summary>Warn on the caption when the app is pointed at the test database.</summary>
@@ -76,9 +83,9 @@ namespace EdataManagement.Views.Setting
         // =====================================================================
         // tab buttons
         // =====================================================================
-        private void btnSettingEmail_Click(object sender, EventArgs e)
+        private void btnSettingSpec_Click(object sender, EventArgs e)
         {
-            SelectTab(btnSettingEmail);
+            SelectTab(btnSettingSpec);
         }
 
         private void btnSettingLogin_Click(object sender, EventArgs e)
@@ -112,8 +119,10 @@ namespace EdataManagement.Views.Setting
 
             _activeTab = tab;
 
-            PaintTab(btnSettingEmail, tab == btnSettingEmail);
-            PaintTab(btnSettingLogin, tab == btnSettingLogin);
+            foreach (BunifuFlatButton button in TabButtons)
+            {
+                PaintTab(button, button == tab);
+            }
 
             ISettingPage settingPage = (ISettingPage)page;
             lbChangeForbtn.Text = settingPage.PageTitle;
@@ -129,7 +138,7 @@ namespace EdataManagement.Views.Setting
             if (_pages.TryGetValue(tab, out page)) return page;
 
             if (tab == btnSettingLogin) page = new ucLoginSetting();
-            else page = new ucEmailSending();
+            else page = new ucSpecSetting();
 
             page.Dock = DockStyle.Fill;
             page.Visible = false;

@@ -42,6 +42,14 @@ namespace EdataManagement.Services
             return resultData;
         }
 
+        public OutputOnDbProperty getGroupEmailAddress(int groupId)
+        {
+            strConnection = ConfigurationManager.ConnectionStrings["ConnectionQAOC"].ConnectionString;
+            sql = sqlFactory.getGroupEmailAddress(groupId);
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
         public OutputOnDbProperty getSignature(EmailProperty dataItem)
         {
             strConnection = ConfigurationManager.ConnectionStrings["ConnectionQAOC"].ConnectionString;

@@ -18,7 +18,7 @@ namespace EdataManagement.Views
     ///
     /// Two steps:
     ///   1) EMPCODE + portal password against the Security Center API
-    ///      -> TURNED OFF for now (see btnLogin_Click), the Password box is ignored.
+    ///      -> TURNED OFF for now (see btnLoginn_Click), the Password box is ignored.
     ///   2) EMPCODE must exist in mfg.info_employees, must not be resigned,
     ///      and must be listed in user_setting_edata with INUSE = 1 -> gives the ROLE.
     ///
@@ -42,9 +42,33 @@ namespace EdataManagement.Views
         public frmLogin()
         {
             InitializeComponent();
+            AddButtonShadow();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void AddButtonShadow()
+        {
+            Panel shadow = new Panel
+            {
+                BackColor = Color.FromArgb(35, 35, 35),
+                Enabled = false,
+                Location = new Point(btnLoginn.Left + 1, btnLoginn.Top + 1),
+                Size = btnLoginn.Size
+            };
+
+            panel1.Controls.Add(shadow);
+            shadow.SendToBack();
+        }
+
+        private void frmLogin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnLoginn_Click(btnLoginn, EventArgs.Empty);
+            }
+        }
+
+        private void btnLoginn_Click(object sender, EventArgs e)
         {
             string empCode = (txtEmpCode.Text ?? "").Trim();
 
@@ -67,7 +91,7 @@ namespace EdataManagement.Views
             //
             //string password = txtPassword.Text;
             //SignInResultProperty signIn;
-            //btnLogin.Enabled = false;
+            //btnLoginn.Enabled = false;
             //Cursor = Cursors.WaitCursor;
             //try
             //{
@@ -76,7 +100,7 @@ namespace EdataManagement.Views
             //finally
             //{
             //    Cursor = Cursors.Default;
-            //    btnLogin.Enabled = true;
+            //    btnLoginn.Enabled = true;
             //}
             // ---------------------------------------------------------------
             SignInResultProperty signIn = new SignInResultProperty() { Status = true };
@@ -135,7 +159,12 @@ namespace EdataManagement.Views
 
         private void ShowStatus(string message)
         {
-            lbLoginStatus.Text = message;
+            MessageBox.Show(
+                message,
+                "Login",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
         }
     }
 }

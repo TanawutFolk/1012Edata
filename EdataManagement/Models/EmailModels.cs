@@ -32,6 +32,12 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty getGroupEmailAddress(int groupId)
+        {
+            _resultData = _services.getGroupEmailAddress(groupId);
+            return _resultData;
+        }
+
         public OutputOnDbProperty getSignature(EmailProperty dataItem)
         {
             _resultData = _services.getSignature(dataItem);

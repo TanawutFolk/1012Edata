@@ -198,12 +198,8 @@ C:\Users\tanawut.pat\Desktop\1012 Send E-data 48-98 Direct V3.5.0\EdataManagemen
 \\192.168.2.100\12_qa\33_SoftwareSourceCode\1012\1_Waiting approve\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x64\7z.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\x86\7z.dll
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\BusinessData.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\INIFileParser.dll
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\SevenZipExtractor.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\System.Web.Mvc.dll
@@ -215,7 +211,6 @@ C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataMana
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Renci.SshNet.xml
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.AssemblyReference.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.SuggestedBindingRedirects.cache
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe.config
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.ResolveComReference.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.emailUserControl.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmEmail.resources
@@ -225,12 +220,17 @@ C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataMana
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.GenerateResource.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.csproj.CoreCompileInputs.cache
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataMan.60F4B2DC.Up2Date
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.exe
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V3.6.0.pdb
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\Bunifu_UI_v1.52.dll
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmConfirm.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmLogin.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.frmSetting.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.frmError.resources
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.ucEmailSending.resources
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.ucLoginSetting.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\EdataManagement.Views.Setting.ucSpecSetting.resources
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\1012 Send E-data 48-98 Direct V4.0.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe.config
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.pdb
+C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.dll

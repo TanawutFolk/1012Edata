@@ -161,7 +161,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(321, 24);
             this.label4.TabIndex = 2;
-            this.label4.Text = "1012 Send E-data 48-98 Direct V3.6.0";
+            this.label4.Text = "1012 Send E-data 48-98 Direct V4.0.0";
             // 
             // lb_logMsg
             // 

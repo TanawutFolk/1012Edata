@@ -1,0 +1,30 @@
+shared_modules:
+  - source_loc: BusinessData/DBManage/DatabaseExecuteModels.cs:1
+    kind: database_gateway
+    used_by_units: [main_shipping_workflow, email_workflow, settings_specification, settings_login, business_data_access]
+    fields:
+      - name: resultData
+        type: OutputOnDbProperty
+    used_fields: [resultData]
+    split_candidate: "transaction and result handling are shared across all SQL services"
+    migration_strategy: preserve_single_gateway
+  - source_loc: EdataManagement/Utilities/MailSafety.cs:1
+    kind: safety_policy
+    used_by_units: [application_startup, main_shipping_workflow, email_workflow]
+    fields:
+      - name: ConfigDatabase
+        type: string
+      - name: TestMailGroupId
+        type: nullable int
+    used_fields: [ConfigDatabase, TestMailGroupId]
+    split_candidate: "keep as one policy because all mail paths must use the same fail-safe rule"
+    migration_strategy: preserve_single_policy
+  - source_loc: EdataManagement/Views/Setting/SettingShared.cs:1
+    kind: ui_shared_state
+    used_by_units: [settings_specification, settings_login]
+    fields:
+      - name: CurrentUser
+        type: SettingUserProperty
+    used_fields: [CurrentUser]
+    split_candidate: "shared settings authorization and grid styling"
+    migration_strategy: preserve_shared_helper

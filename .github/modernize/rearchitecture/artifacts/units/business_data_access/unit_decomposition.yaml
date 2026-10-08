@@ -1,0 +1,9 @@
+unit: business_data_access
+commit: false
+candidate_splits:
+  - name: connection_lifecycle
+    drivers: [open/close and connection error handling]
+    rationale: lifecycle is shared infrastructure
+  - name: transaction_execution
+    drivers: [commit/rollback and multi-statement operations]
+    rationale: transaction semantics are independently testable but currently coupled

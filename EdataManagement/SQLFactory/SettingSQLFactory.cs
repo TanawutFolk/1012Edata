@@ -10,6 +10,12 @@ namespace EdataManagement.SQLFactory
     public class SettingSQLFactory
     {
         private string sql;
+
+        // the key tables have audit triggers (DatabaseScripts\audit_key_tables.sql): they read @app_user
+        // to fill CREATE_BY / UPDATE_BY and log_setting_edata. Harmless where no trigger exists.
+        private const string SET_AUTO_SYNC = "SET @app_user = 'auto-sync'; ";
+        private const string CLEAR_APP_USER = "SET @app_user = NULL; ";
+
         public string maxCusID(SettingProperty dataItem)
         {
 
@@ -36,7 +42,7 @@ namespace EdataManagement.SQLFactory
         }
         public string insertUpdateKeySendMethods(SettingProperty dataItem)
         {
-            sql = "INSERT INTO key_send_methods_" + dataItem.productName + " (key_id, SEND_METHODS_ID) " +
+            sql = SET_AUTO_SYNC + "INSERT INTO key_send_methods_" + dataItem.productName + " (key_id, SEND_METHODS_ID) " +
                   "SELECT a.CusCondition_ID, NULL " +
                   "FROM " + dataItem.dbProduct + ".info_cus_condition a " +
                   "LEFT JOIN key_send_methods_" + dataItem.productName + " b ON a.CusCondition_ID = b.key_id " +
@@ -59,7 +65,7 @@ namespace EdataManagement.SQLFactory
                      "GROUP BY a1.customer " +
                   ") AS subquery ON a.customer = subquery.customer " +
                   "SET b.SEND_METHODS_ID = IFNULL(subquery.SEND_METHODS_ID,0) " +
-                  "WHERE b.SEND_METHODS_ID IS NULL; "
+                  "WHERE b.SEND_METHODS_ID IS NULL; " + CLEAR_APP_USER
 
             ;
 
@@ -68,7 +74,7 @@ namespace EdataManagement.SQLFactory
 
         public string insertUpdateEmailSubject(SettingProperty dataItem)
         {
-            sql = "INSERT INTO email_subject_" + dataItem.productName + " (key_id, SUBJECT_ID) " +
+            sql = SET_AUTO_SYNC + "INSERT INTO email_subject_" + dataItem.productName + " (key_id, SUBJECT_ID) " +
                   "SELECT a.CusCondition_ID, NULL " +
                   "FROM " + dataItem.dbProduct + ".info_cus_condition a " +
                   "LEFT JOIN email_subject_" + dataItem.productName + " b ON a.CusCondition_ID = b.key_id " +
@@ -91,7 +97,7 @@ namespace EdataManagement.SQLFactory
                      "GROUP BY a1.customer " +
                   ") AS subquery ON a.customer = subquery.customer " +
                   "SET b.SUBJECT_ID = IFNULL(subquery.SUBJECT_ID,0) " +
-                  "WHERE b.SUBJECT_ID IS NULL; "
+                  "WHERE b.SUBJECT_ID IS NULL; " + CLEAR_APP_USER
 
             ;
 
@@ -100,7 +106,7 @@ namespace EdataManagement.SQLFactory
 
         public string insertUpdateEmailBody(SettingProperty dataItem)
         {
-            sql = "INSERT INTO email_body_" + dataItem.productName + " (key_id, BODY_ID) " +
+            sql = SET_AUTO_SYNC + "INSERT INTO email_body_" + dataItem.productName + " (key_id, BODY_ID) " +
                   "SELECT a.CusCondition_ID, NULL " +
                   "FROM " + dataItem.dbProduct + ".info_cus_condition a " +
                   "LEFT JOIN email_body_" + dataItem.productName + " b ON a.CusCondition_ID = b.key_id " +
@@ -123,7 +129,7 @@ namespace EdataManagement.SQLFactory
                      "GROUP BY a1.customer " +
                   ") AS subquery ON a.customer = subquery.customer " +
                   "SET b.BODY_ID = IFNULL(subquery.BODY_ID,0) " +
-                  "WHERE b.BODY_ID IS NULL; "
+                  "WHERE b.BODY_ID IS NULL; " + CLEAR_APP_USER
 
             ;
 
@@ -132,7 +138,7 @@ namespace EdataManagement.SQLFactory
 
         public string insertUpdateEmailAttach(SettingProperty dataItem)
         {
-            sql = "INSERT INTO email_attach_" + dataItem.productName + " (key_id, FILE_FORMATS_ID) " +
+            sql = SET_AUTO_SYNC + "INSERT INTO email_attach_" + dataItem.productName + " (key_id, FILE_FORMATS_ID) " +
                   "SELECT a.CusCondition_ID, NULL " +
                   "FROM " + dataItem.dbProduct + ".info_cus_condition a " +
                   "LEFT JOIN email_attach_" + dataItem.productName + " b ON a.CusCondition_ID = b.key_id " +
@@ -155,7 +161,7 @@ namespace EdataManagement.SQLFactory
                      "GROUP BY a1.customer " +
                   ") AS subquery ON a.customer = subquery.customer " +
                   "SET b.FILE_FORMATS_ID = IFNULL(subquery.FILE_FORMATS_ID,0) " +
-                  "WHERE b.FILE_FORMATS_ID IS NULL; "
+                  "WHERE b.FILE_FORMATS_ID IS NULL; " + CLEAR_APP_USER
 
             ;
 
@@ -165,7 +171,7 @@ namespace EdataManagement.SQLFactory
 
         public string insertUpdateKeyGroupEmail(SettingProperty dataItem)
         {
-            sql = "INSERT INTO key_group_email_" + dataItem.productName + " (key_id, GROUP_ID) " +
+            sql = SET_AUTO_SYNC + "INSERT INTO key_group_email_" + dataItem.productName + " (key_id, GROUP_ID) " +
                   "SELECT a.CusCondition_ID, NULL " +
                   "FROM " + dataItem.dbProduct + ".info_cus_condition a " +
                   "LEFT JOIN key_group_email_" + dataItem.productName + " b ON a.CusCondition_ID = b.key_id " +
@@ -188,7 +194,7 @@ namespace EdataManagement.SQLFactory
                      "GROUP BY a1.customer " +
                   ") AS subquery ON a.customer = subquery.customer " +
                   "SET b.GROUP_ID = IFNULL(subquery.GROUP_ID,0) " +
-                  "WHERE b.GROUP_ID IS NULL; "
+                  "WHERE b.GROUP_ID IS NULL; " + CLEAR_APP_USER
 
             ;
 

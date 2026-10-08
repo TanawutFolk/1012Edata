@@ -1,0 +1,11 @@
+unit: business_data_access
+bindings:
+  - source_loc: BusinessData/Interface/DatabaseAction.cs:1
+    framework: application-defined generic database contract
+    binding: services inherit DatabaseAction<T>
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:6
+    key: connectionStrings
+    purpose: select database endpoint by service
+    must_appear_in_target: true

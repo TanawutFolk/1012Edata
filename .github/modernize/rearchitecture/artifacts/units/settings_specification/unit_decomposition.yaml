@@ -1,0 +1,9 @@
+unit: settings_specification
+commit: false
+candidate_splits:
+  - name: specification_values
+    drivers: [send-method/file/subject/body settings]
+    rationale: these settings use different table families from recipient membership
+  - name: recipient_groups
+    drivers: [many-to-many group/email operations]
+    rationale: recipient editing has distinct group matrix and membership behavior

@@ -89,6 +89,17 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
+        /// <summary>Addresses of one info_group_email group (MailSafety test group).</summary>
+        public string getGroupEmailAddress(int groupId)
+        {
+            sql = "SELECT e.EMAIL_ADDRESS " +
+                  "FROM info_group_email ge " +
+                  "JOIN info_email e ON (e.EMAIL_ID = ge.EMAIL_ID) " +
+                  "WHERE ge.GROUP_ID = " + groupId + " AND e.INUSE = 1";
+
+            return sql;
+        }
+
         public string getSignature(EmailProperty dataItem)
         {
             sql = @"SELECT c.SIGNATURE_DETAIL as `Signature`

@@ -1,0 +1,43 @@
+units:
+  - name: application_startup
+    external_trigger: process launch
+    source_anchors: [EdataManagement/Program.cs:18]
+    exported_signature: "STA WinForms process; launches frmMain after IP allow-list check"
+    dynamic_entrypoints: []
+    depends_on: [main_workflow]
+    shared_refs: [ip_guard, mail_safety]
+  - name: main_shipping_workflow
+    external_trigger: frmMain product/date/customer interaction
+    source_anchors: [EdataManagement/Views/frmMain.cs:45, EdataManagement/Controllers/ShippingControllers.cs:1]
+    exported_signature: "loads products, shipping customers, serial/wafer rows, and selected shipment state"
+    dynamic_entrypoints: [WinForms event handlers, user-control callbacks]
+    depends_on: [business_data_access, email_workflow]
+    shared_refs: [db_result, mail_safety]
+  - name: email_workflow
+    external_trigger: emailUserControl send button
+    source_anchors: [EdataManagement/Views/emailUserControl.cs:147, EdataManagement/Utilities/EmailCls.cs:1]
+    exported_signature: "validates attachment paths, builds recipient/message data, sends or drafts Outlook mail"
+    dynamic_entrypoints: [DataGridView binding events, Outlook COM callbacks]
+    depends_on: [business_data_access, main_shipping_workflow]
+    shared_refs: [db_result, mail_safety]
+  - name: settings_specification
+    external_trigger: frmSetting -> ucSpecSetting tab
+    source_anchors: [EdataManagement/Views/Setting/ucSpecSetting.cs:1, EdataManagement/Services/SettingServices.cs:1]
+    exported_signature: "loads and saves product email specification and recipient-group configuration"
+    dynamic_entrypoints: [lazy tab creation, grid button events]
+    depends_on: [business_data_access, settings_login]
+    shared_refs: [db_result, setting_ui]
+  - name: settings_login
+    external_trigger: frmLogin and frmSetting -> ucLoginSetting
+    source_anchors: [EdataManagement/Views/frmLogin.cs:1, EdataManagement/Views/Setting/ucLoginSetting.cs:1]
+    exported_signature: "sets CurrentUser and manages user_setting_edata roles/INUSE"
+    dynamic_entrypoints: [modal login result, setting tab visibility]
+    depends_on: [business_data_access]
+    shared_refs: [db_result, setting_ui]
+  - name: business_data_access
+    external_trigger: service calls from application units
+    source_anchors: [BusinessData/DBManage/DatabaseExecuteModels.cs:1, BusinessData/DBManage/TransMysqlModels.cs:1]
+    exported_signature: "raw SQL select/execute with explicit connection and transaction lifecycle"
+    dynamic_entrypoints: []
+    depends_on: []
+    shared_refs: [db_result]

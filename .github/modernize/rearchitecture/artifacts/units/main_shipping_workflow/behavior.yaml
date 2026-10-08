@@ -1,0 +1,22 @@
+unit: main_shipping_workflow
+branches:
+  - source_loc: EdataManagement/Views/frmMain.cs:120
+    condition: no shipping/customer rows for selected date
+    behavior: clear customer source and show warning that no ship date was found
+    must_preserve: true
+  - source_loc: EdataManagement/Views/frmMain.cs:90
+    condition: test database is active
+    behavior: show TEST MODE and explain mail/SFTP safety state
+    must_preserve: true
+side_effects:
+  - source_loc: EdataManagement/Views/frmMain.cs:78
+    effect: load products and update each product's last-data setting
+    must_preserve: true
+error_paths:
+  - source_loc: EdataManagement/Controllers/ShippingControllers.cs:1
+    trigger: database operation reports failure
+    outcome: controller exposes/display error and returns an empty result
+    must_preserve: true
+concurrency:
+  model: synchronous event-driven UI
+  tx_boundary: database operations are delegated to BusinessData

@@ -1,0 +1,15 @@
+unit: email_workflow
+bindings:
+  - source_loc: EdataManagement/Views/emailUserControl.cs:147
+    framework: Windows Forms
+    binding: bt_sendEmail_Click
+    must_appear_in_target: true
+  - source_loc: EdataManagement/Views/emailUserControl.cs:58
+    framework: Windows Forms
+    binding: DataGridView rows/binding events recalculate Send enabled state
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:46
+    key: SettingEmail
+    purpose: email/subject configuration file
+    must_appear_in_target: true

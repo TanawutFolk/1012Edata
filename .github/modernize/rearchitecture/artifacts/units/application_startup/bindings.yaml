@@ -1,0 +1,11 @@
+unit: application_startup
+bindings:
+  - source_loc: EdataManagement/Program.cs:42
+    framework: Windows Forms
+    binding: Application.Run(new frmMain())
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:70
+    key: allowIP
+    purpose: allowed workstation network address
+    must_appear_in_target: true

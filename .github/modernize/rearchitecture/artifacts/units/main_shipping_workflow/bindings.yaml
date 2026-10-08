@@ -1,0 +1,15 @@
+unit: main_shipping_workflow
+bindings:
+  - source_loc: EdataManagement/Views/frmMain.cs:75
+    framework: Windows Forms
+    binding: frmMain_Load populates cb_product
+    must_appear_in_target: true
+  - source_loc: EdataManagement/Views/frmMain.cs:105
+    framework: Windows Forms
+    binding: cb_product_SelectedIndexChanged resets dependent customer state
+    must_appear_in_target: true
+runtime_config:
+  - source_loc: EdataManagement/App.config:6
+    key: ConnectionQAOC
+    purpose: product and shipping database
+    must_appear_in_target: true

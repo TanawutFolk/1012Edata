@@ -1,0 +1,25 @@
+unit: email_workflow
+branches:
+  - source_loc: EdataManagement/Views/emailUserControl.cs:78
+    condition: no attached-file value exists
+    behavior: disable Send button
+    must_preserve: true
+  - source_loc: EdataManagement/Views/emailUserControl.cs:178
+    condition: attachment path is missing or file does not exist
+    behavior: show all missing paths, remove control, and reset main form
+    must_preserve: true
+side_effects:
+  - source_loc: EdataManagement/Views/emailUserControl.cs:147
+    effect: create Outlook messages with generated recipients, subject/body, and attachments
+    must_preserve: true
+  - source_loc: EdataManagement/Utilities/MailSafety.cs:1
+    effect: save test mail as recipient-less draft unless test-group policy permits sending
+    must_preserve: true
+error_paths:
+  - source_loc: EdataManagement/Utilities/EmailCls.cs:4249
+    trigger: Outlook unavailable or COM send failure
+    outcome: surface an error to the user and do not silently report success
+    must_preserve: true
+concurrency:
+  model: synchronous UI event and Outlook COM calls
+  tx_boundary: null

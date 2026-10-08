@@ -35,7 +35,7 @@ namespace EdataManagement.Views.Setting
         bool ConfirmLeavePage();
     }
 
-    /// <summary>Colors, grid look and signed-in user shared by the three Setting pages.</summary>
+    /// <summary>Colors, grid look and signed-in user shared by the Setting pages.</summary>
     internal static class SettingUi
     {
         // ---- alert bar ----

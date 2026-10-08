@@ -1,0 +1,26 @@
+unit: settings_login
+branches:
+  - source_loc: EdataManagement/Views/frmLogin.cs:32
+    condition: employee code is empty
+    behavior: show validation message and focus employee field
+    must_preserve: true
+  - source_loc: EdataManagement/Views/frmLogin.cs:88
+    condition: employee not found, resigned, or no active whitelist role
+    behavior: deny login with a specific user-visible message
+    must_preserve: true
+  - source_loc: EdataManagement/Views/Setting/frmSetting.cs:80
+    condition: signed-in user is not ADMIN
+    behavior: hide login permission tab
+    must_preserve: true
+side_effects:
+  - source_loc: EdataManagement/Views/frmLogin.cs:113
+    effect: set static CurrentUser for the settings session
+    must_preserve: true
+error_paths:
+  - source_loc: EdataManagement/Views/frmLogin.cs:77
+    trigger: database cannot be reached
+    outcome: show database error and do not set CurrentUser
+    must_preserve: true
+concurrency:
+  model: synchronous modal dialog
+  tx_boundary: permission writes delegate to BusinessData

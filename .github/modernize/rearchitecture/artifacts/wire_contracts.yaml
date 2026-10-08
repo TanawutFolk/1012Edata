@@ -1,0 +1,19 @@
+contracts:
+  - source_loc: EdataManagement/App.config:6
+    kind: mysql
+    consumers: [application_startup, main_shipping_workflow, email_workflow, settings_specification, settings_login]
+    stability: frozen
+    target_contract: "Named connection strings resolve to the configured MySQL databases with utf8 and user-variable support."
+    semantic_divergence: "Test and production database names change mail/SFTP behavior."
+  - source_loc: EdataManagement/Utilities/EmailCls.cs:734
+    kind: outlook_com
+    consumers: [email_workflow]
+    stability: frozen
+    target_contract: "Mail is created with computed subject/body/TO/CC and attachments; in test mode it is saved as a recipient-less draft unless all recipients pass the configured test-group rule."
+    semantic_divergence: "Outlook availability and COM errors surface as user-visible failures."
+  - source_loc: EdataManagement/Controllers/SecurityCenterControllers.cs:60
+    kind: http
+    consumers: [settings_login]
+    stability: existing_but_disabled
+    target_contract: "GET /api/security-center/SignIn?data=<URL-encoded JSON> returns JSON Status/Message."
+    semantic_divergence: "The current frmLogin flow bypasses this call while testing."

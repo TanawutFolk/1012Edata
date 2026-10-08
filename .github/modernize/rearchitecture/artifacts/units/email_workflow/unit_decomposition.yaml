@@ -1,0 +1,9 @@
+unit: email_workflow
+commit: false
+candidate_splits:
+  - name: email_composition
+    drivers: [pure data transformation, recipient/subject/body rules]
+    rationale: composition can be separated from external Outlook side effects
+  - name: outlook_delivery
+    drivers: [COM integration, test safety policy, external failure path]
+    rationale: delivery has an independent integration contract

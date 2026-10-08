@@ -1,0 +1,9 @@
+unit: main_shipping_workflow
+commit: false
+candidate_splits:
+  - name: shipping_lookup
+    drivers: [separate user trigger, separate SQL query family]
+    rationale: product/date/customer lookup can be isolated from document preparation
+  - name: document_preparation
+    drivers: [file-system side effects, separate UI grid]
+    rationale: serial/wafer/attachment preparation has different failure behavior

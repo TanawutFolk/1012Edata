@@ -1,0 +1,14 @@
+unit: application_startup
+branches:
+  - source_loc: EdataManagement/Program.cs:18
+    condition: IPChecker.IsAllowed() is false
+    behavior: show allowed/current IP and terminate without opening the main form
+    must_preserve: true
+side_effects:
+  - source_loc: EdataManagement/Program.cs:39
+    effect: enable WinForms visual styles and compatible text rendering
+    must_preserve: true
+error_paths: []
+concurrency:
+  model: single STA UI thread
+  tx_boundary: null

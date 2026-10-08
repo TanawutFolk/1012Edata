@@ -213,5 +213,31 @@ namespace EdataManagement.Controllers
             }
         }
 
+        /// <summary>
+        /// Every address of one info_group_email group (TO and CC). Empty list when the group
+        /// has no member or cannot be read - MailSafety then keeps the test mail as a draft.
+        /// </summary>
+        public List<string> getGroupEmailAddresses(int groupId)
+        {
+            List<string> addresses = new List<string>();
+            try
+            {
+                resultData = models.getGroupEmailAddress(groupId);
+
+                if (resultData.StatusOnDb == true && resultData.ResultOnDb != null)
+                {
+                    foreach (DataRow row in resultData.ResultOnDb.Rows)
+                    {
+                        addresses.Add(row["EMAIL_ADDRESS"].ToString().Trim());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                addresses.Clear();
+            }
+            return addresses;
+        }
+
     }
 }

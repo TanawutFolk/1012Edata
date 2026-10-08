@@ -1,0 +1,18 @@
+strategy: preserve_existing_runtime_boundary
+user_intent:
+  acceptance_criteria: understand_existing_project
+  cleanup_required: false
+must_rewrite: []
+copy_as_is:
+  - EdataManagement
+  - BusinessData
+legacy_allowed_to_remain:
+  - Login
+  - bin
+  - obj
+  - .vs
+defer_cleanup:
+  - credentials and endpoints in App.config
+  - legacy standalone Login project
+  - unused legacy System.Web references in BusinessData
+notes: "This is an analysis-only request; no implementation rewrite boundary was requested."

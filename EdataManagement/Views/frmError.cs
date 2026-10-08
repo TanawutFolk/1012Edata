@@ -35,9 +35,11 @@ namespace EdataManagement.Views
         {
             StartPosition = FormStartPosition.CenterParent;
 
-            btnSave.DialogResult = DialogResult.OK;
-            AcceptButton = btnSave;
-            CancelButton = btnSave;     // Esc closes it too
+            btnSavee.ButtonText = "OK";
+            btnSavee.Click += delegate
+            {
+                DialogResult = DialogResult.OK;
+            };
 
             // same reason as frmConfirm: the designer label is AutoSize
             lbErrorModal.AutoSize = false;
@@ -45,7 +47,7 @@ namespace EdataManagement.Views
             lbErrorModal.Bounds = new Rectangle(24, 150, ClientSize.Width - 48, 64);
             lbErrorModal.Text = message ?? "";
 
-            frmConfirm.GrowForText(this, lbErrorModal, new Control[] { btnSave });
+            frmConfirm.GrowForText(this, lbErrorModal, new Control[] { btnSavee });
 
             Paint += Modal_Paint;
         }
@@ -53,6 +55,17 @@ namespace EdataManagement.Views
         private void Modal_Paint(object sender, PaintEventArgs e)
         {
             frmConfirm.PaintBorder(this, e);
+        }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Enter || keyData == Keys.Escape)
+            {
+                DialogResult = DialogResult.OK;
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
         }
     }
 }

@@ -289,20 +289,18 @@ namespace EdataManagement.SQLFactory
         }
 
         /// <summary>
-        /// log_setting_edata rows for updateCustomerGroup - run BEFORE it, so OLD_VALUE is still the old group.
+        /// Who is saving: the audit triggers of the key tables (DatabaseScripts\audit_key_tables.sql)
+        /// read @app_user for CREATE_BY / UPDATE_BY and log_setting_edata. Run first in the same Save.
         /// </summary>
-        public string logCustomerGroupChange(SettingEmailProperty dataItem)
+        public string setAppUser(string empCode)
         {
-            sql = "INSERT INTO log_setting_edata (PRODUCT, TABLE_NAME, KEY_ID, CUSTOMER, SPEC, OLD_VALUE, NEW_VALUE, CHANGE_USER, CHANGE_DATE) " +
-                  "SELECT '" + Esc(dataItem.productName) + "', 'key_group_email_" + Esc(dataItem.productName) + "', g.KEY_ID " +
-                  ", ic.Customer, ic.Specification, g.GROUP_ID, " + dataItem.newGroupId + ", '" + Esc(dataItem.createUser) + "', NOW() " +
-                  "FROM key_group_email_" + dataItem.productName + " g " +
-                  "INNER JOIN " + dataItem.dbProduct + ".info_cus_condition ic ON (ic.CusCondition_ID = g.KEY_ID) " +
-                  "INNER JOIN key_send_methods_" + dataItem.productName + " k ON (k.KEY_ID = g.KEY_ID) " +
-                  "WHERE ic.Inuse = 1 AND ic.Customer = '" + Esc(dataItem.customerName) + "' " +
-                  "AND k.SEND_METHODS_ID = 3 AND g.GROUP_ID <> " + dataItem.newGroupId + " ";
+            return "SET @app_user = '" + Esc(empCode) + "'";
+        }
 
-            return sql;
+        /// <summary>Run last in the Save, so a pooled connection does not carry the name to the next command.</summary>
+        public string clearAppUser()
+        {
+            return "SET @app_user = NULL";
         }
 
         /// <summary>Point every Email spec of one customer at another group.</summary>

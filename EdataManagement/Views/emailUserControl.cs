@@ -300,6 +300,84 @@ namespace EdataManagement.Views
                 mf.clearDataForm();
                 return;
             }
+            else if (prop.fileFormatsId == "13" || prop.fileFormatsId == "14")
+            {
+                // 1480Dual: one mail per E-data sub-folder (13: its txt files, 14: its zip), or one mail with every file when it was not split
+                prop.dgvFile = dataGridViewDocs;
+                List<string> groupKeys = new List<string>();
+                List<List<string>> mailFiles = new List<List<string>>();
+                List<string> missingFiles = new List<string>();
+
+                foreach (DataGridViewRow dgvfilePath in prop.dgvFile.Rows)
+                {
+                    if (dgvfilePath.IsNewRow)
+                        continue;
+
+                    string filePath = dgvfilePath.Cells["attached"].Value?.ToString();
+                    if (string.IsNullOrEmpty(filePath))
+                    {
+                        missingFiles.Add("ไฟล์ว่าง (ไม่มี path)");
+                        continue;
+                    }
+                    if (!File.Exists(filePath))
+                    {
+                        missingFiles.Add(filePath);
+                        continue;
+                    }
+
+                    string groupKey = dt.Rows.Count == 1 ? "" : dgvfilePath.Cells["folder"].Value?.ToString() ?? "";
+                    int group = groupKeys.IndexOf(groupKey);
+                    if (group < 0)
+                    {
+                        groupKeys.Add(groupKey);
+                        mailFiles.Add(new List<string>());
+                        group = groupKeys.Count - 1;
+                    }
+                    mailFiles[group].Add(filePath);
+                }
+
+                if (missingFiles.Any())
+                {
+                    MessageBox.Show("ไม่พบไฟล์แนบต่อไปนี้:\n" + string.Join("\n", missingFiles), "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Parent.Controls.Remove(this);
+                    mf.clearDataForm();
+                    return;
+                }
+
+                if (mailFiles.Count != dt.Rows.Count)
+                {
+                    MessageBox.Show($"จำนวนโฟลเดอร์ไฟล์แนบ ({mailFiles.Count}) ไม่ตรงกับจำนวนอีเมล์ ({dt.Rows.Count})", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Parent.Controls.Remove(this);
+                    mf.clearDataForm();
+                    return;
+                }
+
+                for (int m = 0; m < dt.Rows.Count; m++)
+                {
+                    DataRow row = dt.Rows[m];
+                    prop.toEmailAddresses = (List<string>)row["toEmailAddresses"];
+                    prop.ccEmailAddresses = (List<string>)row["ccEmailAddresses"];
+                    rpWord.subject = row["subject"].ToString();
+                    rpWord.body = row["body"].ToString();
+                    prop.productName = row["productName"].ToString();
+                    prop.key = row["key_id"].ToString();
+                    prop.attachmentFilePaths = mailFiles[m];
+
+                    if (emailCls.SendEmail(prop, rpWord) != true)
+                    {
+                        if (m > 0)
+                            MessageBox.Show($"ส่งไปแล้ว {m} จาก {dt.Rows.Count} อีเมล์ ฉบับที่ {m + 1} ส่งไม่สำเร็จ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Parent.Controls.Remove(this);
+                        mf.clearDataForm();
+                        return;
+                    }
+                }
+
+                this.Parent.Controls.Remove(this);
+                mf.clearDataForm();
+                MessageBox.Show(dt.Rows.Count > 1 ? $"ส่งอีเมล์สำเร็จ {dt.Rows.Count} ฉบับ" : "ส่งอีเมล์สำเร็จ", "FINISHED", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             else if (sldt.Rows.Count != 0 && dt.Rows.Count == 2)
             {
                 string successMessage = "";

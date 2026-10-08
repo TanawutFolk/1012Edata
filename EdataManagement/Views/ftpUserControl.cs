@@ -69,6 +69,20 @@ namespace EdataManagement.Views
 
         public bool ReadSftpFile(string host, int port, string username, string password, string remoteFolderPath)
         {
+            // not on the production database -> do not even connect: this method creates the
+            // remote folder when it is missing, which is a write on the customer's server (see MailSafety)
+            if (Utilities.MailSafety.IsTestMode)
+            {
+                DataTable empty = new DataTable();
+                empty.Columns.Add("File");
+                dataGridViewCustomer.DataSource = empty;
+                bdFileCustomer.DataSource = empty;
+                tb_searchFile.Enabled = false;
+                LogUpdated?.Invoke("[TEST - NO SFTP] did not connect to " + host + " / " + remoteFolderPath +
+                                   "  (DB: " + Utilities.MailSafety.ConfigDatabase + ")\n");
+                return true;
+            }
+
             try
             {
                 //string custPartNo = tb_cusPartNo.Text;
@@ -257,15 +271,17 @@ namespace EdataManagement.Views
                     }
 
                     List<string> FindTarget = new List<string>();
+                    string customerFolder = null;
                     foreach (string subfolder in subfolders)
                     {
                         string folderName = Path.GetFileName(subfolder);
 
-                        //// หา sub-folder ที่ชื่อลูกค้า
-                        if (folderName.Contains(dataItem.customerName))
+                        //// หา sub-folder ที่ชื่อลูกค้า (ข้ามโฟลเดอร์ For DUC ที่ชื่อมีชื่อลูกค้าเหมือนกัน)
+                        if (folderName.Contains(dataItem.customerName) && !Utilities.DucZipCls.IsDucFolder(subfolder))
                         {
                             //target คือ targetFileNames => serial.txt ทั้งหมดใน gridview dataGridViewSerialShipping
                             FindTarget = FindTargetFiles(subfolder, targetFileNames, dataItem); // หาใน subfolder ที่ชื่อ dataItem อะไรก็ตามที่อยู่ในนี้(serial.txt)
+                            customerFolder = subfolder;
                             break;
                         }
                     }
@@ -307,6 +323,7 @@ namespace EdataManagement.Views
 
 
                     int intSerialModule = 0;
+                    int notOnServer = 0;
 
 
                     foreach (DataGridViewRow row2 in dataGridViewSerialShipping.Rows)
@@ -332,6 +349,7 @@ namespace EdataManagement.Views
                         {
                             row2.DefaultCellStyle.BackColor = Color.Red;  // เปลี่ยนสีพื้นหลังของแถวใน dgvSerialShipping เป็นสีแดงหากไม่เจอค่าที่ตรงกัน
                             LogUpdated?.Invoke($"ยังไม่เคยส่ง serial : {value2}\n");
+                            notOnServer++;
                         }
                     }
 
@@ -363,6 +381,8 @@ namespace EdataManagement.Views
                     {
                         dataGridViewSerialShipping.SelectedCells[0].OwningRow.Selected = false;
                     }
+
+                    PrepareDataForDuc(customerFolder, targetFileNames, FindTarget, uploadStatusList, notOnServer);
 
                     return;
 
@@ -417,6 +437,50 @@ namespace EdataManagement.Views
             }
 
             return foundFilePaths;
+        }
+
+        /// <summary>
+        /// After the upload: when every serial of the order is on the server, zip its serial folder(s) for the
+        /// DUC upload ({customer folder}-For DUC, see Utilities.DucZipCls) and tell the user.
+        /// Test mode never reaches the server (all rows red), so there the simulated upload counts.
+        /// </summary>
+        private void PrepareDataForDuc(string customerFolder, List<string> serials, List<string> uploadedFiles,
+                                       List<string> uploadStatusList, int notOnServer)
+        {
+            HashSet<string> withFile = new HashSet<string>(uploadedFiles.Select(f => Path.GetFileNameWithoutExtension(f)),
+                                                           StringComparer.OrdinalIgnoreCase);
+            int noFile = serials.Count(s => !withFile.Contains(s));
+            int failed = uploadStatusList.Count(s => s.StartsWith("Failed to upload"));
+            int missing = Utilities.MailSafety.IsTestMode ? 0 : notOnServer;
+
+            if (customerFolder == null || serials.Count == 0 || noFile > 0 || failed > 0 || missing > 0)
+            {
+                MessageBox.Show("Upload ยังไม่ครบ จึงยังไม่ได้เตรียม data for DUC\n" +
+                                $"- serial ที่ไม่พบไฟล์ .txt ใน Shipping Data : {noFile}\n" +
+                                $"- ไฟล์ที่ upload ไม่สำเร็จ : {failed}\n" +
+                                $"- serial ที่ยังไม่มีบน server : {missing}",
+                                "Upload ไม่ครบ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            List<string> zipPaths;
+            try
+            {
+                zipPaths = Utilities.DucZipCls.PrepareZips(customerFolder, uploadedFiles);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Upload เสร็จแล้ว แต่เตรียม data for DUC ไม่สำเร็จ\n" + ex.Message,
+                                "Prepare data for DUC", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            foreach (string zipPath in zipPaths)
+            {
+                LogUpdated?.Invoke($"Prepared for DUC: {zipPath}");
+            }
+
+            MessageBox.Show("Upload data and Prepare data for DUC finish.", "Finish", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private List<string> UploadFiles(string host, int port, string username, string password, string remoteFolderPath, List<string> fileList)

@@ -1,0 +1,21 @@
+flows:
+  - writer:
+      unit: settings_login
+      source_loc: EdataManagement/Views/frmLogin.cs:35
+      state: frmLogin.CurrentUser
+    reader:
+      unit: settings_specification
+      source_loc: EdataManagement/Views/Setting/SettingShared.cs:124
+      state: SettingUi.IsAdmin/CurrentUserCode
+    pairing: matched
+    must_preserve: true
+  - writer:
+      unit: main_shipping_workflow
+      source_loc: EdataManagement/Views/frmMain.cs:120
+      state: selected product/date/customer DataTables and selected grid rows
+    reader:
+      unit: email_workflow
+      source_loc: EdataManagement/Views/emailUserControl.cs:147
+      state: MainDataGridView and bound email/serial/wafer tables
+    pairing: matched
+    must_preserve: true

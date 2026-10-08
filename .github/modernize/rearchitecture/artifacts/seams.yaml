@@ -1,0 +1,7 @@
+seams:
+  - source: inferred
+    cut_between: [EdataManagement, BusinessData]
+    frozen_side: BusinessData
+    frozen_side_rule: "Do not refactor BusinessData database primitives while changing an application unit; callers depend on its OutputOnDbProperty and transaction behavior."
+    protocol_shift: null
+    notes: "The seam is visible in source, so no frozen_contract restatement is required."

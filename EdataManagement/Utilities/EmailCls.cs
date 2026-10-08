@@ -91,16 +91,14 @@ namespace EdataManagement.Utilities
             return excelCls.ExcelValue(poAllProp)?.Trim() ?? "";
         }
 
+        /// <summary>
+        /// PO part of the case 10 file name yyMMdd-{PO}(short PN).xls, from Shipping-PO-all column V.
+        /// The file name uses column V as it is: XTERA-INC "PO-0000032335", SMTC-CORP "SJ 70320745".
+        /// </summary>
         private string GetCase10SpecialPO(EmailProperty.replaceWord rpWord, string testReportNo)
         {
             string specialPO = GetCase10ExcelValueByColumns(Case10SpecialPOAllPath, "N", "V", testReportNo);
             return NormalizeSpecialPO(specialPO);
-        }
-
-        // case 12 (SMTC) ใช้ค่าคอลัมน์ V ตามจริง เช่น "SJ 70320745" ไม่ตัด "PO" และไม่เติม 0
-        private string GetCase12SpecialPO(string testReportNo)
-        {
-            return GetCase10ExcelValueByColumns(Case10SpecialPOAllPath, "N", "V", testReportNo)?.Trim() ?? "";
         }
 
         private string GetCase10ExcelValueByColumns(string pathPOall, string keyColumn, string valueColumn, string input)
@@ -170,27 +168,27 @@ namespace EdataManagement.Utilities
 
             return index;
         }
+        /// <summary>
+        /// Column V as it is ("PO-0000032335", "SJ 70320745"). Only a bare PO number
+        /// ("32335", "32335.0", "PO32335", "PO-32335") is rewritten to "PO-" + 10 digits,
+        /// which is how those rows were named before.
+        /// </summary>
         private string NormalizeSpecialPO(string specialPO)
         {
             specialPO = specialPO?.Trim() ?? "";
-
-            if (specialPO.StartsWith("PO-", StringComparison.OrdinalIgnoreCase))
-            {
-                specialPO = specialPO.Substring(3).Trim();
-            }
-            else if (specialPO.StartsWith("PO", StringComparison.OrdinalIgnoreCase) && specialPO.Length > 2 && char.IsDigit(specialPO[2]))
-            {
-                specialPO = specialPO.Substring(2).Trim();
-            }
 
             if (specialPO.EndsWith(".0", StringComparison.OrdinalIgnoreCase))
             {
                 specialPO = specialPO.Substring(0, specialPO.Length - 2);
             }
 
-            if (specialPO.Length > 0 && specialPO.All(char.IsDigit) && specialPO.Length < 10)
+            System.Text.RegularExpressions.Match number =
+                System.Text.RegularExpressions.Regex.Match(specialPO, @"^(?:PO\s*-?\s*)?(\d+)$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+            if (number.Success)
             {
-                specialPO = specialPO.PadLeft(10, '0');
+                string digits = number.Groups[1].Value;
+                return "PO-" + (digits.Length < 10 ? digits.PadLeft(10, '0') : digits);
             }
 
             return specialPO;
@@ -737,6 +735,12 @@ namespace EdataManagement.Utilities
 
             // not on the production database -> never send, see MailSafety
             bool testMode = MailSafety.IsTestMode;
+            // ...unless every recipient is in the test group (App.config TestMailGroupId)
+            int? testGroupId = testMode ? MailSafety.TestMailGroupId : null;
+            bool testSend = testGroupId.HasValue &&
+                            MailSafety.CanSendTestMail(prop.toEmailAddresses, prop.ccEmailAddresses,
+                                                       _emailCon.getGroupEmailAddresses(testGroupId.Value));
+            bool addRecipients = !testMode || testSend;
 
             try
             {
@@ -746,7 +750,7 @@ namespace EdataManagement.Utilities
 
 
                 // 2. จัดการผู้รับ (To)
-                if (prop.toEmailAddresses != null && !testMode)
+                if (prop.toEmailAddresses != null && addRecipients)
                 {
                     foreach (string toAddress in prop.toEmailAddresses)
                     {
@@ -759,7 +763,7 @@ namespace EdataManagement.Utilities
                 }
 
                 // 3. จัดการผู้รับสำเนา (CC)
-                if (prop.ccEmailAddresses != null && !testMode)
+                if (prop.ccEmailAddresses != null && addRecipients)
                 {
                     foreach (string ccAddress in prop.ccEmailAddresses)
                     {
@@ -775,13 +779,15 @@ namespace EdataManagement.Utilities
                 mail.Recipients.ResolveAll();
 
                 // 5. กำหนดเรื่อง (Subject)
-                mail.Subject = testMode ? MailSafety.TEST_SUBJECT_PREFIX + itemData.subject : itemData.subject;
+                // a mail to the test group looks exactly like the real one; only the draft is marked
+                bool draftOnly = testMode && !testSend;
+                mail.Subject = draftOnly ? MailSafety.TEST_SUBJECT_PREFIX + itemData.subject : itemData.subject;
 
                 // 6. กำหนดเนื้อหา (ต้องใช้ HTMLBody)
                 mail.BodyFormat = Outlook.OlBodyFormat.olFormatHTML;
                 // เติม <html> tag เพื่อความสมบูรณ์
-                // test mode: the recipients it would have gone to are listed on top instead of being added
-                string testNotice = testMode ? MailSafety.IntendedRecipientsHtml(prop.toEmailAddresses, prop.ccEmailAddresses) : "";
+                // draft: the recipients it would have gone to are listed on top instead of being added
+                string testNotice = draftOnly ? MailSafety.IntendedRecipientsHtml(prop.toEmailAddresses, prop.ccEmailAddresses) : "";
                 mail.HTMLBody = "<html><body>" + testNotice + "Dear Sir/Madam <br><br>" + itemData.body + "</body></html>";
 
                 
@@ -801,7 +807,7 @@ namespace EdataManagement.Utilities
                 }
 
                 // 8. test mode: keep it as a draft without recipients - nothing leaves Outlook
-                if (testMode)
+                if (testMode && !testSend)
                 {
                     mail.Save();
                     return true;   // finally still releases the COM objects
@@ -1127,6 +1133,11 @@ namespace EdataManagement.Utilities
                         return emailProp;
                     //ZIP , //RAR เก็บ zip เฉยๆ
                     case "3":
+
+                        // MOLEX / MOLEX-SG / OPLINK / OPLINK-SUBMARINE: 1012 prepares the zips itself (was program 1084)
+                        if (IsCase3PrepareCustomer(rpWord.customerName))
+                            return prepareCase3PrepareZip(emailProp, emailProp.dgvShip.Rows.Cast<DataGridViewRow>(), true,
+                                                          rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
                         subCount = 1;
 
@@ -2107,8 +2118,7 @@ namespace EdataManagement.Utilities
 
                         return emailProp;
 
-                    case "10":
-                    case "12": // SMTC : yyMMdd-(PO ตามคอลัมน์ V)(short Part Number) ไม่มี "PO-" และไม่เติม 0
+                    case "10": // XTERA-INC, SMTC-CORP : yyMMdd-{Shipping-PO-all column V}(short Part Number).xls
                         foreach (DataGridViewRow dtShipRow in emailProp.dgvShip.Rows)
                         {
                             if (dtShipRow.IsNewRow)
@@ -2148,12 +2158,9 @@ namespace EdataManagement.Utilities
                                 ? $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})-{shipProp.subFolder}"
                                 : $"{datePrefix}-{shipProp.fecOrderNo}({shortPartNo})";
 
-                            bool isCase12 = emailProp.fileFormatsId == "12";
-                            string poFilePrefix = isCase12 ? $"{datePrefix}-" : $"{datePrefix}-PO-";
+                            string poFilePrefix = $"{datePrefix}-";
                             string poFileSuffix = $"({shortPartNo})";
-                            string specialPO = isCase12
-                                ? GetCase12SpecialPO(shipProp.testReportNo)
-                                : GetCase10SpecialPO(rpWord, shipProp.testReportNo);
+                            string specialPO = GetCase10SpecialPO(rpWord, shipProp.testReportNo);
 
                             if (string.IsNullOrEmpty(specialPO))
                             {
@@ -2308,6 +2315,14 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                         emailProp.isValid = true;
                         return emailProp;
 
+                    case "13": // 1480Dual (COHERENT, INFINERA) : yyMMdd-{FEC order}(full Part No)[-sub]\yyMMdd-{FEC order}(full Part No)_Edata\*.txt
+                        return prepareCase13TxtEdata(emailProp, emailProp.dgvShip.Rows.Cast<DataGridViewRow>(),
+                                                     rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
+
+                    case "14": // 1480Dual MOLEX : one txt per order -> yyMMdd-MOLEX(48Dual)-n folder + .zip
+                        return prepareCase14TxtZip(emailProp, emailProp.dgvShip.Rows.Cast<DataGridViewRow>(), true,
+                                                   rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
+
                     //Nothing
                     default:
                         return emailProp;
@@ -2329,9 +2344,656 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                     MessageBox.Show("เกิดข้อผิดพลาดของระบบ: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 emailProp.isValid = false;
-                return emailProp; 
+                return emailProp;
             }
         }
+
+        // One mail may carry at most this much E-data; above it the txt files are split into numbered sub-folders, one mail each.
+        private const long CASE13_MAX_MAIL_BYTES = 10L * 1024 * 1024;
+        private const int CASE13_MAX_MAIL_FILES = 256;
+
+        // Format 13 (1480Dual txt per serial). For every order row:
+        //   1. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
+        //   2. ...\yyMMdd-{FEC order}(full Part No)_Edata
+        //   3. number of *.txt must equal Qty (serial rows of that test report in shipping)
+        // The txt files of all orders go out together; over 10 MB or 256 files they are copied into
+        // {customer folder}\yyMMdd-{customer}({product})_Edata-1, -2, ... and every sub-folder is one mail.
+        private EmailProperty prepareCase13TxtEdata(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows,
+                                                    EmailProperty.replaceWord rpWord,
+                                                    DataTable dtFile, DataTable dtInfoEmail,
+                                                    DataGridView dgvFile, DataGridView dgvInfoEmail)
+        {
+            string datePrefix = emailProp.shipDate.ToString("yyMMdd");
+            List<string> txtFiles = new List<string>();
+            List<string> orderNos = new List<string>();
+
+            if (!Directory.Exists(emailProp.folderCustomer))
+            {
+                MessageBox.Show($"ไม่พบโฟลเดอร์ลูกค้า\n{emailProp.folderCustomer}",
+                                "ไม่พบโฟลเดอร์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            foreach (DataGridViewRow dtShipRow in shipRows)
+            {
+                if (dtShipRow.IsNewRow)
+                    continue;
+
+                string fecOrderNo = dtShipRow.Cells["manuFactureNo"].Value?.ToString()?.Trim() ?? "";
+                string partNo = dtShipRow.Cells["Part_No"].Value?.ToString()?.Trim() ?? "";
+                string subFolder = dtShipRow.Cells["subFolder"].Value?.ToString()?.Trim() ?? "";
+                string testReportNo = dtShipRow.Cells["TestReportNo"].Value?.ToString()?.Trim() ?? "";
+                string qtyText = dtShipRow.Cells["Qty"].Value?.ToString()?.Trim() ?? "";
+
+                rpWord.customerPN = dtShipRow.Cells["customerPN"].Value?.ToString()?.Trim() ?? "";
+                if (string.IsNullOrEmpty(rpWord.testReportNo))
+                    rpWord.testReportNo = testReportNo;
+
+                string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
+                string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
+
+                // 1. order folder
+                string orderFolder = Path.Combine(emailProp.folderCustomer, orderFolderName);
+                if (!Directory.Exists(orderFolder))
+                    orderFolder = Path.Combine(emailProp.folderCustomer, orderName);
+
+                if (!Directory.Exists(orderFolder))
+                {
+                    MessageBox.Show($"ไม่พบเทสรีพอตหมายเลข {testReportNo}\n" +
+                                    $"ไม่พบโฟลเดอร์: {orderFolderName}\n" +
+                                    $"ใน: {emailProp.folderCustomer}",
+                                    "ไม่พบเทสรีพอต", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                // 2. _Edata folder
+                string edataFolder = Path.Combine(orderFolder, orderName + "_Edata");
+                if (!Directory.Exists(edataFolder))
+                {
+                    MessageBox.Show($"ไม่พบเทสรีพอตหมายเลข {testReportNo}\n" +
+                                    $"ไม่พบโฟลเดอร์: {orderName}_Edata\n" +
+                                    $"ใน: {orderFolder}",
+                                    "ไม่พบเทสรีพอต", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                // 3. txt count vs serial rows in shipping ("*.txt" alone would also match e.g. ".txt~")
+                string[] txtInOrder = Directory.GetFiles(edataFolder, "*.txt", SearchOption.TopDirectoryOnly)
+                    .Where(f => f.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                    .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+
+                int qty;
+                if (!int.TryParse(qtyText, out qty) || txtInOrder.Length != qty)
+                {
+                    MessageBox.Show($"จำนวนไฟล์ txt ไม่ตรงกับจำนวนในฐานข้อมูล\n" +
+                                    $"เทสรีพอตหมายเลข: {testReportNo}\n" +
+                                    $"ไฟล์ txt: {txtInOrder.Length}\n" +
+                                    $"ฐานข้อมูล (shipping): {qtyText}\n" +
+                                    $"โฟลเดอร์: {edataFolder}",
+                                    "จำนวนไฟล์ไม่ตรง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                txtFiles.AddRange(txtInOrder);
+                if (!orderNos.Contains(fecOrderNo))
+                    orderNos.Add(fecOrderNo);
+            }
+
+            if (txtFiles.Count == 0)
+            {
+                MessageBox.Show("ไม่พบไฟล์ txt ที่จะส่ง", "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // all orders go into one mail / one set of sub-folders, so a serial name may appear only once
+            List<string> duplicateNames = txtFiles
+                .GroupBy(f => Path.GetFileName(f), StringComparer.OrdinalIgnoreCase)
+                .Where(g => g.Count() > 1)
+                .Select(g => string.Join("\n", g))
+                .ToList();
+            if (duplicateNames.Any())
+            {
+                MessageBox.Show("พบไฟล์ txt ชื่อซ้ำกันในหลาย order:\n" + string.Join("\n\n", duplicateNames),
+                                "ไฟล์ซ้ำ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // 4. split when over 10 MB or 256 files
+            long totalBytes = txtFiles.Sum(f => new FileInfo(f).Length);
+            List<List<string>> mails = new List<List<string>>();
+
+            if (totalBytes > CASE13_MAX_MAIL_BYTES || txtFiles.Count > CASE13_MAX_MAIL_FILES)
+            {
+                List<string> current = new List<string>();
+                long currentBytes = 0;
+                foreach (string file in txtFiles)
+                {
+                    long size = new FileInfo(file).Length;
+                    if (current.Count > 0 &&
+                        (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= CASE13_MAX_MAIL_FILES))
+                    {
+                        mails.Add(current);
+                        current = new List<string>();
+                        currentBytes = 0;
+                    }
+                    current.Add(file);
+                    currentBytes += size;
+                }
+                mails.Add(current);
+
+                // same input always gives the same split, so a second run only overwrites the same copies
+                string splitBaseName = $"{datePrefix}-{rpWord.customerName}({rpWord.productNameInEmail})_Edata";
+                for (int m = 0; m < mails.Count; m++)
+                {
+                    string splitFolder = Path.Combine(emailProp.folderCustomer, $"{splitBaseName}-{m + 1}");
+                    Directory.CreateDirectory(splitFolder);
+
+                    List<string> copies = new List<string>();
+                    foreach (string file in mails[m])
+                    {
+                        string target = Path.Combine(splitFolder, Path.GetFileName(file));
+                        File.Copy(file, target, true);
+                        copies.Add(target);
+                        dtFile.Rows.Add(splitFolder, target);
+                    }
+                    mails[m] = copies;
+                }
+            }
+            else
+            {
+                mails.Add(txtFiles);
+                foreach (string file in txtFiles)
+                    dtFile.Rows.Add(Path.GetDirectoryName(file), file);
+            }
+
+            emailProp = _emailCon.getEmailAddress(emailProp);
+
+            rpWord.manuFactureNo = string.Join(", ", orderNos);
+            rpWord.shipDate = emailProp.shipDate;
+            rpWord.formatDate = _emailCon.allFormatDate();
+            rpWord.signature = _emailCon.getSignature(emailProp);
+
+            for (int m = 0; m < mails.Count; m++)
+            {
+                rpWord.Qty = mails[m].Count.ToString();
+                // "FolderName" in the body: names (not UNC paths) of the E-data folders in this mail
+                rpWord.folderName = string.Join("<BR>", mails[m]
+                    .Select(f => Path.GetFileName(Path.GetDirectoryName(f)))
+                    .Distinct(StringComparer.OrdinalIgnoreCase));
+                rpWord.subject = _emailCon.getSubject(emailProp);
+                rpWord.body = _emailCon.getBody(emailProp);
+                rpWord.subject = strProcessSubject(rpWord);
+                rpWord.body = strProcessBody(rpWord);
+                rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
+
+                string subject = mails.Count > 1 ? $"{rpWord.subject} ({m + 1}/{mails.Count})" : rpWord.subject;
+
+                dtInfoEmail.Rows.Add(emailProp.toEmailAddresses,
+                                     emailProp.ccEmailAddresses,
+                                     emailProp.productName,
+                                     emailProp.key,
+                                     subject,
+                                     rpWord.body,
+                                     emailProp.fileFormatsId);
+            }
+
+            dgvFile.DataSource = dtFile;
+            emailProp.dgvFile = dgvFile;
+
+            dgvInfoEmail.DataSource = dtInfoEmail;
+            emailProp.dgvInfoEmail = dgvInfoEmail;
+
+            emailProp.isValid = true;
+            return emailProp;
+        }
+
+        // Format 14 (1480Dual MOLEX, work order Y-3ER4002C). One txt per order, for every order row:
+        //   1. (all orders only) test report folders in the customer folder must not outnumber the orders in the database
+        //   2. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
+        //   3. {Customer PN}_{FEC order without '-'}_{Qty}PCS_{Part No up to the first '-'}_{yyMMdd}-{sub}.txt in it
+        //      e.g. NA_301235900610001_10PCS_FRL1441D4045_260512-1.txt
+        // Each txt is copied (only the txt) into {Shipping Data}\yyMMdd-MOLEX(48Dual)-n\{its test report folder name}\ -
+        // a new -n whenever the next file would pass 10 MB / 256 files (size before zip) - and each -n is zipped next
+        // to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout. One zip = one mail.
+        private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
+                                                  EmailProperty.replaceWord rpWord,
+                                                  DataTable dtFile, DataTable dtInfoEmail,
+                                                  DataGridView dgvFile, DataGridView dgvInfoEmail)
+        {
+            string datePrefix = emailProp.shipDate.ToString("yyMMdd");
+            List<DataGridViewRow> rows = shipRows.Where(r => !r.IsNewRow).ToList();
+            List<string> txtFiles = new List<string>();
+            Dictionary<string, int> qtyByFile = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            List<string> orderNos = new List<string>();
+
+            if (!Directory.Exists(emailProp.folderCustomer))
+            {
+                MessageBox.Show($"ไม่พบโฟลเดอร์ลูกค้า\n{emailProp.folderCustomer}",
+                                "ไม่พบโฟลเดอร์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // 1. more test report folders than orders in the database = something is shipped that the database does not know
+            if (checkFolderCount)
+            {
+                int reportFolders = Directory.GetDirectories(emailProp.folderCustomer).Length;
+                if (reportFolders > rows.Count)
+                {
+                    MessageBox.Show($"จำนวนเทสรีพอตมากกว่าดาต้าเบส\n" +
+                                    $"โฟลเดอร์เทสรีพอต: {reportFolders}\n" +
+                                    $"ในดาต้าเบส: {rows.Count} order\n" +
+                                    $"โฟลเดอร์: {emailProp.folderCustomer}",
+                                    "จำนวนเทสรีพอตไม่ตรง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+            }
+
+            foreach (DataGridViewRow dtShipRow in rows)
+            {
+                string fecOrderNo = dtShipRow.Cells["manuFactureNo"].Value?.ToString()?.Trim() ?? "";
+                string partNo = dtShipRow.Cells["Part_No"].Value?.ToString()?.Trim() ?? "";
+                string subFolder = dtShipRow.Cells["subFolder"].Value?.ToString()?.Trim() ?? "";
+                string testReportNo = dtShipRow.Cells["TestReportNo"].Value?.ToString()?.Trim() ?? "";
+                string qtyText = dtShipRow.Cells["Qty"].Value?.ToString()?.Trim() ?? "";
+                string customerPN = dtShipRow.Cells["customerPN"].Value?.ToString()?.Trim() ?? "";
+
+                rpWord.customerPN = customerPN;
+                if (string.IsNullOrEmpty(rpWord.testReportNo))
+                    rpWord.testReportNo = testReportNo;
+
+                string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
+                string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
+
+                // 2. test report folder
+                string orderFolder = Path.Combine(emailProp.folderCustomer, orderFolderName);
+                if (!Directory.Exists(orderFolder))
+                    orderFolder = Path.Combine(emailProp.folderCustomer, orderName);
+
+                if (!Directory.Exists(orderFolder))
+                {
+                    MessageBox.Show($"ไม่พบเทสรีพอตหมายเลข {testReportNo}\n" +
+                                    $"ไม่พบโฟลเดอร์: {orderFolderName}\n" +
+                                    $"ใน: {emailProp.folderCustomer}",
+                                    "ไม่พบเทสรีพอต", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                // 3. txt named after the order - the Qty in the name has to match the serials in shipping
+                string mpn = partNo.Split('-')[0];
+                string expectedTxt = $"{customerPN}_{fecOrderNo.Replace("-", "")}_{qtyText}PCS_{mpn}_{datePrefix}" +
+                                     (string.IsNullOrEmpty(subFolder) ? "" : "-" + subFolder) + ".txt";
+                string txtPath = Directory.GetFiles(orderFolder, "*.txt", SearchOption.TopDirectoryOnly)
+                    .FirstOrDefault(f => Path.GetFileName(f).Equals(expectedTxt, StringComparison.OrdinalIgnoreCase));
+
+                if (txtPath == null)
+                {
+                    string[] foundTxt = Directory.GetFiles(orderFolder, "*.txt", SearchOption.TopDirectoryOnly)
+                        .Where(f => f.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                        .Select(Path.GetFileName).ToArray();
+                    MessageBox.Show($"ไม่พบไฟล์ดาต้า\n" +
+                                    $"เทสรีพอตหมายเลข: {testReportNo}\n" +
+                                    $"ชื่อไฟล์ที่ต้องการ: {expectedTxt}\n" +
+                                    $"ไฟล์ txt ที่มีอยู่: {(foundTxt.Length == 0 ? "-" : string.Join(", ", foundTxt))}\n" +
+                                    $"โฟลเดอร์: {orderFolder}",
+                                    "ไม่พบไฟล์ดาต้า", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                int qty;
+                int.TryParse(qtyText, out qty);
+                txtFiles.Add(txtPath);
+                qtyByFile[txtPath] = qty;
+                if (!orderNos.Contains(fecOrderNo))
+                    orderNos.Add(fecOrderNo);
+            }
+
+            if (txtFiles.Count == 0)
+            {
+                MessageBox.Show("ไม่พบไฟล์ txt ที่จะส่ง", "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // 4. split by size before zip (same limits as format 13); a file bigger than the limit goes alone
+            List<List<string>> groups = new List<List<string>>();
+            List<string> current = new List<string>();
+            long currentBytes = 0;
+            foreach (string file in txtFiles)
+            {
+                long size = new FileInfo(file).Length;
+                if (current.Count > 0 &&
+                    (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= CASE13_MAX_MAIL_FILES))
+                {
+                    groups.Add(current);
+                    current = new List<string>();
+                    currentBytes = 0;
+                }
+                current.Add(file);
+                currentBytes += size;
+            }
+            groups.Add(current);
+
+            // 5. yyMMdd-MOLEX(48Dual)-n\{test report folder}\{txt} - the order folder keeps its name, only its txt goes in -
+            //    and the zip gets exactly that layout from this list (never whatever else is lying in the folder)
+            string baseName = $"{datePrefix}-{rpWord.customerName}({rpWord.productNameInEmail})";
+            List<string> zipPaths = new List<string>();
+            for (int g = 0; g < groups.Count; g++)
+            {
+                string folder = Path.Combine(emailProp.pathShipping, $"{baseName}-{g + 1}");
+                string zipPath = folder + ".zip";
+                Directory.CreateDirectory(folder);
+
+                using (FileStream zipStream = new FileStream(zipPath, FileMode.Create))
+                using (System.IO.Compression.ZipArchive zip =
+                           new System.IO.Compression.ZipArchive(zipStream, System.IO.Compression.ZipArchiveMode.Create))
+                {
+                    foreach (string file in groups[g])
+                    {
+                        string reportFolderName = Path.GetFileName(Path.GetDirectoryName(file));
+                        string reportFolder = Path.Combine(folder, reportFolderName);
+                        Directory.CreateDirectory(reportFolder);
+
+                        string copy = Path.Combine(reportFolder, Path.GetFileName(file));
+                        File.Copy(file, copy, true);
+
+                        zip.CreateEntry(reportFolderName + "/");
+                        System.IO.Compression.ZipFileExtensions.CreateEntryFromFile(zip, copy, reportFolderName + "/" + Path.GetFileName(copy),
+                                                                                    System.IO.Compression.CompressionLevel.Optimal);
+                    }
+                }
+
+                // the zip is what goes out: read it back, every test report folder of the group with its txt has to be inside
+                int txtEntries, reportFolders;
+                using (System.IO.Compression.ZipArchive check = System.IO.Compression.ZipFile.OpenRead(zipPath))
+                {
+                    txtEntries = check.Entries.Count(e => e.FullName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase) && e.FullName.Contains("/"));
+                    reportFolders = check.Entries.Select(e => e.FullName.Split('/')[0]).Distinct(StringComparer.OrdinalIgnoreCase).Count();
+                }
+                if (txtEntries != groups[g].Count || reportFolders != groups[g].Count)
+                {
+                    MessageBox.Show($"ไฟล์ zip ไม่ครบ! พบเทสรีพอต {reportFolders} โฟลเดอร์ / txt {txtEntries} ไฟล์ จากที่ต้องมี {groups[g].Count}\n{zipPath}",
+                                    "ข้อมูลไม่ครบ - ยกเลิกการส่ง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                zipPaths.Add(zipPath);
+                dtFile.Rows.Add(folder, zipPath);
+            }
+
+            // 6. one mail per zip
+            emailProp = _emailCon.getEmailAddress(emailProp);
+
+            rpWord.manuFactureNo = string.Join(", ", orderNos);
+            rpWord.shipDate = emailProp.shipDate;
+            rpWord.formatDate = _emailCon.allFormatDate();
+            rpWord.signature = _emailCon.getSignature(emailProp);
+
+            for (int g = 0; g < groups.Count; g++)
+            {
+                rpWord.Qty = groups[g].Sum(f => qtyByFile[f]).ToString();
+                rpWord.folderName = Path.GetFileNameWithoutExtension(zipPaths[g]);
+                rpWord.subject = _emailCon.getSubject(emailProp);
+                rpWord.body = _emailCon.getBody(emailProp);
+                rpWord.subject = strProcessSubject(rpWord);
+                rpWord.body = strProcessBody(rpWord);
+                rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
+
+                string subject = groups.Count > 1 ? $"{rpWord.subject}({g + 1}/{groups.Count})" : rpWord.subject;
+
+                dtInfoEmail.Rows.Add(emailProp.toEmailAddresses,
+                                     emailProp.ccEmailAddresses,
+                                     emailProp.productName,
+                                     emailProp.key,
+                                     subject,
+                                     rpWord.body,
+                                     emailProp.fileFormatsId);
+            }
+
+            dgvFile.DataSource = dtFile;
+            emailProp.dgvFile = dgvFile;
+
+            dgvInfoEmail.DataSource = dtInfoEmail;
+            emailProp.dgvInfoEmail = dgvInfoEmail;
+
+            emailProp.isValid = true;
+            return emailProp;
+        }
+
+        // Format 3 ("New flow of ID=3") for these customers, any product (1480, 980Dual): the zips used to be prepared
+        // by program 1084 in Shipping Data\Send, 1012 now prepares them itself.
+        private static readonly string[] CASE3_PREPARE_CUSTOMERS = { "MOLEX", "MOLEX-SG", "OPLINK", "OPLINK-SUBMARINE" };
+
+        private static bool IsCase3PrepareCustomer(string customerName)
+        {
+            return CASE3_PREPARE_CUSTOMERS.Any(c => c.Equals(customerName?.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        //   1. (all orders only) test report folders must not outnumber the orders in the database, and every order
+        //      needs its folder yyMMdd-{FEC order}(short Part No)-{sub}
+        //   2-4. copy each test report folder (everything except "For QA check") into Shipping Data\yyMMdd-{customer}({product})-n,
+        //        a new -n whenever the next folder would pass 10 MB / 256 files - a test report folder is never split
+        //   5. zip each -n next to it as yyMMdd-{customer}({product})-n.zip ({test report folder}/{files}, like 1084)
+        //   6. one mail per zip, subject and body as the old format 3: "(i/N)" after the subject, folder names in the body
+        // Nothing is overwritten: when a -n folder or zip is already there it stops (maybe prepared or sent already).
+        private EmailProperty prepareCase3PrepareZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
+                                                     EmailProperty.replaceWord rpWord,
+                                                     DataTable dtFile, DataTable dtInfoEmail,
+                                                     DataGridView dgvFile, DataGridView dgvInfoEmail)
+        {
+            string datePrefix = emailProp.shipDate.ToString("yyMMdd");
+            string baseName = $"{datePrefix}-{rpWord.customerName}({rpWord.productNameInEmail})";
+            List<DataGridViewRow> rows = shipRows.Where(r => !r.IsNewRow).ToList();
+            List<string> reportFolders = new List<string>();
+
+            if (!Directory.Exists(emailProp.folderCustomer))
+            {
+                MessageBox.Show($"ไม่พบโฟลเดอร์ลูกค้า\n{emailProp.folderCustomer}",
+                                "ไม่พบโฟลเดอร์", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // 1. more test report folders than orders in the database = something is shipped that the database does not know
+            if (checkFolderCount)
+            {
+                int folderCount = Directory.GetDirectories(emailProp.folderCustomer).Length;
+                if (folderCount > rows.Count)
+                {
+                    MessageBox.Show($"จำนวนเทสรีพอตมากกว่าดาต้าเบส กรุณาตรวจสอบอีกครั้ง\n" +
+                                    $"โฟลเดอร์เทสรีพอต: {folderCount}\n" +
+                                    $"ในดาต้าเบส: {rows.Count} order\n" +
+                                    $"โฟลเดอร์: {emailProp.folderCustomer}",
+                                    "จำนวนเทสรีพอตไม่ตรง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+            }
+
+            // 1. every order has its test report folder
+            foreach (DataGridViewRow dtShipRow in rows)
+            {
+                string fecOrderNo = dtShipRow.Cells["manuFactureNo"].Value?.ToString()?.Trim() ?? "";
+                string partNo = dtShipRow.Cells["Part_No"].Value?.ToString()?.Trim() ?? "";
+                string subFolder = dtShipRow.Cells["subFolder"].Value?.ToString()?.Trim() ?? "";
+                string testReportNo = dtShipRow.Cells["TestReportNo"].Value?.ToString()?.Trim() ?? "";
+
+                string shortPartNo = partNo.Length > 7 ? partNo.Substring(7) : partNo;
+                string orderName = $"{datePrefix}-{fecOrderNo}({shortPartNo})";
+                string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
+
+                string orderFolder = Path.Combine(emailProp.folderCustomer, orderFolderName);
+                if (!Directory.Exists(orderFolder))
+                    orderFolder = Path.Combine(emailProp.folderCustomer, orderName);
+
+                if (!Directory.Exists(orderFolder))
+                {
+                    MessageBox.Show($"ไม่พบเทสรีพอตหมายเลข {testReportNo}\n" +
+                                    $"ไม่พบโฟลเดอร์: {orderFolderName}\n" +
+                                    $"ใน: {emailProp.folderCustomer}",
+                                    "ไม่พบเทสรีพอต", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                if (!reportFolders.Contains(orderFolder, StringComparer.OrdinalIgnoreCase))
+                    reportFolders.Add(orderFolder);
+            }
+
+            // prepared (or sent) already? never overwrite - the user checks and deletes it first
+            Regex ownOutput = new Regex("^" + Regex.Escape(baseName) + @"-\d+(\.zip)?$", RegexOptions.IgnoreCase);
+            string[] existing = Directory.GetFileSystemEntries(emailProp.pathShipping)
+                .Select(Path.GetFileName)
+                .Where(n => ownOutput.IsMatch(n))
+                .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+            if (existing.Length > 0)
+            {
+                MessageBox.Show($"พบข้อมูลที่เตรียมไว้แล้ว อาจเตรียมหรือส่ง E-data ของ shipment นี้ไปแล้ว\n" +
+                                $"กรุณาตรวจสอบ ถ้าจะเตรียมใหม่ให้ลบรายการเหล่านี้ก่อน:\n" +
+                                string.Join("\n", existing) + "\n" +
+                                $"ใน: {emailProp.pathShipping}",
+                                "มีข้อมูลที่เตรียมไว้แล้ว", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                emailProp.isValid = false;
+                return emailProp;
+            }
+
+            // same order as 1084 (folder name), files of each test report folder without "For QA check"
+            reportFolders.Sort(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, List<string>> filesByFolder = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            foreach (string reportFolder in reportFolders)
+            {
+                List<string> files = Directory.GetFiles(reportFolder, "*", SearchOption.AllDirectories)
+                    .Where(f => !f.Substring(reportFolder.Length).TrimStart('\\').Split('\\')
+                                  .Any(part => part.Equals("For QA check", StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+
+                if (files.Count == 0)
+                {
+                    MessageBox.Show($"ไม่พบไฟล์ดาต้าในโฟลเดอร์เทสรีพอต\n{reportFolder}",
+                                    "ไม่พบไฟล์ดาต้า", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+                filesByFolder[reportFolder] = files;
+            }
+
+            // 4. whole test report folders per -n (same limits as format 13); one bigger than the limit goes alone
+            List<List<string>> groups = new List<List<string>>();
+            List<string> current = new List<string>();
+            long currentBytes = 0;
+            int currentFiles = 0;
+            foreach (string reportFolder in reportFolders)
+            {
+                long size = filesByFolder[reportFolder].Sum(f => new FileInfo(f).Length);
+                int count = filesByFolder[reportFolder].Count;
+                if (current.Count > 0 &&
+                    (currentBytes + size > CASE13_MAX_MAIL_BYTES || currentFiles + count > CASE13_MAX_MAIL_FILES))
+                {
+                    groups.Add(current);
+                    current = new List<string>();
+                    currentBytes = 0;
+                    currentFiles = 0;
+                }
+                current.Add(reportFolder);
+                currentBytes += size;
+                currentFiles += count;
+            }
+            groups.Add(current);
+
+            // 2, 3, 5. yyMMdd-{customer}({product})-n\{test report folder}\... and the zip of exactly those files
+            List<string> zipPaths = new List<string>();
+            for (int g = 0; g < groups.Count; g++)
+            {
+                string folder = Path.Combine(emailProp.pathShipping, $"{baseName}-{g + 1}");
+                string zipPath = folder + ".zip";
+                int expectedFiles = 0;
+
+                using (FileStream zipStream = new FileStream(zipPath, FileMode.CreateNew))
+                using (System.IO.Compression.ZipArchive zip =
+                           new System.IO.Compression.ZipArchive(zipStream, System.IO.Compression.ZipArchiveMode.Create))
+                {
+                    foreach (string reportFolder in groups[g])
+                    {
+                        string reportFolderName = Path.GetFileName(reportFolder);
+                        foreach (string file in filesByFolder[reportFolder])
+                        {
+                            string relative = file.Substring(reportFolder.Length).TrimStart('\\');
+                            string copy = Path.Combine(folder, reportFolderName, relative);
+                            Directory.CreateDirectory(Path.GetDirectoryName(copy));
+                            File.Copy(file, copy, false);
+
+                            System.IO.Compression.ZipFileExtensions.CreateEntryFromFile(zip, copy,
+                                reportFolderName + "/" + relative.Replace('\\', '/'),
+                                System.IO.Compression.CompressionLevel.Optimal);
+                            expectedFiles++;
+                        }
+                    }
+                }
+
+                // the zip is what goes out: read it back, every test report folder and every file has to be inside
+                int entries, zipReportFolders;
+                using (System.IO.Compression.ZipArchive check = System.IO.Compression.ZipFile.OpenRead(zipPath))
+                {
+                    entries = check.Entries.Count(e => !e.FullName.EndsWith("/"));
+                    zipReportFolders = check.Entries.Select(e => e.FullName.Split('/')[0]).Distinct(StringComparer.OrdinalIgnoreCase).Count();
+                }
+                if (entries != expectedFiles || zipReportFolders != groups[g].Count)
+                {
+                    MessageBox.Show($"ไฟล์ zip ไม่ครบ! พบเทสรีพอต {zipReportFolders}/{groups[g].Count} โฟลเดอร์, ไฟล์ {entries}/{expectedFiles}\n{zipPath}",
+                                    "ข้อมูลไม่ครบ - ยกเลิกการส่ง", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                zipPaths.Add(zipPath);
+                dtFile.Rows.Add(folder, zipPath);
+            }
+
+            // 6. one mail per zip, same subject / body handling as the old format 3
+            emailProp = _emailCon.getEmailAddress(emailProp);
+            rpWord.shipDate = emailProp.shipDate;
+            rpWord.formatDate = _emailCon.allFormatDate();
+            rpWord.signature = _emailCon.getSignature(emailProp);
+
+            for (int g = 0; g < zipPaths.Count; g++)
+            {
+                rpWord.folderName = fileCls.GetZipDirectoryContents(zipPaths[g]).Replace(datePrefix + "-", "");
+                rpWord.subject = _emailCon.getSubject(emailProp);
+                rpWord.body = _emailCon.getBody(emailProp);
+
+                rpWord.subject = strProcessSubject(rpWord);
+                if (zipPaths.Count > 1)
+                    rpWord.subject = rpWord.subject + "(" + (g + 1) + "/" + zipPaths.Count + ")";
+                rpWord.body = strProcessBody(rpWord);
+                rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
+
+                dtInfoEmail.Rows.Add(emailProp.toEmailAddresses, emailProp.ccEmailAddresses, emailProp.productName,
+                                     emailProp.key, rpWord.subject, rpWord.body, emailProp.fileFormatsId);
+            }
+
+            dgvFile.DataSource = dtFile;
+            emailProp.dgvFile = dgvFile;
+
+            dgvInfoEmail.DataSource = dtInfoEmail;
+            emailProp.dgvInfoEmail = dgvInfoEmail;
+
+            emailProp.isValid = true;
+            return emailProp;
+        }
+
         //------------------------------------------------------------------------------------------------------------------------------------------------------
         //-------------------------------- Email Selection -----------------------------------------------------------------------------------------------------
         //------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2566,6 +3228,12 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                         return emailProp;
                     //ZIP , //RAR เก็บ zip เฉยๆ
                     case "3":
+
+                        // MOLEX / MOLEX-SG / OPLINK / OPLINK-SUBMARINE, selected orders only (no folder-count check)
+                        if (IsCase3PrepareCustomer(rpWord.customerName))
+                            return prepareCase3PrepareZip(emailProp, emailProp.dgvShip.SelectedRows.Cast<DataGridViewRow>()
+                                                                          .OrderBy(r => r.Index), false,
+                                                          rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
                         subCount = 1;
 
@@ -3499,7 +4167,15 @@ emailProp = _emailCon.getEmailAddress(emailProp);
 
                         return emailProp;
 
+                    case "13": // 1480Dual txt, selected orders only
+                        return prepareCase13TxtEdata(emailProp, emailProp.dgvShip.SelectedRows.Cast<DataGridViewRow>()
+                                                                     .OrderBy(r => r.Index),
+                                                     rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
+                    case "14": // 1480Dual MOLEX, selected orders only (no folder-count check: the other orders' folders are there too)
+                        return prepareCase14TxtZip(emailProp, emailProp.dgvShip.SelectedRows.Cast<DataGridViewRow>()
+                                                                  .OrderBy(r => r.Index), false,
+                                                   rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
                     //Nothing
                     default:

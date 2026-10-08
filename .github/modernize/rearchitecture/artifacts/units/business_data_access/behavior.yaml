@@ -1,0 +1,22 @@
+unit: business_data_access
+branches:
+  - source_loc: BusinessData/DBManage/DatabaseExecuteModels.cs:20
+    condition: connection or select fails
+    behavior: return OutputOnDbProperty with failure status and close connection in finally
+    must_preserve: true
+  - source_loc: BusinessData/DBManage/DatabaseExecuteModels.cs:61
+    condition: any statement in a multi-statement insert/update fails
+    behavior: roll back immediately and return the failed result
+    must_preserve: true
+side_effects:
+  - source_loc: BusinessData/DBManage/DatabaseExecuteModels.cs:70
+    effect: commit successful writes and set operation success message
+    must_preserve: true
+error_paths:
+  - source_loc: BusinessData/DBManage/TransMysqlModels.cs:1
+    trigger: MySQL connection/command exception
+    outcome: preserve failure result and close the connection
+    must_preserve: true
+concurrency:
+  model: one synchronous connection/transaction per operation
+  tx_boundary: explicit connection open through commit/rollback and close
