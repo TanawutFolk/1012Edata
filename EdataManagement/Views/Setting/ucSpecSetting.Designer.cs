@@ -478,7 +478,7 @@
             this.btnRcpAction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
             this.btnRcpAction.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnRcpAction.BorderRadius = 0;
-            this.btnRcpAction.ButtonText = "Split";
+            this.btnRcpAction.ButtonText = "New Group";
             this.btnRcpAction.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnRcpAction.DisabledColor = System.Drawing.Color.Gray;
             this.btnRcpAction.Iconcolor = System.Drawing.Color.Transparent;
@@ -501,7 +501,7 @@
             this.btnRcpAction.selected = false;
             this.btnRcpAction.Size = new System.Drawing.Size(100, 28);
             this.btnRcpAction.TabIndex = 3;
-            this.btnRcpAction.Text = "Split";
+            this.btnRcpAction.Text = "New Group";
             this.btnRcpAction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.btnRcpAction.Textcolor = System.Drawing.Color.White;
             this.btnRcpAction.TextFont = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

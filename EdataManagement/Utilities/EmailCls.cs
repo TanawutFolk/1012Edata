@@ -735,11 +735,23 @@ namespace EdataManagement.Utilities
 
             // not on the production database -> never send, see MailSafety
             bool testMode = MailSafety.IsTestMode;
-            // ...unless every recipient is in the test group (App.config TestMailGroupId)
-            int? testGroupId = testMode ? MailSafety.TestMailGroupId : null;
-            bool testSend = testGroupId.HasValue &&
+            // In test mode, Group 1000 is internal-only and Group 0 is the explicitly
+            // approved QA group which may contain external recipients.
+            List<string> internalTestAddresses = new List<string>();
+            List<string> externalTestAddresses = new List<string>();
+            if (testMode)
+            {
+                foreach (int groupId in MailSafety.TestMailGroupIds)
+                {
+                    List<string> groupAddresses = _emailCon.getGroupEmailAddresses(groupId);
+                    if (groupId == 0) externalTestAddresses.AddRange(groupAddresses);
+                    else internalTestAddresses.AddRange(groupAddresses);
+                }
+            }
+
+            bool testSend = testMode &&
                             MailSafety.CanSendTestMail(prop.toEmailAddresses, prop.ccEmailAddresses,
-                                                       _emailCon.getGroupEmailAddresses(testGroupId.Value));
+                                                       internalTestAddresses, externalTestAddresses);
             bool addRecipients = !testMode || testSend;
 
             try

@@ -18,11 +18,10 @@ namespace EdataManagement.Utilities
     ///
     /// Fail-safe: when the database name cannot be read, it is treated as test mode.
     ///
-    /// Test group (App.config appSetting "TestMailGroupId", e.g. 1000): in test mode a mail IS sent
-    /// when every one of its recipients is a member of that info_group_email group and on
-    /// INTERNAL_DOMAIN - i.e. the spec was pointed at the test group on purpose. That mail goes out
-    /// exactly like a real one (same subject and body, nothing added). A mail with any other
-    /// recipient stays a draft as above. Not set = never send. Ignored on qa_oc.
+    /// Test groups are configured in App.config "TestMailGroupIds" (for example "0,1000").
+    /// Group 1000 remains internal-only; Group 0 is explicitly allowed to include external
+    /// recipients because it is the selected QA test group. Any recipient outside these groups
+    /// stays a draft. Ignored on qa_oc.
     /// </summary>
     public static class MailSafety
     {
@@ -54,7 +53,7 @@ namespace EdataManagement.Utilities
             get { return !string.Equals(ConfigDatabase, PRODUCTION_DATABASE, StringComparison.OrdinalIgnoreCase); }
         }
 
-        /// <summary>App.config "TestMailGroupId", null when missing or not a number (= never send in test mode).</summary>
+        /// <summary>Legacy single-group setting. Prefer TestMailGroupIds for new deployments.</summary>
         public static int? TestMailGroupId
         {
             get
@@ -62,6 +61,30 @@ namespace EdataManagement.Utilities
                 int groupId;
                 string value = ConfigurationManager.AppSettings["TestMailGroupId"];
                 return int.TryParse(value?.Trim(), out groupId) ? groupId : (int?)null;
+            }
+        }
+
+        public static IEnumerable<int> TestMailGroupIds
+        {
+            get
+            {
+                string value = ConfigurationManager.AppSettings["TestMailGroupIds"];
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    int? legacy = TestMailGroupId;
+                    return legacy.HasValue ? new[] { legacy.Value } : Enumerable.Empty<int>();
+                }
+
+                return value.Split(',')
+                    .Select(item =>
+                    {
+                        int groupId;
+                        return int.TryParse(item.Trim(), out groupId) ? (int?)groupId : null;
+                    })
+                    .Where(item => item.HasValue)
+                    .Select(item => item.Value)
+                    .Distinct()
+                    .ToArray();
             }
         }
 
@@ -84,6 +107,28 @@ namespace EdataManagement.Utilities
                 .ToList();
 
             return recipients.Count > 0 && recipients.All(allowed.Contains);
+        }
+
+        public static bool CanSendTestMail(IEnumerable<string> to, IEnumerable<string> cc,
+                                           IEnumerable<string> internalGroupAddresses,
+                                           IEnumerable<string> externalGroupAddresses)
+        {
+            List<string> recipients = (to ?? Enumerable.Empty<string>())
+                .Concat(cc ?? Enumerable.Empty<string>())
+                .Where(a => !string.IsNullOrWhiteSpace(a))
+                .Select(a => a.Trim())
+                .ToList();
+
+            HashSet<string> externalAllowed = new HashSet<string>(
+                externalGroupAddresses ?? Enumerable.Empty<string>(),
+                StringComparer.OrdinalIgnoreCase);
+
+            if (recipients.Count > 0 && recipients.All(externalAllowed.Contains))
+            {
+                return true;
+            }
+
+            return CanSendTestMail(recipients, Enumerable.Empty<string>(), internalGroupAddresses);
         }
 
         /// <summary>HTML block put at the top of a test mail: who it would have gone to.</summary>

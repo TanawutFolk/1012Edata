@@ -147,6 +147,7 @@
     <Compile Include="Utilities\DucZipCls.cs" />
     <Compile Include="Utilities\EmailCls.cs" />
     <Compile Include="Utilities\MailSafety.cs" />
+    <Compile Include="Utilities\DatabaseSelection.cs" />
     <Compile Include="Utilities\FileCls.cs" />
     <Compile Include="Utilities\IPChecker.cs" />
     <Compile Include="Views\emailUserControl.cs">

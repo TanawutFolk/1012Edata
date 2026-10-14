@@ -187,8 +187,8 @@
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.btnCancel);
             this.panel4.Controls.Add(this.btnSave);
+            this.panel4.Controls.Add(this.btnCancel);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 635);
             this.panel4.Name = "panel4";
@@ -216,14 +216,14 @@
             this.btnCancel.IconVisible = true;
             this.btnCancel.IconZoom = 90D;
             this.btnCancel.IsTab = false;
-            this.btnCancel.Location = new System.Drawing.Point(1109, 14);
+            this.btnCancel.Location = new System.Drawing.Point(1105, 15);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.btnCancel.OnHovercolor = System.Drawing.Color.Silver;
             this.btnCancel.OnHoverTextColor = System.Drawing.Color.White;
             this.btnCancel.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnCancel.selected = false;
-            this.btnCancel.Size = new System.Drawing.Size(132, 37);
+            this.btnCancel.Size = new System.Drawing.Size(102, 30);
             this.btnCancel.TabIndex = 23;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -234,7 +234,7 @@
             // btnSave
             // 
             this.btnSave.Activecolor = System.Drawing.Color.Lime;
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(51)))));
+            this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
             this.btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnSave.BorderRadius = 0;
             this.btnSave.ButtonText = "Save";
@@ -252,14 +252,14 @@
             this.btnSave.IconVisible = true;
             this.btnSave.IconZoom = 90D;
             this.btnSave.IsTab = false;
-            this.btnSave.Location = new System.Drawing.Point(1263, 14);
+            this.btnSave.Location = new System.Drawing.Point(1217, 15);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(51)))));
+            this.btnSave.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
             this.btnSave.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnSave.OnHoverTextColor = System.Drawing.Color.White;
             this.btnSave.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnSave.selected = false;
-            this.btnSave.Size = new System.Drawing.Size(132, 37);
+            this.btnSave.Size = new System.Drawing.Size(176, 30);
             this.btnSave.TabIndex = 22;
             this.btnSave.Text = "Save";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;

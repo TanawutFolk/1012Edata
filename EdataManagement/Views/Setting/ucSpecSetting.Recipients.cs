@@ -17,9 +17,10 @@ namespace EdataManagement.Views.Setting
     ///   Edata (LD data)      the group of the ticked specs - the Recipient Group list decides which -
     ///                        or, with nothing ticked, the group most Email specs of the customer use
     ///   Serial List / Wafer  the customer's own group in key_group_email_document
-    /// Add / Remove / TO-CC / Split / Create Group are staged with the spec edits and written by the same Save.
+    /// Add / Remove / TO-CC / New Group / Create Group are staged with the spec edits and written by the same Save.
     /// A group is shared, so a member change reaches every spec / customer on it: sharing is always spelled out,
-    /// and Group #0 (internal, also used by other programs) is read only - Split it instead.
+    /// and Group #0 (internal, also used by other programs) is read only. New Group (an empty group for the
+    /// ticked specs) and Create Group (Serial List / Wafer) are for ADMIN only; Save refuses a new group without a TO.
     ///
     /// Save writes them before the spec values (AddRecipientStatements); info_group_email has no trigger,
     /// so every change gets its own row in log_setting_edata.
@@ -38,7 +39,7 @@ namespace EdataManagement.Views.Setting
 
         private const string EMAIL_PATTERN = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
 
-        private enum RecipientAction { None, Split, CreateGroup }
+        private enum RecipientAction { None, NewGroup, CreateGroup }
 
         private SettingEmailControllers _emailCon;
 
@@ -49,7 +50,7 @@ namespace EdataManagement.Views.Setting
         /// <summary>Other customers of the same product on a group, read once.</summary>
         private readonly Dictionary<int, List<string>> _sharing = new Dictionary<int, List<string>>();
 
-        /// <summary>Groups made on this screen (Split / Create Group), not in the database yet: id -> what it is.</summary>
+        /// <summary>Groups made on this screen (New Group / Create Group), not in the database yet: id -> what it is.</summary>
         private readonly Dictionary<int, string> _newGroups = new Dictionary<int, string>();
 
         /// <summary>Serial List / Wafer group made here for the current customer: document id -> group id.</summary>
@@ -57,16 +58,13 @@ namespace EdataManagement.Views.Setting
 
         private int _nextGroupId = -1;
 
-        /// <summary>Group made by Split -> the group it was copied from (for the log).</summary>
-        private readonly Dictionary<int, int> _splitSource = new Dictionary<int, int>();
-
         /// <summary>Group on the panel; -1 = a message instead of a group.</summary>
         private int _shownGroupId = -1;
 
         private RecipientAction _recipientAction = RecipientAction.None;
 
-        /// <summary>Specs that Split moves to the new group.</summary>
-        private List<DataRow> _splitTargets = new List<DataRow>();
+        /// <summary>Specs that New Group moves to the new group.</summary>
+        private List<DataRow> _newGroupTargets = new List<DataRow>();
 
         private void WireRecipientEvents()
         {
@@ -131,7 +129,7 @@ namespace EdataManagement.Views.Setting
         {
             if (_emailCon == null) return;
 
-            _splitTargets = new List<DataRow>();
+            _newGroupTargets = new List<DataRow>();
 
             string customer = SelectedCustomerName();
             if (_specs == null || customer == "")
@@ -182,7 +180,7 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
-            _splitTargets = ticked;
+            _newGroupTargets = ticked;
 
             int notOnIt = ticked.Count(r => ToInt(r[COL_GROUP]) != groupId);
             ShowGroup(groupId, notOnIt > 0
@@ -208,10 +206,10 @@ namespace EdataManagement.Views.Setting
                 .ToList();
 
             int groupId = byGroup[0].Key;
-            _splitTargets = byGroup[0].ToList();
+            _newGroupTargets = byGroup[0].ToList();
 
             ShowGroup(groupId, byGroup.Count > 1
-                ? "Email specs of " + customer + " use " + byGroup.Count + " groups - this is the one of " + _splitTargets.Count + " specs. Tick specs to see another."
+                ? "Email specs of " + customer + " use " + byGroup.Count + " groups - this is the one of " + _newGroupTargets.Count + " specs. Tick specs to see another."
                 : "Used by the " + email.Count + " Email spec(s) of " + customer + ". Tick specs to change their group.", true);
         }
 
@@ -240,9 +238,11 @@ namespace EdataManagement.Views.Setting
 
                 if (found.Rows.Count == 0)
                 {
+                    bool admin = SettingUi.IsAdmin();
                     ShowRecipientsMessage("Recipients", "No " + typeName + " recipients for " + customer + " (" + product + ") in the database." +
-                        Environment.NewLine + Environment.NewLine + "Sending still reads Setting\\EmailSetting.ini. Create a group to manage them here.");
-                    SetRecipientNote("", SettingUi.ALERT_NONE_TEXT, RecipientAction.CreateGroup);
+                        Environment.NewLine + Environment.NewLine + "Sending still reads Setting\\EmailSetting.ini. " +
+                        (admin ? "Create a group to manage them here." : "Ask an ADMIN to create a group to manage them here."));
+                    SetRecipientNote("", SettingUi.ALERT_NONE_TEXT, admin ? RecipientAction.CreateGroup : RecipientAction.None);
                     return;
                 }
 
@@ -255,7 +255,7 @@ namespace EdataManagement.Views.Setting
         // =====================================================================
         // panel content
         // =====================================================================
-        private void ShowGroup(int groupId, string contextNote, bool splittable)
+        private void ShowGroup(int groupId, string contextNote, bool forSpecs)
         {
             DataTable members = MembersOf(groupId);
             if (members == null)
@@ -283,12 +283,14 @@ namespace EdataManagement.Views.Setting
 
             // what an edit here reaches, most important first
             List<string> others = isNew ? new List<string>() : OtherCustomersOn(groupId);
-            RecipientAction split = splittable && _splitTargets.Count > 0 ? RecipientAction.Split : RecipientAction.None;
+            bool admin = SettingUi.IsAdmin();
+            RecipientAction newGroup = forSpecs && admin && _newGroupTargets.Count > 0 ? RecipientAction.NewGroup : RecipientAction.None;
 
             if (locked)
             {
-                SetRecipientNote("#0 is internal and shared (other customers, uITLA) - read only. Split to give these specs their own group.",
-                    SettingUi.ALERT_WARN_TEXT, split);
+                SetRecipientNote("#0 is internal and shared (other customers, uITLA) - read only. " +
+                    (admin ? "New Group gives these specs their own group." : "Ask an ADMIN for a new group."),
+                    SettingUi.ALERT_WARN_TEXT, newGroup);
             }
             else if (isNew)
             {
@@ -297,7 +299,7 @@ namespace EdataManagement.Views.Setting
             else if (others.Count > 0)
             {
                 SetRecipientNote("Also used by " + NameList(others) + " - adding / removing here changes their mail too.",
-                    SettingUi.ALERT_WARN_TEXT, split);
+                    SettingUi.ALERT_WARN_TEXT, newGroup);
             }
             else
             {
@@ -330,13 +332,13 @@ namespace EdataManagement.Views.Setting
             SetButtonEnabled(btnAddEmail, enabled, Color.FromArgb(102, 153, 0));
         }
 
-        /// <summary>The line under the title, with Split / Create Group next to it when that is the way out.</summary>
+        /// <summary>The line under the title, with New Group / Create Group next to it when that is the way out (ADMIN only).</summary>
         private void SetRecipientNote(string text, Color fore, RecipientAction action)
         {
             _recipientAction = action;
 
             btnRcpAction.Visible = action != RecipientAction.None;
-            if (action == RecipientAction.Split) btnRcpAction.ButtonText = "Split";
+            if (action == RecipientAction.NewGroup) btnRcpAction.ButtonText = "New Group";
             if (action == RecipientAction.CreateGroup) btnRcpAction.ButtonText = "Create Group";
 
             int rightEdge = btnRcpAction.Visible ? btnRcpAction.Left - 8 : pnRecipients.ClientSize.Width - 12;
@@ -475,7 +477,10 @@ namespace EdataManagement.Views.Setting
 
         private void btnRcpAction_Click(object sender, EventArgs e)
         {
-            if (_recipientAction == RecipientAction.Split) SplitShownGroup();
+            // the button is only shown to ADMIN; checked again in case the role changed while the page was open
+            if (!SettingUi.IsAdmin()) return;
+
+            if (_recipientAction == RecipientAction.NewGroup) NewGroupForSpecs();
             else if (_recipientAction == RecipientAction.CreateGroup) CreateDocumentGroup();
         }
 
@@ -551,34 +556,30 @@ namespace EdataManagement.Views.Setting
             AfterRecipientsChanged(groupId);
         }
 
-        private void SplitShownGroup()
+        private void NewGroupForSpecs()
         {
-            int source = _shownGroupId;
-            List<DataRow> targets = _splitTargets;
-            if (source < 0 || targets.Count == 0) return;
+            int current = _shownGroupId;
+            List<DataRow> targets = _newGroupTargets;
+            if (current < 0 || targets.Count == 0) return;
 
             if (!frmConfirm.Ask(this,
-                "Copy Group #" + source + " into a new group for " + targets.Count + " spec(s) of " + SelectedCustomerName() + "?" +
-                Environment.NewLine + "Everyone else keeps Group #" + source + " unchanged.",
-                "Split", "Cancel")) return;
+                "Make a new, empty recipient group for " + targets.Count + " spec(s) of " + SelectedCustomerName() + "?" +
+                Environment.NewLine + "Add its recipients (at least one TO), then Save. Everyone else keeps Group #" + current + " unchanged.",
+                "New Group", "Cancel")) return;
 
-            StageSplit(source, targets);
+            StageNewGroup(targets);
         }
 
-        /// <summary>New group = copy of the members; the specs move to it like any other staged spec change.</summary>
-        private void StageSplit(int sourceGroupId, List<DataRow> targets)
+        /// <summary>New group starts empty (nothing is copied); the specs move to it like any other staged spec change.</summary>
+        private void StageNewGroup(List<DataRow> targets)
         {
-            DataTable source = MembersOf(sourceGroupId);
-            if (source == null) return;
-
             int newId = NextGroupId();
-            DataTable copy = source.Copy();
+            DataTable empty = EmptyMembers();
 
-            _members[newId] = copy;
-            _membersLoaded[newId] = copy.Copy();
-            _newGroups[newId] = "Copy of #" + sourceGroupId + " for " + targets.Count + " spec(s)";
-            _splitSource[newId] = sourceGroupId;
-            AddGroupToLists(newId, copy.Rows.Count);
+            _members[newId] = empty;
+            _membersLoaded[newId] = empty.Copy();
+            _newGroups[newId] = "New group for " + targets.Count + " spec(s)";
+            AddGroupToLists(newId, 0);
 
             foreach (DataRow row in targets)
             {
@@ -586,8 +587,8 @@ namespace EdataManagement.Views.Setting
                 EvaluateRow(row);
             }
 
-            _notice = "Group #" + newId + " (copy of #" + sourceGroupId + ") staged for " + targets.Count +
-                      " spec(s) - edit its addresses on the right, then Save.";
+            _notice = "Group #" + newId + " (new, empty) staged for " + targets.Count +
+                      " spec(s) - add its addresses on the right, then Save.";
             RefreshAll();
         }
 
@@ -652,6 +653,16 @@ namespace EdataManagement.Views.Setting
             return count;
         }
 
+        /// <summary>New groups (New Group / Create Group) that have no TO address yet - Save refuses them.</summary>
+        private List<int> NewGroupsWithoutTo()
+        {
+            return _newGroups.Keys
+                .Where(id => !_members.ContainsKey(id) ||
+                             !_members[id].Rows.Cast<DataRow>().Any(r => ToInt(r[COL_RCP_ID]) == RCP_TO))
+                .OrderBy(id => id)
+                .ToList();
+        }
+
         /// <summary>Drop every staged recipient edit and the groups made here (Cancel / another customer).</summary>
         private void ResetRecipients()
         {
@@ -680,7 +691,6 @@ namespace EdataManagement.Views.Setting
             _sharing.Clear();
             _newGroups.Clear();
             _newDocumentGroups.Clear();
-            _splitSource.Clear();
             _nextGroupId = -1;
             _shownGroupId = -1;
         }
@@ -759,9 +769,7 @@ namespace EdataManagement.Views.Setting
                     }
                     else
                     {
-                        int source;
-                        batch.Add(_specSql.logNewGroup(product, groupId,
-                            _splitSource.TryGetValue(staged, out source) ? source : -1, customer, user));
+                        batch.Add(_specSql.logNewGroup(product, groupId, customer, user));
                     }
                 }
                 else
@@ -785,7 +793,7 @@ namespace EdataManagement.Views.Setting
                     }
                 }
 
-                // one log row per address, against the group as it was read (a split group: against its copy)
+                // one log row per address, against the group as it was read (a new group: every address is "added")
                 foreach (string address in removed)
                 {
                     batch.Add(_specSql.logRecipientChange(product, groupId, customer, address, before[address], null, user));
@@ -854,7 +862,7 @@ namespace EdataManagement.Views.Setting
             return ToInt(row["EMAIL_ID"]);
         }
 
-        /// <summary>Serial List / Wafer document of a group made here; 0 = not one (a Split group).</summary>
+        /// <summary>Serial List / Wafer document of a group made here; 0 = not one (a New Group for specs).</summary>
         private int DocumentOfNewGroup(int stagedGroupId)
         {
             foreach (KeyValuePair<int, int> pair in _newDocumentGroups)

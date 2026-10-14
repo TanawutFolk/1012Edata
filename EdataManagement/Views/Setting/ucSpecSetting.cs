@@ -195,6 +195,16 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
+            // a new group with nobody on TO would send the mail to no one
+            List<int> noTo = NewGroupsWithoutTo();
+            if (noTo.Count > 0)
+            {
+                frmError.ShowError(this, "Save stopped, nothing was written." + Environment.NewLine +
+                    string.Join(", ", noTo.Select(id => "Group #" + id + " (new)")) + " has no TO address yet." +
+                    Environment.NewLine + "Add at least one TO address, or Cancel to drop the new group.");
+                return;
+            }
+
             if (!frmConfirm.Ask(this, SaveQuestion(specCount, recipientCount), "Save", "Cancel")) return;
 
             WriteChanges();

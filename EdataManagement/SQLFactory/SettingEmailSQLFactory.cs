@@ -277,17 +277,6 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
-        /// <summary>Copy every member of one group into a new GROUP_ID (used by "Split To New Group").</summary>
-        public string copyGroupMembers(SettingEmailProperty dataItem)
-        {
-            sql = "INSERT INTO info_group_email (GROUP_ID, RECIPIENT_ID, EMAIL_ID) " +
-                  "SELECT " + dataItem.newGroupId + ", ge.RECIPIENT_ID, ge.EMAIL_ID " +
-                  "FROM info_group_email ge " +
-                  "WHERE ge.GROUP_ID = " + dataItem.groupId + " ";
-
-            return sql;
-        }
-
         /// <summary>
         /// Who is saving: the audit triggers of the key tables (DatabaseScripts\audit_key_tables.sql)
         /// read @app_user for CREATE_BY / UPDATE_BY and log_setting_edata. Run first in the same Save.
@@ -301,19 +290,6 @@ namespace EdataManagement.SQLFactory
         public string clearAppUser()
         {
             return "SET @app_user = NULL";
-        }
-
-        /// <summary>Point every Email spec of one customer at another group.</summary>
-        public string updateCustomerGroup(SettingEmailProperty dataItem)
-        {
-            sql = "UPDATE key_group_email_" + dataItem.productName + " g " +
-                  "INNER JOIN " + dataItem.dbProduct + ".info_cus_condition ic ON (ic.CusCondition_ID = g.KEY_ID) " +
-                  "INNER JOIN key_send_methods_" + dataItem.productName + " k ON (k.KEY_ID = g.KEY_ID) " +
-                  "SET g.GROUP_ID = " + dataItem.newGroupId + " " +
-                  "WHERE ic.Inuse = 1 AND ic.Customer = '" + Esc(dataItem.customerName) + "' " +
-                  "AND k.SEND_METHODS_ID = 3 ";
-
-            return sql;
         }
     }
 }

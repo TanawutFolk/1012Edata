@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data.Common;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 using Bunifu.Framework.UI;
+using EdataManagement.Utilities;
 
 namespace EdataManagement.Views.Setting
 {
@@ -26,6 +28,7 @@ namespace EdataManagement.Views.Setting
     {
         private readonly Dictionary<BunifuFlatButton, UserControl> _pages = new Dictionary<BunifuFlatButton, UserControl>();
         private BunifuFlatButton _activeTab;
+        private bool _loadingDatabase;
 
         public frmSetting()
         {
@@ -54,6 +57,8 @@ namespace EdataManagement.Views.Setting
         private void frmSetting_Load(object sender, EventArgs e)
         {
             ShowDatabaseInTitle();
+            LoadDatabaseSelector();
+            cbDatabase.SelectedIndexChanged += cbDatabase_SelectedIndexChanged;
 
             // a USER never sees the permission tab
             btnSettingLogin.Visible = SettingUi.IsAdmin();
@@ -61,6 +66,56 @@ namespace EdataManagement.Views.Setting
             FormClosing += frmSetting_FormClosing;
 
             SelectTab(btnSettingSpec);
+        }
+
+        private void LoadDatabaseSelector()
+        {
+            _loadingDatabase = true;
+            DataTable databases = new DataTable();
+            databases.Columns.Add("Text", typeof(string));
+            databases.Columns.Add("Value", typeof(string));
+            databases.Rows.Add("TEST (qa_oc_test)", DatabaseSelection.TestDatabase);
+            databases.Rows.Add("PRODUCTION (qa_oc)", DatabaseSelection.ProductionDatabase);
+
+            cbDatabase.Font = new Font(cbDatabase.Font.FontFamily, 11f, FontStyle.Regular);
+            cbDatabase.DisplayMember = "Text";
+            cbDatabase.ValueMember = "Value";
+            cbDatabase.DataSource = databases;
+            cbDatabase.SelectedValue = DatabaseSelection.CurrentDatabase;
+            _loadingDatabase = false;
+        }
+
+        private void cbDatabase_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_loadingDatabase || cbDatabase.SelectedValue == null) return;
+
+            string selected = cbDatabase.SelectedValue.ToString();
+            if (string.Equals(selected, DatabaseSelection.CurrentDatabase, StringComparison.OrdinalIgnoreCase)) return;
+
+            string warning = selected == DatabaseSelection.ProductionDatabase
+                ? "กำลังเปลี่ยนเป็นฐานข้อมูลจริง qa_oc และอาจส่งอีเมลจริงไปยังผู้รับจริง\nต้องการปิดและเปิดโปรแกรมใหม่หรือไม่?"
+                : "กำลังเปลี่ยนเป็นฐานข้อมูลทดสอบ qa_oc_test อีเมลที่ไม่ใช่กลุ่มทดสอบจะถูกเก็บเป็น Draft\nต้องการปิดและเปิดโปรแกรมใหม่หรือไม่?";
+
+            if (!frmConfirm.Ask(this, warning, "เปลี่ยนฐานข้อมูล", "ยกเลิก"))
+            {
+                _loadingDatabase = true;
+                cbDatabase.SelectedValue = DatabaseSelection.CurrentDatabase;
+                _loadingDatabase = false;
+                return;
+            }
+
+            try
+            {
+                DatabaseSelection.SaveAndRestart(selected);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "ไม่สามารถบันทึกการเปลี่ยนฐานข้อมูลได้\n" + ex.Message,
+                    "Database", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _loadingDatabase = true;
+                cbDatabase.SelectedValue = DatabaseSelection.CurrentDatabase;
+                _loadingDatabase = false;
+            }
         }
 
         /// <summary>Warn on the caption when the app is pointed at the test database.</summary>

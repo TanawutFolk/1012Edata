@@ -88,9 +88,9 @@ namespace EdataManagement
             // any database but qa_oc: mail is saved as a draft and SFTP is skipped (Utilities.MailSafety)
             if (Utilities.MailSafety.IsTestMode)
             {
-                int? testGroupId = Utilities.MailSafety.TestMailGroupId;
+                string testGroups = string.Join(", ", Utilities.MailSafety.TestMailGroupIds);
                 label4.Text = label4.Text + "   TEST MODE (" + databaseName + ") - " +
-                              (testGroupId.HasValue ? "mail only to test group " + testGroupId.Value : "no mail") + ", no FTP";
+                              (testGroups.Length > 0 ? "mail only to test groups " + testGroups : "no mail") + ", no FTP";
                 label4.ForeColor = Color.FromArgb(185, 28, 28);
                 this.Text = "[TEST MODE - " + databaseName + "] " + this.Text;
             }
@@ -962,5 +962,4 @@ namespace EdataManagement
 
     }
 }
-
 

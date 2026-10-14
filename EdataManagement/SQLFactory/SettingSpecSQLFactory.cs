@@ -174,12 +174,12 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
-        /// <summary>A group made by Split: OLD_VALUE = the group it was copied from.</summary>
-        public string logNewGroup(string productName, int newGroupId, int sourceGroupId, string customerName, string user)
+        /// <summary>A group made by New Group (empty at first; each address it gets has its own log row).</summary>
+        public string logNewGroup(string productName, int newGroupId, string customerName, string user)
         {
             sql = "INSERT INTO log_setting_edata (PRODUCT, TABLE_NAME, KEY_ID, CUSTOMER, SPEC, OLD_VALUE, NEW_VALUE, CHANGE_USER, CHANGE_DATE) " +
                   "VALUES ('" + Esc(productName) + "', 'info_group_email', " + newGroupId + ", LEFT('" + Esc(customerName) + "', 100), " +
-                  "'new group (split)', " + sourceGroupId + ", " + newGroupId + ", LEFT('" + Esc(user) + "', 20), NOW()) ";
+                  "'new group', NULL, " + newGroupId + ", LEFT('" + Esc(user) + "', 20), NOW()) ";
 
             return sql;
         }
