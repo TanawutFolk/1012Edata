@@ -96,9 +96,6 @@ namespace EdataManagement.Views.Setting
         private int _productIndex = -1;
         private int _customerIndex = -1;
 
-        /// <summary>Which specs the alert button ticks for the message on screen.</summary>
-        private Func<DataRow, bool> _alertTickRule;
-
         /// <summary>Shown once on the alert bar (after Apply / Save) instead of the summary.</summary>
         private string _notice = "";
 
@@ -112,7 +109,6 @@ namespace EdataManagement.Views.Setting
             cbCustomer.SelectedIndexChanged += cbCustomer_SelectedIndexChanged;
             cbFilter.SelectedIndexChanged += cbFilter_SelectedIndexChanged;
             txtSearch.OnValueChanged += txtSearch_OnValueChanged;
-            btnAlertAction.Click += btnAlertAction_Click;
             cbSendMethod.SelectedIndexChanged += cbSendMethod_SelectedIndexChanged;
             cbGroup.SelectedIndexChanged += cbGroup_SelectedIndexChanged;
             btnApply.Click += btnApply_Click;
@@ -195,7 +191,7 @@ namespace EdataManagement.Views.Setting
 
             if (specCount + recipientCount == 0)
             {
-                SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i", "Nothing has changed.", null, null);
+                SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i", "Nothing has changed.");
                 return;
             }
 
@@ -285,7 +281,7 @@ namespace EdataManagement.Views.Setting
             LoadLookups();       // member counts / the new groups
             LoadSpecs();
 
-            SetAlert(SettingUi.ALERT_OK_BACK, SettingUi.ALERT_OK_TEXT, "v", message, null, null);
+            SetAlert(SettingUi.ALERT_OK_BACK, SettingUi.ALERT_OK_TEXT, "v", message);
         }
 
         public bool CancelPage()
@@ -420,8 +416,7 @@ namespace EdataManagement.Views.Setting
                 _customerIndex = -1;
                 ShowSpecs(null);
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i",
-                    error != "" ? "Could not read the customers of " + product + "." : "No customer of " + product + " has an in-use spec.",
-                    null, null);
+                    error != "" ? "Could not read the customers of " + product + "." : "No customer of " + product + " has an in-use spec.");
                 if (error != "") frmError.ShowError(this, error);
                 return;
             }
@@ -996,7 +991,7 @@ namespace EdataManagement.Views.Setting
             if (picked.Count == 0)
             {
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i",
-                    "Every list says (keep as is) - pick at least one value to change.", null, null);
+                    "Every list says (keep as is) - pick at least one value to change.");
                 return;
             }
 
@@ -1109,35 +1104,31 @@ namespace EdataManagement.Views.Setting
             if (bad > 0)
             {
                 SetAlert(SettingUi.ALERT_WARN_BACK, SettingUi.ALERT_WARN_TEXT, "!",
-                    bad + " of " + total + " specs are set to send but miss a value (see STATUS).",
-                    "Tick Them (" + bad + ")", r => ToInt(r[COL_LEVEL]) == LEVEL_BAD);
+                    bad + " of " + total + " specs are set to send but miss a value (see STATUS).");
             }
             else if (notice != "")
             {
-                SetAlert(SettingUi.ALERT_INFO_BACK, SettingUi.ALERT_INFO_TEXT, "i", notice, null, null);
+                SetAlert(SettingUi.ALERT_INFO_BACK, SettingUi.ALERT_INFO_TEXT, "i", notice);
             }
             else if (sending == 0)
             {
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i",
-                    customer + " is Don't Send on all " + total + " specs. Tick them and pick a Send Method to start sending.",
-                    "Tick All (" + total + ")", r => true);
+                    customer + " is Don't Send on all " + total + " specs. Pick a Send Method to start sending.");
             }
             else if (dontSend > 0)
             {
                 SetAlert(SettingUi.ALERT_INFO_BACK, SettingUi.ALERT_INFO_TEXT, "i",
-                    sending + " of " + total + " specs send, the other " + dontSend + " are Don't Send. A new spec that should send too?",
-                    "Tick Don't Send (" + dontSend + ")", r => ToInt(r[COL_SEND]) == SEND_DONT_SEND);
+                    sending + " of " + total + " specs send, the other " + dontSend + " are Don't Send. Review the STATUS and select any specs that should send.");
             }
             else if (warn > 0)
             {
                 SetAlert(SettingUi.ALERT_WARN_BACK, SettingUi.ALERT_WARN_TEXT, "!",
-                    warn + " spec(s) send to internal group #0 only - the customer gets nothing.",
-                    "Tick Them (" + warn + ")", r => ToInt(r[COL_LEVEL]) == LEVEL_WARN);
+                    warn + " spec(s) send to internal group #0 only - the customer gets nothing.");
             }
             else
             {
                 SetAlert(SettingUi.ALERT_OK_BACK, SettingUi.ALERT_OK_TEXT, "v",
-                    "All " + total + " specs of " + customer + " are ready" + CommonSetup(all) + ".", null, null);
+                    "All " + total + " specs of " + customer + " are ready" + CommonSetup(all) + ".");
             }
         }
 
@@ -1155,50 +1146,19 @@ namespace EdataManagement.Views.Setting
             return text + ")";
         }
 
-        private void SetAlert(Color back, Color fore, string icon, string message, string actionText, Func<DataRow, bool> tickRule)
+        private void SetAlert(Color back, Color fore, string icon, string message)
         {
-            bool showAction = actionText != null && tickRule != null;
-
             pnAlert.BackColor = back;
             lbAlertIcon.ForeColor = fore;
             lbAlertIcon.Text = icon;
             lbAlertText.ForeColor = fore;
-            btnAlertAction.Visible = showAction;
-            _alertTickRule = showAction ? tickRule : null;
-
-            if (showAction)
-            {
-                btnAlertAction.ButtonText = actionText;
-            }
-
-            // the label must stop before the action button, otherwise the text runs underneath it
-            int rightEdge = showAction
-                ? btnAlertAction.Left - ALERT_TEXT_GAP
-                : pnAlert.ClientSize.Width - ALERT_TEXT_GAP;
+            int rightEdge = pnAlert.ClientSize.Width - ALERT_TEXT_GAP;
 
             lbAlertText.Width = Math.Max(120, rightEdge - lbAlertText.Left);
             lbAlertText.Text = message;
 
             toolTipAlert.SetToolTip(lbAlertText, message);
             toolTipAlert.SetToolTip(lbAlertIcon, message);
-        }
-
-        /// <summary>Tick exactly the specs the alert talks about (showing all specs first).</summary>
-        private void btnAlertAction_Click(object sender, EventArgs e)
-        {
-            if (_alertTickRule == null || _specs == null) return;
-
-            _loading = true;
-            cbFilter.SelectedItem = SHOW_ALL;
-            txtSearch.Text = "";
-            _loading = false;
-            ApplyFilter();
-
-            foreach (DataRow row in _specs.Rows)
-            {
-                row[COL_CHECK] = _alertTickRule(row);
-            }
-            AfterTickChanged();
         }
 
         // =====================================================================

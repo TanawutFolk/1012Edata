@@ -64,7 +64,6 @@
             this.lbEditorTitle = new System.Windows.Forms.Label();
             this.dtgSpecs = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.pnAlert = new System.Windows.Forms.Panel();
-            this.btnAlertAction = new Bunifu.Framework.UI.BunifuFlatButton();
             this.lbAlertText = new System.Windows.Forms.Label();
             this.lbAlertIcon = new System.Windows.Forms.Label();
             this.panel3.SuspendLayout();
@@ -208,50 +207,12 @@
             // pnAlert
             //
             this.pnAlert.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(244)))), ((int)(((byte)(246)))));
-            this.pnAlert.Controls.Add(this.btnAlertAction);
             this.pnAlert.Controls.Add(this.lbAlertText);
             this.pnAlert.Controls.Add(this.lbAlertIcon);
             this.pnAlert.Location = new System.Drawing.Point(21, 12);
             this.pnAlert.Name = "pnAlert";
             this.pnAlert.Size = new System.Drawing.Size(1326, 44);
             this.pnAlert.TabIndex = 0;
-            //
-            // btnAlertAction
-            //
-            this.btnAlertAction.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
-            this.btnAlertAction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAlertAction.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
-            this.btnAlertAction.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAlertAction.BorderRadius = 0;
-            this.btnAlertAction.ButtonText = "Tick Them";
-            this.btnAlertAction.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAlertAction.DisabledColor = System.Drawing.Color.Gray;
-            this.btnAlertAction.Iconcolor = System.Drawing.Color.Transparent;
-            this.btnAlertAction.Iconimage = null;
-            this.btnAlertAction.Iconimage_right = null;
-            this.btnAlertAction.Iconimage_right_Selected = null;
-            this.btnAlertAction.Iconimage_Selected = null;
-            this.btnAlertAction.IconMarginLeft = 0;
-            this.btnAlertAction.IconMarginRight = 0;
-            this.btnAlertAction.IconRightVisible = true;
-            this.btnAlertAction.IconRightZoom = 0D;
-            this.btnAlertAction.IconVisible = true;
-            this.btnAlertAction.IconZoom = 90D;
-            this.btnAlertAction.IsTab = false;
-            this.btnAlertAction.Location = new System.Drawing.Point(1114, 6);
-            this.btnAlertAction.Name = "btnAlertAction";
-            this.btnAlertAction.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
-            this.btnAlertAction.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
-            this.btnAlertAction.OnHoverTextColor = System.Drawing.Color.White;
-            this.btnAlertAction.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnAlertAction.selected = false;
-            this.btnAlertAction.Size = new System.Drawing.Size(200, 32);
-            this.btnAlertAction.TabIndex = 2;
-            this.btnAlertAction.Text = "Tick Them";
-            this.btnAlertAction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnAlertAction.Textcolor = System.Drawing.Color.White;
-            this.btnAlertAction.TextFont = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAlertAction.Visible = false;
             //
             // lbAlertText
             //
@@ -677,7 +638,6 @@
         private Bunifu.Framework.UI.BunifuFlatButton btnAllGroups;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel pnAlert;
-        private Bunifu.Framework.UI.BunifuFlatButton btnAlertAction;
         private System.Windows.Forms.Label lbAlertText;
         private System.Windows.Forms.Label lbAlertIcon;
         private Bunifu.Framework.UI.BunifuCustomDataGrid dtgSpecs;

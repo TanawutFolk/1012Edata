@@ -39,7 +39,7 @@ namespace EdataManagement
             Application.SetCompatibleTextRenderingDefault(false);
 
             // เปิด frmMain เป็นหน้าแรก
-            Application.Run(new frmLogin());
+            Application.Run(new frmMain());
         }
     }
 }

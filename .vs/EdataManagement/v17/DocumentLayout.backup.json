@@ -3,23 +3,51 @@
   "WorkspaceRootPath": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\frmsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\frmsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucloginsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucloginsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\settingshared.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\settingshared.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\groupoverviewdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\groupoverviewdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\views\\frmlogin.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\frmlogin.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmlogin.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -39,19 +67,15 @@
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\emailusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\frmsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\frmsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\ftpusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\ftpusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\utilities\\filecls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\utilities\\filecls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\filecls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\utilities\\excelcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\utilities\\excelcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\excelcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -59,11 +83,11 @@
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\emailcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\utilities\\duczipcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\utilities\\duczipcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\duczipcls.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|c:\\users\\tanawut.pat\\desktop\\1012\\1012 send e-data 48-98 direct v3.6.0\\edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\frmmain.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -75,32 +99,8 @@
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\utilities\\mailsafety.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\groupoverviewdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\groupoverviewdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\settingshared.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\settingshared.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucloginsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucloginsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucspecsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\ucloginsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|solutionrelative:edatamanagement\\views\\setting\\ucloginsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0AA824F9-F7AA-479C-A61A-73872420375A}|EdataManagement\\EdataManagement.csproj|C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\edatamanagement\\views\\setting\\frmsetting.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -146,7 +146,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 110,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Bookmark",
@@ -166,31 +166,83 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "frmConfirm.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmConfirm.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmConfirm.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmConfirm.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\frmConfirm.cs [Design]",
+              "DocumentIndex": 8,
+              "Title": "GroupOverviewDialog.cs",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
+              "ViewState": "AgIAAJcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-21T11:37:56.946Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-10-06T08:16:18.804Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SettingShared.cs",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\SettingShared.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\SettingShared.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\SettingShared.cs",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\SettingShared.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAQwH0AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-24T06:18:44.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ucSpecSetting.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
+              "ViewState": "AgIAAHYAAAAAAAAAAAAowJoAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-28T03:30:23.834Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "frmEmail.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmEmail.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmEmail.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmEmail.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\frmEmail.cs [Design]",
+              "Title": "ucLoginSetting.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucLoginSetting.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucLoginSetting.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucLoginSetting.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucLoginSetting.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T04:54:39.193Z",
+              "WhenOpened": "2026-09-24T05:03:18.511Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "ucSpecSetting.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-28T02:59:41.601Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ucSpecSetting.cs",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
+              "ViewState": "AgIAAP4DAAAAAAAAAIAxwBoEAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-28T04:54:27.996Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "frmLogin.cs [Design]",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmLogin.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmLogin.cs",
@@ -202,44 +254,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "frmError.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmError.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmError.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmError.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\frmError.cs [Design]",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Program.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Program.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Program.cs",
+              "RelativeToolTip": "EdataManagement\\Program.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAowCkAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-24T04:35:56.154Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ftpUserControl.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\ftpUserControl.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\ftpUserControl.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\ftpUserControl.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\ftpUserControl.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-22T10:48:00.713Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "App.config",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
-              "RelativeDocumentMoniker": "EdataManagement\\App.config",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
-              "RelativeToolTip": "EdataManagement\\App.config",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAUwE0AAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2026-05-06T04:54:47.414Z",
+              "WhenOpened": "2026-09-21T10:01:38.622Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "frmSetting.cs [Design]",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\frmSetting.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\frmSetting.cs",
@@ -251,7 +279,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
               "Title": "frmLogin.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmLogin.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmLogin.cs",
@@ -264,20 +292,64 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Program.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Program.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Program.cs",
-              "RelativeToolTip": "EdataManagement\\Program.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAA5wCoAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-21T10:01:38.622Z",
+              "DocumentIndex": 10,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
+              "RelativeDocumentMoniker": "EdataManagement\\App.config",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\App.config",
+              "RelativeToolTip": "EdataManagement\\App.config",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAUwE0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-05-06T04:54:47.414Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 16,
+              "Title": "ftpUserControl.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\ftpUserControl.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\ftpUserControl.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\ftpUserControl.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\ftpUserControl.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-22T10:48:00.713Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "frmError.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmError.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmError.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmError.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\frmError.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-24T04:35:56.154Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "frmEmail.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmEmail.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmEmail.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmEmail.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\frmEmail.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T04:54:39.193Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "frmConfirm.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmConfirm.cs",
+              "RelativeDocumentMoniker": "EdataManagement\\Views\\frmConfirm.cs",
+              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmConfirm.cs [Design]",
+              "RelativeToolTip": "EdataManagement\\Views\\frmConfirm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-21T11:37:56.946Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "frmLogin.Designer.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmLogin.Designer.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmLogin.Designer.cs",
@@ -290,19 +362,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 15,
               "Title": "emailUserControl.cs [Design]",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\emailUserControl.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\emailUserControl.cs",
               "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\emailUserControl.cs [Design]",
               "RelativeToolTip": "EdataManagement\\Views\\emailUserControl.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-22T10:47:51.003Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-09-22T10:47:51.003Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 18,
               "Title": "ExcelCls.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Utilities\\ExcelCls.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Utilities\\ExcelCls.cs",
@@ -310,12 +381,11 @@
               "RelativeToolTip": "EdataManagement\\Utilities\\ExcelCls.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-08T02:32:15.486Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-08T02:32:15.486Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "FileCls.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Utilities\\FileCls.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Utilities\\FileCls.cs",
@@ -323,12 +393,11 @@
               "RelativeToolTip": "EdataManagement\\Utilities\\FileCls.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-08T02:32:16.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-08T02:32:16.224Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 20,
               "Title": "DucZipCls.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Utilities\\DucZipCls.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Utilities\\DucZipCls.cs",
@@ -336,12 +405,11 @@
               "RelativeToolTip": "EdataManagement\\Utilities\\DucZipCls.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-08T02:11:50.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-08T02:11:50.538Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 21,
               "Title": "frmMain.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmMain.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmMain.cs",
@@ -349,24 +417,22 @@
               "RelativeToolTip": "EdataManagement\\Views\\frmMain.cs",
               "ViewState": "AgIAAHkBAAAAAAAAAAApwFwBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T10:24:06.169Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-13T10:24:06.169Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 22,
               "Title": "frmMain.cs [Design]",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmMain.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\frmMain.cs",
               "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\frmMain.cs [Design]",
               "RelativeToolTip": "EdataManagement\\Views\\frmMain.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-13T10:23:57.131Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-05-13T10:23:57.131Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 19,
               "Title": "EmailCls.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Utilities\\EmailCls.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Utilities\\EmailCls.cs",
@@ -374,12 +440,11 @@
               "RelativeToolTip": "EdataManagement\\Utilities\\EmailCls.cs",
               "ViewState": "AgIAAGIIAAAAAAAAAAAtwHAIAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-06T04:54:41.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-06T04:54:41.626Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 24,
               "Title": "ucLoginSetting.Designer.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucLoginSetting.Designer.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucLoginSetting.Designer.cs",
@@ -387,46 +452,12 @@
               "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucLoginSetting.Designer.cs",
               "ViewState": "AgIAAI8AAAAAAAAAAAAawK0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-24T09:09:34.244Z"
+              "WhenOpened": "2026-09-24T09:09:34.244Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ucSpecSetting.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.Designer.cs",
-              "ViewState": "AgIAADcBAAAAAAAAAAAIwEgBAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-28T03:30:23.834Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "ucSpecSetting.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-28T02:59:41.601Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "GroupOverviewDialog.cs",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\GroupOverviewDialog.cs",
-              "ViewState": "AgIAAHAAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-06T08:16:18.804Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 23,
               "Title": "MailSafety.cs",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Utilities\\MailSafety.cs",
               "RelativeDocumentMoniker": "EdataManagement\\Utilities\\MailSafety.cs",
@@ -438,18 +469,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "SettingShared.cs",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\SettingShared.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\SettingShared.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\SettingShared.cs",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\SettingShared.cs",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-24T06:18:44.029Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 33,
               "Title": "ucEmailSending.cs [Design]",
               "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucEmailSending.cs",
@@ -458,29 +477,6 @@
               "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucEmailSending.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-24T05:06:41.091Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "ucSpecSetting.cs",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucSpecSetting.cs",
-              "ViewState": "AgIAAO4DAAAAAAAAAIAxwM0CAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-28T04:54:27.996Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "ucLoginSetting.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucLoginSetting.cs",
-              "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\ucLoginSetting.cs",
-              "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\ucLoginSetting.cs [Design]",
-              "RelativeToolTip": "EdataManagement\\Views\\Setting\\ucLoginSetting.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-09-24T05:03:18.511Z"
             },
             {
               "$type": "Document",
@@ -503,7 +499,7 @@
               "RelativeDocumentMoniker": "EdataManagement\\Views\\Setting\\frmSetting.cs",
               "ToolTip": "C:\\Users\\tanawut.pat\\Desktop\\1012\\1012 Send E-data 48-98 Direct V3.6.0\\EdataManagement\\Views\\Setting\\frmSetting.cs",
               "RelativeToolTip": "EdataManagement\\Views\\Setting\\frmSetting.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAcwM4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAcwM0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-24T04:27:02.987Z",
               "EditorCaption": ""
