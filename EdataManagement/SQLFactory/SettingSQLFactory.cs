@@ -19,7 +19,7 @@ namespace EdataManagement.SQLFactory
         public string maxCusID(SettingProperty dataItem)
         {
 
-            sql = " SELECT max(CusCondition_ID) as `max_id_cus` " +
+            sql = " SELECT IFNULL(MAX(CusCondition_ID), 0) as `max_id_cus` " +
                 " FROM " + dataItem.dbProduct + ".`info_cus_condition` ";
 
             return sql;
@@ -31,11 +31,11 @@ namespace EdataManagement.SQLFactory
         {
 
             sql = "SELECT " +
-                "(SELECT MAX(KEY_ID) FROM email_subject_" + dataItem.productName + ") AS max_email_subject_key_id," +
-                "(SELECT MAX(KEY_ID) FROM email_body_" + dataItem.productName + ") AS max_email_body_key_id," +
-                "(SELECT MAX(KEY_ID) FROM email_attach_" + dataItem.productName + ") AS max_email_attach_key_id ," +
-                "(SELECT MAX(KEY_ID) FROM key_send_methods_" + dataItem.productName + ") AS max_key_send_methods_key_id ," +
-                "(SELECT MAX(KEY_ID) FROM key_group_email_" + dataItem.productName + ") AS max_key_group_email_key_id ;";
+                "(SELECT IFNULL(MAX(KEY_ID), 0) FROM email_subject_" + dataItem.productName + ") AS max_email_subject_key_id," +
+                "(SELECT IFNULL(MAX(KEY_ID), 0) FROM email_body_" + dataItem.productName + ") AS max_email_body_key_id," +
+                "(SELECT IFNULL(MAX(KEY_ID), 0) FROM email_attach_" + dataItem.productName + ") AS max_email_attach_key_id ," +
+                "(SELECT IFNULL(MAX(KEY_ID), 0) FROM key_send_methods_" + dataItem.productName + ") AS max_key_send_methods_key_id ," +
+                "(SELECT IFNULL(MAX(KEY_ID), 0) FROM key_group_email_" + dataItem.productName + ") AS max_key_group_email_key_id ;";
 
             return sql;
 

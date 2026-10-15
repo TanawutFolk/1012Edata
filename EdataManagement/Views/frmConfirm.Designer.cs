@@ -39,10 +39,10 @@
             // lbConfirmModal
             // 
             this.lbConfirmModal.AutoSize = true;
-            this.lbConfirmModal.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbConfirmModal.Location = new System.Drawing.Point(56, 178);
+            this.lbConfirmModal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbConfirmModal.Location = new System.Drawing.Point(72, 156);
             this.lbConfirmModal.Name = "lbConfirmModal";
-            this.lbConfirmModal.Size = new System.Drawing.Size(60, 24);
+            this.lbConfirmModal.Size = new System.Drawing.Size(51, 20);
             this.lbConfirmModal.TabIndex = 23;
             this.lbConfirmModal.Text = "label1";
             // 
@@ -77,14 +77,14 @@
             this.btnCancel.IconVisible = true;
             this.btnCancel.IconZoom = 90D;
             this.btnCancel.IsTab = false;
-            this.btnCancel.Location = new System.Drawing.Point(268, 230);
+            this.btnCancel.Location = new System.Drawing.Point(268, 217);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.btnCancel.OnHovercolor = System.Drawing.Color.Silver;
             this.btnCancel.OnHoverTextColor = System.Drawing.Color.White;
             this.btnCancel.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnCancel.selected = false;
-            this.btnCancel.Size = new System.Drawing.Size(168, 37);
+            this.btnCancel.Size = new System.Drawing.Size(168, 26);
             this.btnCancel.TabIndex = 26;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -112,14 +112,14 @@
             this.btnSavee.IconVisible = true;
             this.btnSavee.IconZoom = 90D;
             this.btnSavee.IsTab = false;
-            this.btnSavee.Location = new System.Drawing.Point(12, 230);
+            this.btnSavee.Location = new System.Drawing.Point(12, 217);
             this.btnSavee.Name = "btnSavee";
             this.btnSavee.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(51)))));
             this.btnSavee.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnSavee.OnHoverTextColor = System.Drawing.Color.White;
             this.btnSavee.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnSavee.selected = false;
-            this.btnSavee.Size = new System.Drawing.Size(250, 37);
+            this.btnSavee.Size = new System.Drawing.Size(237, 26);
             this.btnSavee.TabIndex = 25;
             this.btnSavee.Text = "Save";
             this.btnSavee.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -130,7 +130,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(448, 279);
+            this.ClientSize = new System.Drawing.Size(448, 260);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSavee);
             this.Controls.Add(this.picConfirmModal);

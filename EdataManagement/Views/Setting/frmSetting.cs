@@ -93,8 +93,8 @@ namespace EdataManagement.Views.Setting
             if (string.Equals(selected, DatabaseSelection.CurrentDatabase, StringComparison.OrdinalIgnoreCase)) return;
 
             string warning = selected == DatabaseSelection.ProductionDatabase
-                ? "กำลังเปลี่ยนเป็นฐานข้อมูลจริง qa_oc และอาจส่งอีเมลจริงไปยังผู้รับจริง\nต้องการปิดและเปิดโปรแกรมใหม่หรือไม่?"
-                : "กำลังเปลี่ยนเป็นฐานข้อมูลทดสอบ qa_oc_test อีเมลที่ไม่ใช่กลุ่มทดสอบจะถูกเก็บเป็น Draft\nต้องการปิดและเปิดโปรแกรมใหม่หรือไม่?";
+                ? "เปลี่ยนเป็นฐานข้อมูลจริง qa_oc อีเมลผู้รับจริง\nต้องการเปลี่ยนหรือไม่?"
+                : "เปลี่ยนเป็นฐานข้อมูลทดสอบ qa_oc_test อีเมลผู้รับอีเมลทดสอบ\nต้องการเปลี่ยนหรือไม่?";
 
             if (!frmConfirm.Ask(this, warning, "เปลี่ยนฐานข้อมูล", "ยกเลิก"))
             {
