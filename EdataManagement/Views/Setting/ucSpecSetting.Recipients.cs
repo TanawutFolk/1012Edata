@@ -123,12 +123,63 @@ namespace EdataManagement.Views.Setting
             }
 
             cbMailType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbMailType.DataSource = types;
-            cbMailType.DisplayMember = "NAME";
-            cbMailType.ValueMember = "ID";
+            BindMailTypes(types);
             cbMailType.DropDownWidth = 160;
 
             ShowRecipientsMessage("Recipients", "");
+        }
+
+        private void BindMailTypes(DataTable types)
+        {
+            cbMailType.DataSource = null;
+            cbMailType.DisplayMember = "NAME";
+            cbMailType.ValueMember = "ID";
+            cbMailType.DataSource = types;
+        }
+
+        private static DataTable EmptyMailTypes()
+        {
+            DataTable types = new DataTable();
+            types.Columns.Add("ID", typeof(int));
+            types.Columns.Add("NAME", typeof(string));
+            return types;
+        }
+
+        private void LoadConfiguredMailTypes()
+        {
+            string product = SelectedProductName();
+            string customer = SelectedCustomerName();
+            if (product == "" || customer == "")
+            {
+                _loading = true;
+                BindMailTypes(EmptyMailTypes());
+                _loading = false;
+                return;
+            }
+
+            DataTable types = _emailCon.searchConfiguredEdataTypes(new SettingEmailProperty
+            {
+                productName = product,
+                customerName = customer
+            });
+
+            if (_emailCon.lastError != "")
+            {
+                _loading = true;
+                BindMailTypes(EmptyMailTypes());
+                _loading = false;
+                frmError.ShowError(this, "Could not read configured mail types:" + Environment.NewLine + _emailCon.lastError);
+                return;
+            }
+
+            int selectedId = SelectedMailType();
+            _loading = true;
+            BindMailTypes(types);
+            if (types.Rows.Cast<DataRow>().Any(r => ToInt(r["ID"]) == selectedId))
+            {
+                cbMailType.SelectedValue = selectedId;
+            }
+            _loading = false;
         }
 
         /// <summary>
@@ -236,10 +287,24 @@ namespace EdataManagement.Views.Setting
             {
                 List<int> groups = ticked.Select(r => ToInt(r[COL_GROUP])).Distinct().OrderBy(g => g).ToList();
 
-                ShowRecipientsMessage("Recipients", groups.Count > 1
-                    ? "spec ที่ติ๊กใช้ " + groups.Count + " group: " + string.Join(", ", groups.Select(g => "#" + g)) +
-                      Environment.NewLine + Environment.NewLine + "เลือก Recipient Group เดียวเพื่อดูและแก้ผู้รับ"
-                    : "ไม่พบ Group #" + groups[0] + " ในฐานข้อมูล");
+                if (groups.Count > 1)
+                {
+                    ShowRecipientsMessage("Recipients",
+                        "spec ที่ติ๊กใช้ " + groups.Count + " group: " + string.Join(", ", groups.Select(g => "#" + g)) +
+                        Environment.NewLine + Environment.NewLine + "เลือก Recipient Group เดียวเพื่อดูและแก้ผู้รับ");
+                    return;
+                }
+
+                if (groups.Count == 0 || FindId(_groups, groups[0]) == null)
+                {
+                    ShowRecipientsMessage("Recipients", groups.Count == 0
+                        ? "spec ที่ติ๊กยังไม่มี Group"
+                        : "ไม่พบ Group #" + groups[0] + " ในฐานข้อมูล");
+                    return;
+                }
+
+                _newGroupTargets = ticked;
+                ShowGroup(groups[0], "ใช้กับ " + ticked.Count + " spec ที่ติ๊ก", true);
                 return;
             }
 

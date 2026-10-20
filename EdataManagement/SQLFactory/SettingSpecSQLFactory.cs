@@ -119,12 +119,16 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
-        /// <summary>Recipient groups a spec can use - not the Serial List / Wafer groups of key_group_email_document.</summary>
+        /// <summary>Recipient groups a spec can use - not groups reserved for non-LD document mails.</summary>
         public string searchSpecGroups()
         {
             sql = "SELECT ge.GROUP_ID AS `ID`, COUNT(*) AS `MEMBERS` " +
                   "FROM info_group_email ge " +
-                  "WHERE ge.GROUP_ID NOT IN (SELECT d.GROUP_ID FROM key_group_email_document d) " +
+                  "WHERE ge.GROUP_ID = 0 " +
+                  "OR NOT EXISTS (" +
+                  "SELECT 1 FROM key_group_email_document d " +
+                  "WHERE d.GROUP_ID = ge.GROUP_ID " +
+                  "AND d.DOCUMENT_ID <> 1) " +
                   "GROUP BY ge.GROUP_ID " +
                   "ORDER BY ge.GROUP_ID ASC ";
 

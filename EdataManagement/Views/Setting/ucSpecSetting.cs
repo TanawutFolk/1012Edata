@@ -678,6 +678,7 @@ namespace EdataManagement.Views.Setting
                 _specs = loaded;
             }
 
+            LoadConfiguredMailTypes();
             _view = _specs == null ? null : new DataView(_specs);
             dtgSpecs.DataSource = _view;
             ApplyFilter();

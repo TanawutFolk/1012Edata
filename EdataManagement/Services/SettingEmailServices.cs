@@ -58,6 +58,14 @@ namespace EdataManagement.Services
             return resultData;
         }
 
+        public OutputOnDbProperty searchConfiguredEdataTypes(SettingEmailProperty dataItem)
+        {
+            UseSettingConnection();
+            sql = sqlFactory.searchConfiguredEdataTypes(dataItem);
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
         public OutputOnDbProperty searchCustomersSharingGroup(SettingEmailProperty dataItem)
         {
             UseSettingConnection();

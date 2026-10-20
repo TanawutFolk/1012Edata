@@ -38,6 +38,12 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty searchConfiguredEdataTypes(SettingEmailProperty dataItem)
+        {
+            _resultData = _services.searchConfiguredEdataTypes(dataItem);
+            return _resultData;
+        }
+
         public OutputOnDbProperty searchCustomersSharingGroup(SettingEmailProperty dataItem)
         {
             _resultData = _services.searchCustomersSharingGroup(dataItem);

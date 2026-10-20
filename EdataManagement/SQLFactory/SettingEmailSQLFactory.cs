@@ -76,6 +76,25 @@ namespace EdataManagement.SQLFactory
         }
 
         /// <summary>
+        /// E-data types configured for one product + customer. Edata (ID 1) is available
+        /// through the customer's Email specs; other types need a bound document group.
+        /// </summary>
+        public string searchConfiguredEdataTypes(SettingEmailProperty dataItem)
+        {
+            sql = "SELECT d.DOCUMENT_ID AS `ID`, d.DOCUMENT_NAME AS `NAME`, d.IN_EMAIL_NAME, d.INUSE " +
+                  "FROM info_document d " +
+                  "WHERE d.DOCUMENT_ID = 1 " +
+                  "OR EXISTS (" +
+                  "SELECT 1 FROM key_group_email_document g " +
+                  "WHERE g.PRODUCT_NAME = '" + Esc(dataItem.productName) + "' " +
+                  "AND g.CUSTOMER = '" + Esc(dataItem.customerName) + "' " +
+                  "AND g.DOCUMENT_ID = d.DOCUMENT_ID) " +
+                  "ORDER BY d.DOCUMENT_ID ASC ";
+
+            return sql;
+        }
+
+        /// <summary>
         /// Group of a non-LD E-data type (Serial List / Wafer) of one product + customer.
         /// No row = that type has no recipients in the database yet.
         /// </summary>

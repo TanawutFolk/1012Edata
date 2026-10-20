@@ -74,6 +74,11 @@ namespace EdataManagement.Controllers
             return Run(() => models.searchEdataTypes());
         }
 
+        public DataTable searchConfiguredEdataTypes(SettingEmailProperty dataItem)
+        {
+            return Run(() => models.searchConfiguredEdataTypes(dataItem));
+        }
+
         public DataTable searchCustomersSharingGroup(SettingEmailProperty dataItem)
         {
             return Run(() => models.searchCustomersSharingGroup(dataItem));
