@@ -1,5 +1,6 @@
 using EdataManagement.Controllers;
 using EdataManagement.Property;
+using EdataManagement.Utilities;
 
 using System;
 using System.Collections.Generic;
@@ -19,11 +20,14 @@ namespace EdataManagement.Views.Setting
     ///   Serial List / Wafer  the customer's own group in key_group_email_document
     /// Add / Remove / TO-CC / New Group / Create Group are staged with the spec edits and written by the same Save.
     /// A group is shared, so a member change reaches every spec / customer on it: sharing is always spelled out,
-    /// and Group #0 (internal, also used by other programs) is read only. New Group (an empty group for the
-    /// ticked specs) and Create Group (Serial List / Wafer) are for ADMIN only; Save refuses a new group without a TO.
+    /// and Group #0 (internal, also used by other programs such as uITLA) is edited like any group but every Add /
+    /// Remove on it is confirmed. New Group (an empty group for the ticked specs, offered on every saved Edata group)
+    /// and Create Group (Serial List / Wafer) are for ADMIN only; Save refuses a new group without a TO.
     ///
     /// Save writes them before the spec values (AddRecipientStatements); info_group_email has no trigger,
     /// so every change gets its own row in log_setting_edata.
+    /// A group can have a name (info_group_name, read by this page only - sending never needs it): typed in the box
+    /// under the note, staged like the rest, optional, anyone may set it. A database without the table shows no names.
     /// </summary>
     public partial class ucSpecSetting
     {
@@ -31,6 +35,7 @@ namespace EdataManagement.Views.Setting
         private const int RCP_TO = 1;
         private const int RCP_CC = 2;
         private const int NOTE_MAX_NAMES = 3;
+        private const int CONFIRM_MAX_NAMES = 15;
 
         private const string COL_RCP_REMOVE = "colRemove";
         private const string COL_RCP_TYPE = "RECIPIENT_TYPE";
@@ -48,7 +53,7 @@ namespace EdataManagement.Views.Setting
         private readonly Dictionary<int, DataTable> _membersLoaded = new Dictionary<int, DataTable>();
 
         /// <summary>Other customers of the same product on a group, read once.</summary>
-        private readonly Dictionary<int, List<string>> _sharing = new Dictionary<int, List<string>>();
+        private readonly Dictionary<string, List<string>> _sharing = new Dictionary<string, List<string>>();
 
         /// <summary>Groups made on this screen (New Group / Create Group), not in the database yet: id -> what it is.</summary>
         private readonly Dictionary<int, string> _newGroups = new Dictionary<int, string>();
@@ -65,6 +70,21 @@ namespace EdataManagement.Views.Setting
 
         /// <summary>Specs that New Group moves to the new group.</summary>
         private List<DataRow> _newGroupTargets = new List<DataRow>();
+
+        private const int GROUP_NAME_MAX = 100;
+
+        /// <summary>Group names as read (info_group_name) / typed here and not saved yet (staged group id -> name, "" = no name).</summary>
+        private readonly Dictionary<int, string> _groupNames = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> _groupNamesStaged = new Dictionary<int, string>();
+
+        /// <summary>False when the database has no info_group_name: no names are shown and none can be typed.</summary>
+        private bool _groupNamesReadable;
+
+        /// <summary>Set while the page itself fills txtGroupName, so that is not taken as a rename.</summary>
+        private bool _fillingGroupName;
+
+        private Label lbGroupName;
+        private TextBox txtGroupName;
 
         private void WireRecipientEvents()
         {
@@ -84,6 +104,7 @@ namespace EdataManagement.Views.Setting
             _emailCon = new SettingEmailControllers();
 
             SettingUi.StyleGrid(dtgRecipients, 30, 9F, 32);
+            SetupGroupNameRow();
 
             cbToOrCC.DropDownStyle = ComboBoxStyle.DropDownList;
             cbToOrCC.Items.Clear();
@@ -110,6 +131,46 @@ namespace EdataManagement.Views.Setting
             ShowRecipientsMessage("Recipients", "");
         }
 
+        /// <summary>
+        /// "ชื่อ group" + a box between the note and the member grid (made here, not in the designer);
+        /// the grid gives up the room for it.
+        /// </summary>
+        private void SetupGroupNameRow()
+        {
+            const int rowTop = 72;
+            const int rowHeight = 28;
+
+            lbGroupName = new Label();
+            lbGroupName.AutoSize = false;
+            lbGroupName.Text = "ชื่อ group";
+            lbGroupName.Font = new Font(SettingUi.FONT_NAME, 9F, FontStyle.Regular);
+            lbGroupName.ForeColor = SettingUi.GRID_TEXT;
+            lbGroupName.TextAlign = ContentAlignment.MiddleLeft;
+            lbGroupName.SetBounds(dtgRecipients.Left, rowTop, 74, rowHeight);
+
+            txtGroupName = new TextBox();
+            txtGroupName.Font = new Font(SettingUi.FONT_NAME, 9.75F, FontStyle.Regular);
+            txtGroupName.MaxLength = GROUP_NAME_MAX;
+            txtGroupName.BorderStyle = BorderStyle.FixedSingle;
+            txtGroupName.SetBounds(lbGroupName.Right + 2, rowTop + 2, dtgRecipients.Right - lbGroupName.Right - 2, rowHeight - 4);
+            txtGroupName.TextChanged += txtGroupName_TextChanged;
+
+            pnRecipients.Controls.Add(lbGroupName);
+            pnRecipients.Controls.Add(txtGroupName);
+
+            int gridTop = rowTop + rowHeight + 6;
+            dtgRecipients.Height -= gridTop - dtgRecipients.Top;
+            dtgRecipients.Top = gridTop;
+
+            SetGroupNameRow(false);
+        }
+
+        private void SetGroupNameRow(bool visible)
+        {
+            lbGroupName.Visible = visible;
+            txtGroupName.Visible = visible;
+        }
+
         private int SelectedMailType()
         {
             return cbMailType.SelectedValue == null ? DOC_LD_DATA : ToInt(cbMailType.SelectedValue);
@@ -134,7 +195,7 @@ namespace EdataManagement.Views.Setting
             string customer = SelectedCustomerName();
             if (_specs == null || customer == "")
             {
-                ShowRecipientsMessage("Recipients", "No customer selected.");
+                ShowRecipientsMessage("Recipients", "ยังไม่ได้เลือกลูกค้า");
                 return;
             }
 
@@ -156,15 +217,17 @@ namespace EdataManagement.Views.Setting
             int send = SelectedId(cbSendMethod);
             if (send == KEEP)
             {
-                ShowRecipientsMessage("Recipients", "The ticked specs use different Send Methods." +
-                    Environment.NewLine + Environment.NewLine + "Pick Email (or tick only Email specs) to see who receives the mail.");
+                ShowRecipientsMessage("Recipients", "spec ที่ติ๊กใช้ Send Method ต่างกัน" +
+                    Environment.NewLine + Environment.NewLine + (EMAIL_ONLY
+                        ? "ติ๊กเฉพาะ spec ที่ส่ง Email เพื่อดูผู้รับ"
+                        : "เลือก Email หรือติ๊กเฉพาะ spec ที่ส่ง Email เพื่อดูผู้รับ"));
                 return;
             }
 
             if (send != SEND_EMAIL)
             {
                 ShowRecipientsMessage("Recipients", "Send Method: " + ListText(_sendMethods, send) +
-                    Environment.NewLine + Environment.NewLine + "Recipients are for Email only.");
+                    Environment.NewLine + Environment.NewLine + "ผู้รับใช้กับการส่ง Email เท่านั้น");
                 return;
             }
 
@@ -174,9 +237,9 @@ namespace EdataManagement.Views.Setting
                 List<int> groups = ticked.Select(r => ToInt(r[COL_GROUP])).Distinct().OrderBy(g => g).ToList();
 
                 ShowRecipientsMessage("Recipients", groups.Count > 1
-                    ? "The ticked specs use " + groups.Count + " groups: " + string.Join(", ", groups.Select(g => "#" + g)) + "." +
-                      Environment.NewLine + Environment.NewLine + "Pick one Recipient Group to see and edit its members."
-                    : "Group #" + groups[0] + " is not in info_group_email.");
+                    ? "spec ที่ติ๊กใช้ " + groups.Count + " group: " + string.Join(", ", groups.Select(g => "#" + g)) +
+                      Environment.NewLine + Environment.NewLine + "เลือก Recipient Group เดียวเพื่อดูและแก้ผู้รับ"
+                    : "ไม่พบ Group #" + groups[0] + " ในฐานข้อมูล");
                 return;
             }
 
@@ -184,8 +247,8 @@ namespace EdataManagement.Views.Setting
 
             int notOnIt = ticked.Count(r => ToInt(r[COL_GROUP]) != groupId);
             ShowGroup(groupId, notOnIt > 0
-                ? "Picked for " + notOnIt + " ticked spec(s) - Apply moves them to this group."
-                : "Used by the " + ticked.Count + " ticked spec(s).", true);
+                ? "เลือกให้ " + notOnIt + " spec ที่ติ๊ก กด Apply เพื่อย้ายมา group นี้"
+                : "ใช้กับ " + ticked.Count + " spec ที่ติ๊ก", true);
         }
 
         /// <summary>Nothing ticked: the group most Email specs of the customer use, like the old Email Sending page.</summary>
@@ -195,8 +258,10 @@ namespace EdataManagement.Views.Setting
 
             if (email.Count == 0)
             {
-                ShowRecipientsMessage("Recipients", customer + " sends nothing by Email." +
-                    Environment.NewLine + Environment.NewLine + "Tick specs and set Send Method = Email to choose who receives the mail.");
+                ShowRecipientsMessage("Recipients", customer + " ไม่มี spec ที่ส่ง Email" +
+                    Environment.NewLine + Environment.NewLine + (EMAIL_ONLY
+                        ? "หน้านี้ยังเปลี่ยน Send Method ไม่ได้"
+                        : "ติ๊ก spec แล้วตั้ง Send Method = Email เพื่อเลือกผู้รับ"));
                 return;
             }
 
@@ -209,8 +274,8 @@ namespace EdataManagement.Views.Setting
             _newGroupTargets = byGroup[0].ToList();
 
             ShowGroup(groupId, byGroup.Count > 1
-                ? "Email specs of " + customer + " use " + byGroup.Count + " groups - this is the one of " + _newGroupTargets.Count + " specs. Tick specs to see another."
-                : "Used by the " + email.Count + " Email spec(s) of " + customer + ". Tick specs to change their group.", true);
+                ? "spec Email ของ " + customer + " ใช้ " + byGroup.Count + " group นี่คือ group ของ " + _newGroupTargets.Count + " spec ติ๊ก spec เพื่อดู group อื่น"
+                : "ใช้กับ " + email.Count + " spec Email ของ " + customer + " ติ๊ก spec เพื่อเปลี่ยน group", true);
         }
 
         /// <summary>Serial List / Wafer: its own mail and group per product + customer, not per spec.</summary>
@@ -232,16 +297,16 @@ namespace EdataManagement.Views.Setting
 
                 if (!string.IsNullOrEmpty(_emailCon.lastError))
                 {
-                    ShowRecipientsMessage("Recipients", "Could not read the " + typeName + " group:" + Environment.NewLine + _emailCon.lastError);
+                    ShowRecipientsMessage("Recipients", "อ่าน group " + typeName + " ไม่ได้" + Environment.NewLine + _emailCon.lastError);
                     return;
                 }
 
                 if (found.Rows.Count == 0)
                 {
                     bool admin = SettingUi.IsAdmin();
-                    ShowRecipientsMessage("Recipients", "No " + typeName + " recipients for " + customer + " (" + product + ") in the database." +
-                        Environment.NewLine + Environment.NewLine + "Sending still reads Setting\\EmailSetting.ini. " +
-                        (admin ? "Create a group to manage them here." : "Ask an ADMIN to create a group to manage them here."));
+                    ShowRecipientsMessage("Recipients", "ยังไม่มีผู้รับ " + typeName + " ของ " + customer + " (" + product + ") ในฐานข้อมูล" +
+                        Environment.NewLine + Environment.NewLine + "เมล " + typeName + " ของลูกค้านี้จะส่งไม่ได้จนกว่าจะมีผู้รับ " +
+                        (admin ? "กด Create Group เพื่อสร้าง" : "ติดต่อ ADMIN ให้สร้าง group"));
                     SetRecipientNote("", SettingUi.ALERT_NONE_TEXT, admin ? RecipientAction.CreateGroup : RecipientAction.None);
                     return;
                 }
@@ -249,7 +314,7 @@ namespace EdataManagement.Views.Setting
                 groupId = ToInt(found.Rows[0]["GROUP_ID"]);
             }
 
-            ShowGroup(groupId, typeName + " of " + customer + " goes out as its own mail, not to the spec group.", false);
+            ShowGroup(groupId, typeName + " ของ " + customer + " ส่งเป็นเมลแยก ไม่ได้ใช้ group ของ spec", false);
         }
 
         // =====================================================================
@@ -260,18 +325,27 @@ namespace EdataManagement.Views.Setting
             DataTable members = MembersOf(groupId);
             if (members == null)
             {
-                ShowRecipientsMessage("Recipients", "Could not read Group #" + groupId + ":" + Environment.NewLine + _emailCon.lastError);
+                ShowRecipientsMessage("Recipients", "อ่าน Group #" + groupId + " ไม่ได้" + Environment.NewLine + _emailCon.lastError);
                 return;
             }
 
             bool isNew = _newGroups.ContainsKey(groupId);
-            bool locked = groupId == GROUP_INTERNAL;
+            bool internalGroup = groupId == GROUP_INTERNAL;
 
             _shownGroupId = groupId;
-            lbRcpTitle.Text = "Group #" + groupId + (isNew ? "  (new)" : "");
+            lbRcpTitle.Text = "Group #" + groupId + (isNew ? "  (ใหม่)" : "");
 
             lbRcpEmpty.Visible = false;
             dtgRecipients.Visible = true;
+
+            _fillingGroupName = true;
+            txtGroupName.Text = NameOf(groupId);
+            _fillingGroupName = false;
+            txtGroupName.Enabled = _groupNamesReadable;
+            toolTipAlert.SetToolTip(txtGroupName, _groupNamesReadable
+                ? "ชื่อที่แสดงในหน้า Setting เท่านั้น ไม่มีผลกับการส่งเมล (เว้นว่าง = ไม่มีชื่อ)"
+                : "ฐานข้อมูล " + MailSafety.ConfigDatabase + " ยังไม่มีตาราง info_group_name");
+            SetGroupNameRow(true);
 
             // TO first, then CC - reads like the mail header
             members.DefaultView.Sort = COL_RCP_ID + " ASC, " + COL_RCP_ADDRESS + " ASC";
@@ -279,31 +353,33 @@ namespace EdataManagement.Views.Setting
             FormatRecipientGrid();
             dtgRecipients.Invalidate();
 
-            SetAddRow(true, !locked);
+            SetAddRow(true, true);
 
-            // what an edit here reaches, most important first
+            // what an edit here reaches, most important first; New Group on every saved group of specs (ADMIN)
             List<string> others = isNew ? new List<string>() : OtherCustomersOn(groupId);
             bool admin = SettingUi.IsAdmin();
-            RecipientAction newGroup = forSpecs && admin && _newGroupTargets.Count > 0 ? RecipientAction.NewGroup : RecipientAction.None;
+            RecipientAction newGroup = forSpecs && admin && !isNew && _newGroupTargets.Count > 0 ? RecipientAction.NewGroup : RecipientAction.None;
 
-            if (locked)
+            if (internalGroup)
             {
-                SetRecipientNote("#0 is internal and shared (other customers, uITLA) - read only. " +
-                    (admin ? "New Group gives these specs their own group." : "Ask an ADMIN for a new group."),
-                    SettingUi.ALERT_WARN_TEXT, newGroup);
+                string note = "#0 ใช้ร่วมกัน (ลูกค้าอื่น, uITLA) แก้ที่นี่มีผลกับทุกที่ที่ใช้ #0";
+                SetRecipientNote(note, SettingUi.ALERT_WARN_TEXT, newGroup,
+                    note + Environment.NewLine +
+                    (admin ? "กด New Group เพื่อแยก group ให้ spec เหล่านี้" : "ติดต่อ ADMIN เพื่อขอ group ใหม่"));
             }
             else if (isNew)
             {
-                SetRecipientNote(_newGroups[groupId] + " - staged, Save creates it.", SettingUi.ALERT_INFO_TEXT, RecipientAction.None);
+                SetRecipientNote(_newGroups[groupId] + " - กด Save เพื่อสร้าง", SettingUi.ALERT_INFO_TEXT, RecipientAction.None);
             }
             else if (others.Count > 0)
             {
-                SetRecipientNote("Also used by " + NameList(others) + " - adding / removing here changes their mail too.",
-                    SettingUi.ALERT_WARN_TEXT, newGroup);
+                SetRecipientNote("ใช้ร่วมกับ " + NameList(others) + " - เพิ่ม/ลบที่นี่มีผลกับเมลของลูกค้าเหล่านี้ด้วย",
+                    SettingUi.ALERT_WARN_TEXT, newGroup,
+                    "Group #" + groupId + " ส่งให้ลูกค้าเหล่านี้ด้วย:" + Environment.NewLine + FullList(others));
             }
             else
             {
-                SetRecipientNote(contextNote, SettingUi.ALERT_NONE_TEXT, RecipientAction.None);
+                SetRecipientNote(contextNote, SettingUi.ALERT_NONE_TEXT, newGroup);
             }
         }
 
@@ -317,6 +393,7 @@ namespace EdataManagement.Views.Setting
             lbRcpEmpty.Text = message;
             lbRcpEmpty.Visible = true;
 
+            SetGroupNameRow(false);
             SetAddRow(false, false);
             SetRecipientNote("", SettingUi.ALERT_NONE_TEXT, RecipientAction.None);
         }
@@ -329,11 +406,14 @@ namespace EdataManagement.Views.Setting
 
             txtAddEmail.Enabled = enabled;
             cbToOrCC.Enabled = enabled;
-            SetButtonEnabled(btnAddEmail, enabled, Color.FromArgb(102, 153, 0));
+            SettingUi.SetButtonEnabled(btnAddEmail, enabled);
         }
 
-        /// <summary>The line under the title, with New Group / Create Group next to it when that is the way out (ADMIN only).</summary>
-        private void SetRecipientNote(string text, Color fore, RecipientAction action)
+        /// <summary>
+        /// The line under the title, with New Group / Create Group next to it when that is the way out (ADMIN only).
+        /// tooltip = the whole text when the line is cut short (default: the line itself).
+        /// </summary>
+        private void SetRecipientNote(string text, Color fore, RecipientAction action, string tooltip = null)
         {
             _recipientAction = action;
 
@@ -345,13 +425,21 @@ namespace EdataManagement.Views.Setting
             lbRcpNote.Width = Math.Max(120, rightEdge - lbRcpNote.Left);
             lbRcpNote.ForeColor = fore;
             lbRcpNote.Text = text;
-            toolTipAlert.SetToolTip(lbRcpNote, text);
+            toolTipAlert.SetToolTip(lbRcpNote, tooltip ?? text);
         }
 
         private static string NameList(List<string> names)
         {
             string text = string.Join(", ", names.Take(NOTE_MAX_NAMES).ToArray());
-            if (names.Count > NOTE_MAX_NAMES) text += " +" + (names.Count - NOTE_MAX_NAMES) + " more";
+            if (names.Count > NOTE_MAX_NAMES) text += " และอีก " + (names.Count - NOTE_MAX_NAMES);
+            return text;
+        }
+
+        /// <summary>One name per line for the tooltip / confirm boxes, capped so the box stays on screen.</summary>
+        private static string FullList(List<string> names)
+        {
+            string text = string.Join(Environment.NewLine, names.Take(CONFIRM_MAX_NAMES).Select(n => "  - " + n).ToArray());
+            if (names.Count > CONFIRM_MAX_NAMES) text += Environment.NewLine + "  ... และอีก " + (names.Count - CONFIRM_MAX_NAMES);
             return text;
         }
 
@@ -380,7 +468,6 @@ namespace EdataManagement.Views.Setting
                 dtgRecipients.Columns.Add(SettingUi.MakeButtonColumn(COL_RCP_REMOVE, "Remove", 70, SettingUi.REMOVE_TEXT));
             }
 
-            dtgRecipients.Columns[COL_RCP_REMOVE].Visible = _shownGroupId != GROUP_INTERNAL;
             dtgRecipients.Columns[COL_RCP_REMOVE].DisplayIndex = dtgRecipients.Columns.Count - 1;
             dtgRecipients.ClearSelection();
         }
@@ -417,7 +504,10 @@ namespace EdataManagement.Views.Setting
 
         private void dtgRecipients_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0 || _shownGroupId == GROUP_INTERNAL) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || _shownGroupId < 0) return;
+
+            DataRowView item = dtgRecipients.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (item == null) return;
 
             string column = dtgRecipients.Columns[e.ColumnIndex].Name;
             if (column == COL_RCP_REMOVE || column == COL_RCP_TYPE) dtgRecipients.Cursor = Cursors.Hand;
@@ -427,7 +517,7 @@ namespace EdataManagement.Views.Setting
         private void dtgRecipients_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
-            if (_shownGroupId < 0 || _shownGroupId == GROUP_INTERNAL) return;
+            if (_shownGroupId < 0) return;
 
             DataRowView item = dtgRecipients.Rows[e.RowIndex].DataBoundItem as DataRowView;
             if (item == null) return;
@@ -440,9 +530,13 @@ namespace EdataManagement.Views.Setting
                 List<string> others = _newGroups.ContainsKey(_shownGroupId) ? new List<string>() : OtherCustomersOn(_shownGroupId);
 
                 if (!frmConfirm.Ask(this,
-                    "Remove " + address + " from Group #" + _shownGroupId + "?" +
-                    (others.Count > 0 ? Environment.NewLine + "It also stops getting the mail of " + NameList(others) + "." : ""),
-                    "Remove", "Cancel")) return;
+                    "ลบ " + address + " ออกจาก Group #" + _shownGroupId + "?" +
+                    (others.Count > 0
+                        ? Environment.NewLine + "จะไม่ได้รับเมลของ:" + Environment.NewLine + FullList(others)
+                        : "") +
+                    (_shownGroupId == GROUP_INTERNAL ? Environment.NewLine + "รวมถึงเมลจากโปรแกรมอื่นที่ใช้ #0 (เช่น uITLA)" : "") +
+                    Environment.NewLine + "ไม่กระทบ group อื่น",
+                    "ลบ", "ยกเลิก")) return;
 
                 StageRemoveMember(_shownGroupId, address);
             }
@@ -454,21 +548,31 @@ namespace EdataManagement.Views.Setting
 
         private void btnAddEmail_Click(object sender, EventArgs e)
         {
-            if (_shownGroupId < 0 || _shownGroupId == GROUP_INTERNAL) return;
+            if (_shownGroupId < 0) return;
 
             string address = (txtAddEmail.Text ?? "").Trim();
 
             if (!Regex.IsMatch(address, EMAIL_PATTERN))
             {
-                frmError.ShowError(this, "Please type a valid email address.");
+                frmError.ShowError(this, "รูปแบบอีเมลไม่ถูกต้อง");
                 return;
             }
 
             if (FindMember(_shownGroupId, address) != null)
             {
-                frmError.ShowError(this, address + " is already in Group #" + _shownGroupId + ".");
+                frmError.ShowError(this, address + " มีอยู่ใน Group #" + _shownGroupId + " แล้ว");
                 return;
             }
+
+            // a shared group: the new address gets the mail of everyone on it, not only this customer's
+            // (#0 also goes to other programs, so it is always asked)
+            bool internalGroup = _shownGroupId == GROUP_INTERNAL;
+            List<string> others = _newGroups.ContainsKey(_shownGroupId) ? new List<string>() : OtherCustomersOn(_shownGroupId);
+            if ((others.Count > 0 || internalGroup) && !frmConfirm.Ask(this,
+                    "เพิ่ม " + address + " ใน Group #" + _shownGroupId + "?" +
+                    (others.Count > 0 ? Environment.NewLine + "จะได้รับเมลของ:" + Environment.NewLine + FullList(others) : "") +
+                    (internalGroup ? Environment.NewLine + "รวมถึงเมลจากโปรแกรมอื่นที่ใช้ #0 (เช่น uITLA)" : ""),
+                    "เพิ่ม", "ยกเลิก")) return;
 
             int type = Convert.ToString(cbToOrCC.SelectedItem) == "CC" ? RCP_CC : RCP_TO;
             StageAddMember(_shownGroupId, address, type);
@@ -488,27 +592,19 @@ namespace EdataManagement.Views.Setting
         {
             if (_emailCon == null) return;
 
-            // every product, not only the one selected
-            List<SettingEmailProperty> products = new List<SettingEmailProperty>();
-            DataTable source = cbProduct.DataSource as DataTable;
-            if (source != null)
-            {
-                foreach (DataRow row in source.Rows)
-                {
-                    products.Add(new SettingEmailProperty
-                    {
-                        productName = row["PRODUCT_NAME"].ToString(),
-                        dbProduct = row["DATABASE_NAME"].ToString()
-                    });
-                }
-            }
-
-            DataTable matrix = _emailCon.searchGroupMatrix(products);
+            DataTable matrix = _emailCon.searchGroupMatrix(AllProducts());
 
             if (!string.IsNullOrEmpty(_emailCon.lastError))
             {
                 frmError.ShowError(this, _emailCon.lastError);
                 return;
+            }
+
+            // names come from memory (as on screen, typed ones too), so the query works on a database without info_group_name
+            matrix.Columns.Add("GROUP_NAME", typeof(string));
+            foreach (DataRow row in matrix.Rows)
+            {
+                row["GROUP_NAME"] = NameOf(ToInt(row["GROUP_ID"]));
             }
 
             GroupOverviewDialog.Show(this, matrix);
@@ -563,9 +659,9 @@ namespace EdataManagement.Views.Setting
             if (current < 0 || targets.Count == 0) return;
 
             if (!frmConfirm.Ask(this,
-                "Make a new, empty recipient group for " + targets.Count + " spec(s) of " + SelectedCustomerName() + "?" +
-                Environment.NewLine + "Add its recipients (at least one TO), then Save. Everyone else keeps Group #" + current + " unchanged.",
-                "New Group", "Cancel")) return;
+                "สร้าง group ใหม่ (ว่าง) ให้ " + targets.Count + " spec ของ " + SelectedCustomerName() + "?" +
+                Environment.NewLine + "เพิ่มผู้รับ (มี TO อย่างน้อย 1) แล้วกด Save  spec อื่นยังใช้ Group #" + current + " เหมือนเดิม",
+                "สร้าง", "ยกเลิก")) return;
 
             StageNewGroup(targets);
         }
@@ -578,7 +674,7 @@ namespace EdataManagement.Views.Setting
 
             _members[newId] = empty;
             _membersLoaded[newId] = empty.Copy();
-            _newGroups[newId] = "New group for " + targets.Count + " spec(s)";
+            _newGroups[newId] = "group ใหม่ของ " + targets.Count + " spec";
             AddGroupToLists(newId, 0);
 
             foreach (DataRow row in targets)
@@ -587,8 +683,8 @@ namespace EdataManagement.Views.Setting
                 EvaluateRow(row);
             }
 
-            _notice = "Group #" + newId + " (new, empty) staged for " + targets.Count +
-                      " spec(s) - add its addresses on the right, then Save.";
+            _notice = "สร้าง Group #" + newId + " (ใหม่, ว่าง) ให้ " + targets.Count +
+                      " spec แล้ว เพิ่มอีเมลทางขวา แล้วกด Save";
             RefreshAll();
         }
 
@@ -599,9 +695,9 @@ namespace EdataManagement.Views.Setting
             if (documentId == DOC_LD_DATA || customer == "") return;
 
             if (!frmConfirm.Ask(this,
-                "Create a " + cbMailType.Text + " recipient group for " + customer + " (" + SelectedProductName() + ")?" +
-                Environment.NewLine + "Add the recipients, then press Save.",
-                "Create", "Cancel")) return;
+                "สร้าง group ผู้รับ " + cbMailType.Text + " ของ " + customer + " (" + SelectedProductName() + ")?" +
+                Environment.NewLine + "เพิ่มผู้รับ แล้วกด Save",
+                "สร้าง", "ยกเลิก")) return;
 
             StageDocumentGroup(documentId);
         }
@@ -613,7 +709,7 @@ namespace EdataManagement.Views.Setting
 
             _members[newId] = empty;
             _membersLoaded[newId] = empty.Copy();
-            _newGroups[newId] = "New " + cbMailType.Text + " group of " + SelectedCustomerName();
+            _newGroups[newId] = "group " + cbMailType.Text + " ใหม่ของ " + SelectedCustomerName();
             _newDocumentGroups[documentId] = newId;
 
             RefreshRecipients();
@@ -669,6 +765,8 @@ namespace EdataManagement.Views.Setting
             bool wasLoading = _loading;
             _loading = true;
 
+            _groupNamesStaged.Clear();
+
             if (_groups != null)
             {
                 foreach (int id in _newGroups.Keys.ToList())
@@ -677,7 +775,7 @@ namespace EdataManagement.Views.Setting
                     RemoveFromList(cbGroup.DataSource as DataTable, id);
                 }
 
-                // member counts in the list back to what the database says
+                // member counts (and names) in the list back to what the database says
                 foreach (KeyValuePair<int, DataTable> pair in _membersLoaded)
                 {
                     if (!_newGroups.ContainsKey(pair.Key)) SetGroupListText(pair.Key, pair.Value.Rows.Count);
@@ -717,7 +815,7 @@ namespace EdataManagement.Views.Setting
                 int max = _specCon.maxGroupId();
                 if (_specCon.lastError != "")
                 {
-                    frmError.ShowError(this, "Save stopped, nothing was written." + Environment.NewLine + _specCon.lastError);
+                    frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _specCon.lastError);
                     return false;
                 }
 
@@ -826,7 +924,7 @@ namespace EdataManagement.Views.Setting
             DataTable found = _emailCon.searchEmailByAddress(new SettingEmailProperty { emailAddress = address });
             if (_emailCon.lastError != "")
             {
-                frmError.ShowError(this, "Save stopped, nothing was written." + Environment.NewLine + _emailCon.lastError);
+                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
                 return int.MinValue;
             }
 
@@ -841,7 +939,7 @@ namespace EdataManagement.Views.Setting
                     lastEmailId = _emailCon.maxEmailId();
                     if (_emailCon.lastError != "")
                     {
-                        frmError.ShowError(this, "Save stopped, nothing was written." + Environment.NewLine + _emailCon.lastError);
+                        frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
                         return int.MinValue;
                     }
                 }
@@ -901,11 +999,18 @@ namespace EdataManagement.Views.Setting
             return members;
         }
 
-        /// <summary>Other customers of this product whose Email specs use the group (database, not staged).</summary>
+        /// <summary>
+        /// Everyone else who gets mail from the group (database, not staged): Email specs of every product and the
+        /// Serial List / Wafer groups, as "CUSTOMER (product)" / "CUSTOMER (product Serial List)". The mail being
+        /// edited is left out. A failed read is listed too, so the warning still shows.
+        /// </summary>
         private List<string> OtherCustomersOn(int groupId)
         {
+            int documentId = SelectedMailType();
+            string cacheKey = groupId + "|" + documentId;
+
             List<string> names;
-            if (_sharing.TryGetValue(groupId, out names)) return names;
+            if (_sharing.TryGetValue(cacheKey, out names)) return names;
 
             DataRowView product = cbProduct.SelectedItem as DataRowView;
 
@@ -914,12 +1019,43 @@ namespace EdataManagement.Views.Setting
                 productName = SelectedProductName(),
                 dbProduct = product == null ? "" : product["DATABASE_NAME"].ToString(),
                 customerName = SelectedCustomerName(),
-                groupId = groupId
+                documentId = documentId,
+                groupId = groupId,
+                products = AllProducts()
             });
 
-            names = shared.Rows.Cast<DataRow>().Select(r => r["CUSTOMER_NAME"].ToString()).ToList();
-            _sharing[groupId] = names;
+            if (!string.IsNullOrEmpty(_emailCon.lastError))
+            {
+                // not cached: the next look tries again
+                return new List<string> { "(ตรวจไม่ได้ว่าใครใช้ Group #" + groupId + " อีก)" };
+            }
+
+            names = shared.Rows.Cast<DataRow>().Select(r =>
+            {
+                string docName = Convert.ToString(r["DOCUMENT_NAME"]);
+                return r["CUSTOMER_NAME"] + " (" + r["PRODUCT"] + (docName == "" ? "" : " " + docName) + ")";
+            }).ToList();
+
+            _sharing[cacheKey] = names;
             return names;
+        }
+
+        /// <summary>Every product of the Product list (name + database), not only the one selected.</summary>
+        private List<SettingEmailProperty> AllProducts()
+        {
+            List<SettingEmailProperty> products = new List<SettingEmailProperty>();
+            DataTable source = cbProduct.DataSource as DataTable;
+            if (source == null) return products;
+
+            foreach (DataRow row in source.Rows)
+            {
+                products.Add(new SettingEmailProperty
+                {
+                    productName = row["PRODUCT_NAME"].ToString(),
+                    dbProduct = row["DATABASE_NAME"].ToString()
+                });
+            }
+            return products;
         }
 
         private DataRow FindMember(int groupId, string address)
@@ -988,13 +1124,82 @@ namespace EdataManagement.Views.Setting
             return _nextGroupId;
         }
 
-        // ---- the Recipient Group list on the left follows the member counts ----
+        // ---- group names ----
 
-        private static string GroupListText(int groupId, int memberCount, bool isNew)
+        /// <summary>Read every name once per list load; a failed read (no info_group_name) = no names, nothing to save.</summary>
+        private void LoadGroupNames()
         {
-            string count = memberCount + (memberCount == 1 ? " address" : " addresses");
-            if (groupId == GROUP_INTERNAL) return "#0   internal only (" + count + ")";
-            return "#" + groupId + "   (" + (isNew ? "new, " : "") + count + ")";
+            _groupNames.Clear();
+
+            DataTable names = _specCon.searchGroupNames();
+            _groupNamesReadable = _specCon.lastError == "";
+
+            foreach (DataRow row in names.Rows)
+            {
+                _groupNames[ToInt(row["GROUP_ID"])] = Convert.ToString(row["GROUP_NAME"]).Trim();
+            }
+        }
+
+        /// <summary>Name on screen: typed here, else as read; "" = none.</summary>
+        private string NameOf(int groupId)
+        {
+            string name;
+            if (_groupNamesStaged.TryGetValue(groupId, out name)) return name;
+            return _groupNames.TryGetValue(groupId, out name) ? name : "";
+        }
+
+        private string LoadedNameOf(int groupId)
+        {
+            string name;
+            return _groupNames.TryGetValue(groupId, out name) ? name : "";
+        }
+
+        private void txtGroupName_TextChanged(object sender, EventArgs e)
+        {
+            if (_fillingGroupName || _shownGroupId < 0 || !_groupNamesReadable) return;
+
+            string name = Regex.Replace(txtGroupName.Text ?? "", @"\s+", " ").Trim();
+
+            // typed back to what the database has = nothing to save for it
+            if (name == LoadedNameOf(_shownGroupId)) _groupNamesStaged.Remove(_shownGroupId);
+            else _groupNamesStaged[_shownGroupId] = name;
+
+            DataTable members;
+            if (_members.TryGetValue(_shownGroupId, out members)) SetGroupListText(_shownGroupId, members.Rows.Count);
+            RaiseSaveButtonTextChanged();
+        }
+
+        /// <summary>Names typed here that differ from the database (a new group with a name counts once).</summary>
+        private int GroupNameChangeCount()
+        {
+            return _groupNamesStaged.Count(p => p.Value != LoadedNameOf(p.Key));
+        }
+
+        /// <summary>One upsert / delete + one log row per changed name; a new group's name goes to the id it gets at Save.</summary>
+        private void AddGroupNameStatements(List<string> batch, string user, Dictionary<int, int> groupIds)
+        {
+            if (!_groupNamesReadable) return;
+
+            string product = SelectedProductName();
+
+            foreach (KeyValuePair<int, string> pair in _groupNamesStaged.OrderBy(p => p.Key))
+            {
+                string oldName = LoadedNameOf(pair.Key);
+                if (pair.Value == oldName) continue;
+
+                int groupId = MapGroup(groupIds, pair.Key);
+                batch.Add(_specSql.saveGroupName(groupId, pair.Value, user));
+                batch.Add(_specSql.logGroupNameChange(product, groupId, oldName, pair.Value, user));
+            }
+        }
+
+        // ---- the Recipient Group list on the left follows the member counts and names ----
+
+        /// <summary>"#12   QA Coherent  (3 อีเมล)" - number, name if any, how many addresses; nothing more.</summary>
+        private string GroupListText(int groupId, int memberCount)
+        {
+            string name = NameOf(groupId);
+            return "#" + groupId + "   " + (name == "" ? "" : name + "  ") + "(" + memberCount + " อีเมล)";
         }
 
         private void AddGroupToLists(int groupId, int memberCount)
@@ -1002,7 +1207,7 @@ namespace EdataManagement.Views.Setting
             bool wasLoading = _loading;
             _loading = true;
 
-            string text = GroupListText(groupId, memberCount, true);
+            string text = GroupListText(groupId, memberCount);
             _groups.Rows.Add(groupId, text, "#" + groupId);
 
             DataTable list = cbGroup.DataSource as DataTable;
@@ -1017,7 +1222,7 @@ namespace EdataManagement.Views.Setting
             DataRow lookupRow = FindId(_groups, groupId);
             if (lookupRow == null) return;
 
-            string text = GroupListText(groupId, memberCount, _newGroups.ContainsKey(groupId));
+            string text = GroupListText(groupId, memberCount);
             if (lookupRow["LIST"].ToString() == text) return;
 
             bool wasLoading = _loading;

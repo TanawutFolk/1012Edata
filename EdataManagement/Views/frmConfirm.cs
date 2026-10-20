@@ -22,6 +22,10 @@ namespace EdataManagement.Views
         public frmConfirm()
         {
             InitializeComponent();
+
+            // same look as btnLoginn (frmLogin) and every Setting button; the confirm button is blue like Save
+            Setting.SettingUi.StylePrimaryButton(btnSavee);
+            Setting.SettingUi.StyleButton(btnCancel);
         }
 
         /// <summary>Ask with the default button captions (OK / Cancel).</summary>

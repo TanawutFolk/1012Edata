@@ -49,16 +49,22 @@ namespace EdataManagement.Utilities
         private const int DOC_WAFER = 3;
 
         /// <summary>
-        /// TO / CC of a Serial List or Wafer mail: key_group_email_document in the database first
-        /// (editable in Setting, same on every PC); Setting\EmailSetting.ini only when the database
-        /// has nothing for this product + customer + type yet.
+        /// TO / CC of a Serial List or Wafer mail, from key_group_email_document (set in Setting, Mail type
+        /// Serial List / Wafer). Setting\EmailSetting.ini is no longer read. Nobody there = says so and
+        /// returns null, the caller then stops.
         /// </summary>
-        private List<string> GetDocumentRecipients(ShippingProperty ship, int documentId, string iniSuffix, string recipientType)
+        private List<string> GetDocumentRecipients(ShippingProperty ship, int documentId, string recipientType)
         {
-            List<string> fromDatabase = _emailCon.getDocumentEmailAddresses(ship.productName, ship.customerName, documentId, recipientType);
-            if (fromDatabase != null) return fromDatabase;
+            List<string> addresses = _emailCon.getDocumentEmailAddresses(ship.productName, ship.customerName, documentId, recipientType);
+            if (addresses != null && addresses.Count > 0) return addresses;
 
-            return fileCls.GetEmailAddresses(ship.productName + ship.customerName + iniSuffix, recipientType);
+            string mailType = documentId == DOC_WAFER ? "Wafer" : "Serial List";
+            MessageBox.Show($"ไม่พบผู้รับ {recipientType.ToUpper()} ของเมล {mailType} ในฐานข้อมูล\n" +
+                            $"Product: {ship.productName}\n" +
+                            $"ลูกค้า: {ship.customerName}\n" +
+                            $"ตั้งผู้รับได้ที่หน้า Setting (Mail type: {mailType})",
+                            "ไม่พบผู้รับ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return null;
         }
 
         private string GetCellValue(DataGridViewRow row, params string[] columnNames)
@@ -1621,14 +1627,14 @@ namespace EdataManagement.Utilities
                         rpWord.body = "We attached file(s) of Serial list for Hisilicon in this e-mail";
                         rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
 
-                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"to");
                         if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"cc");
                         if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
@@ -1649,14 +1655,14 @@ namespace EdataManagement.Utilities
 
                         // email productcustomer WAFER
 
-                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "to");
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER,"to");
                         if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "cc");
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER,"cc");
                         if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
@@ -2102,14 +2108,14 @@ namespace EdataManagement.Utilities
                         rpWord.body = "We attached file(s) of Serial list for Hisilicon in this e-mail";
                         rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
 
-                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"to");
                         if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"cc");
                         if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
@@ -2331,7 +2337,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                         return prepareCase13TxtEdata(emailProp, emailProp.dgvShip.Rows.Cast<DataGridViewRow>(),
                                                      rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
-                    case "14": // 1480Dual MOLEX : one txt per order -> yyMMdd-MOLEX(48Dual)-n folder + .zip
+                    case "14": // 1480Dual MOLEX : one txt per order -> MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n folder + .zip
                         return prepareCase14TxtZip(emailProp, emailProp.dgvShip.Rows.Cast<DataGridViewRow>(), true,
                                                    rpWord, dtFile, dtInfoEmail, dgvFile, dgvInfoEmail);
 
@@ -2571,9 +2577,10 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         //   2. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
         //   3. {Customer PN}_{FEC order without '-'}_{Qty}PCS_{Part No up to the first '-'}_{yyMMdd}-{sub}.txt in it
         //      e.g. NA_301235900610001_10PCS_FRL1441D4045_260512-1.txt
-        // Each txt is copied (only the txt) into {Shipping Data}\yyMMdd-MOLEX(48Dual)-n\{its test report folder name}\ -
+        // Each txt is copied (only the txt) into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report folder name}\ -
         // a new -n whenever the next file would pass 10 MB / 256 files (size before zip) - and each -n is zipped next
-        // to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout. One zip = one mail.
+        // to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout. The zips go out together in one mail (like case 10
+        // attaches every file); a second mail only when the zips together would pass 10 MB.
         private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
                                                   EmailProperty.replaceWord rpWord,
                                                   DataTable dtFile, DataTable dtInfoEmail,
@@ -2696,13 +2703,15 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             }
             groups.Add(current);
 
-            // 5. yyMMdd-MOLEX(48Dual)-n\{test report folder}\{txt} - the order folder keeps its name, only its txt goes in -
-            //    and the zip gets exactly that layout from this list (never whatever else is lying in the folder)
+            // 5. MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{test report folder}\{txt} + ...\yyMMdd-MOLEX(48Dual)-n.zip
+            //    the order folder keeps its name, only its txt goes in - and the zip gets exactly that layout from this list
+            //    (never whatever else is lying in the folder); opening the zip shows the order folder
+            string outerFolder = Path.Combine(emailProp.pathShipping, $"{rpWord.customerName}-Data for 1012 program");
             string baseName = $"{datePrefix}-{rpWord.customerName}({rpWord.productNameInEmail})";
             List<string> zipPaths = new List<string>();
             for (int g = 0; g < groups.Count; g++)
             {
-                string folder = Path.Combine(emailProp.pathShipping, $"{baseName}-{g + 1}");
+                string folder = Path.Combine(outerFolder, $"{baseName}-{g + 1}");
                 string zipPath = folder + ".zip";
                 Directory.CreateDirectory(folder);
 
@@ -2741,10 +2750,34 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 }
 
                 zipPaths.Add(zipPath);
-                dtFile.Rows.Add(folder, zipPath);
             }
 
-            // 6. one mail per zip
+            // 6. as many zips per mail as fit in 10 MB (zip size, what is attached); a zip bigger than that goes alone.
+            //    The folder of a file row names its mail - emailUserControl attaches the rows of one folder together.
+            List<List<int>> mails = new List<List<int>>();
+            List<int> mailZips = new List<int>();
+            long mailBytes = 0;
+            for (int g = 0; g < zipPaths.Count; g++)
+            {
+                long size = new FileInfo(zipPaths[g]).Length;
+                if (mailZips.Count > 0 && mailBytes + size > CASE13_MAX_MAIL_BYTES)
+                {
+                    mails.Add(mailZips);
+                    mailZips = new List<int>();
+                    mailBytes = 0;
+                }
+                mailZips.Add(g);
+                mailBytes += size;
+            }
+            mails.Add(mailZips);
+
+            foreach (List<int> mail in mails)
+            {
+                string mailKey = Path.ChangeExtension(zipPaths[mail[0]], null);
+                foreach (int g in mail)
+                    dtFile.Rows.Add(mailKey, zipPaths[g]);
+            }
+
             emailProp = _emailCon.getEmailAddress(emailProp);
 
             rpWord.manuFactureNo = string.Join(", ", orderNos);
@@ -2752,17 +2785,17 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             rpWord.formatDate = _emailCon.allFormatDate();
             rpWord.signature = _emailCon.getSignature(emailProp);
 
-            for (int g = 0; g < groups.Count; g++)
+            for (int m = 0; m < mails.Count; m++)
             {
-                rpWord.Qty = groups[g].Sum(f => qtyByFile[f]).ToString();
-                rpWord.folderName = Path.GetFileNameWithoutExtension(zipPaths[g]);
+                rpWord.Qty = mails[m].SelectMany(g => groups[g]).Sum(f => qtyByFile[f]).ToString();
+                rpWord.folderName = string.Join(", ", mails[m].Select(g => Path.GetFileNameWithoutExtension(zipPaths[g])));
                 rpWord.subject = _emailCon.getSubject(emailProp);
                 rpWord.body = _emailCon.getBody(emailProp);
                 rpWord.subject = strProcessSubject(rpWord);
                 rpWord.body = strProcessBody(rpWord);
                 rpWord.body = rpWord.body + "<BR>" + "<BR>" + rpWord.signature;
 
-                string subject = groups.Count > 1 ? $"{rpWord.subject}({g + 1}/{groups.Count})" : rpWord.subject;
+                string subject = mails.Count > 1 ? $"{rpWord.subject}({m + 1}/{mails.Count})" : rpWord.subject;
 
                 dtInfoEmail.Rows.Add(emailProp.toEmailAddresses,
                                      emailProp.ccEmailAddresses,
@@ -3711,14 +3744,14 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                             dtslFile.Rows.Add(shippingPathSerialList, slFile[count]);
                         }
 
-                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "to");
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"to");
                         if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST, "SERIAL_LIST", "cc");
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_SERIAL_LIST,"cc");
                         if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
@@ -3737,14 +3770,14 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                             dtwfFile.Rows.Add(shippingPathWafer, wfFile[count]);
                         }
 
-                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "to");
+                        emailProp.toEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER,"to");
                         if (emailProp.toEmailAddresses == null || emailProp.toEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;
                             return emailProp;
                         }
 
-                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER, "WAFER", "cc");
+                        emailProp.ccEmailAddresses = GetDocumentRecipients(shipProp, DOC_WAFER,"cc");
                         if (emailProp.ccEmailAddresses == null || emailProp.ccEmailAddresses.Count == 0)
                         {
                             emailProp.isValid = false;

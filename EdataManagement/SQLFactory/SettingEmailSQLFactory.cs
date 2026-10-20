@@ -104,16 +104,49 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
-        /// <summary>Other customers that share the same GROUP_ID (the reason for the alert panel).</summary>
+        /// <summary>
+        /// Everyone else whose mail comes from the same GROUP_ID (the reason for the alert line):
+        /// the Email specs of every product in dataItem.products (key tables are per product, customers live in
+        /// each product's own database) plus the Serial List / Wafer groups in key_group_email_document.
+        /// The mail being edited (dataItem product + customer + documentId) is left out.
+        /// Strings are converted to one collation because the product databases do not share one.
+        /// </summary>
         public string searchCustomersSharingGroup(SettingEmailProperty dataItem)
         {
-            sql = "SELECT DISTINCT ic.Customer AS `CUSTOMER_NAME` " +
-                  "FROM " + dataItem.dbProduct + ".info_cus_condition ic " +
-                  "INNER JOIN key_send_methods_" + dataItem.productName + " k ON (k.KEY_ID = ic.CusCondition_ID) " +
-                  "INNER JOIN key_group_email_" + dataItem.productName + " g ON (g.KEY_ID = ic.CusCondition_ID) " +
-                  "WHERE ic.Inuse = 1 AND g.GROUP_ID = " + dataItem.groupId + " " +
-                  "AND k.SEND_METHODS_ID = 3 AND ic.Customer <> '" + Esc(dataItem.customerName) + "' " +
-                  "ORDER BY ic.Customer ASC ";
+            List<string> parts = new List<string>();
+            List<SettingEmailProperty> products = dataItem.products ?? new List<SettingEmailProperty> { dataItem };
+
+            foreach (SettingEmailProperty product in products)
+            {
+                if (string.IsNullOrEmpty(product.productName) || string.IsNullOrEmpty(product.dbProduct)) continue;
+
+                parts.Add(
+                    "SELECT CONVERT('" + Esc(product.productName) + "' USING utf8) COLLATE utf8_general_ci AS `PRODUCT` " +
+                    ", CONVERT(ic.Customer USING utf8) COLLATE utf8_general_ci AS `CUSTOMER_NAME` " +
+                    ", 1 AS `DOCUMENT_ID`, CONVERT('' USING utf8) COLLATE utf8_general_ci AS `DOCUMENT_NAME` " +
+                    "FROM `" + product.dbProduct + "`.info_cus_condition ic " +
+                    "INNER JOIN key_send_methods_" + product.productName + " k ON (k.KEY_ID = ic.CusCondition_ID) " +
+                    "INNER JOIN key_group_email_" + product.productName + " g ON (g.KEY_ID = ic.CusCondition_ID) " +
+                    "WHERE ic.Inuse = 1 AND k.SEND_METHODS_ID = 3 AND g.GROUP_ID = " + dataItem.groupId + " " +
+                    "GROUP BY ic.Customer ");
+            }
+
+            parts.Add(
+                "SELECT CONVERT(d.PRODUCT_NAME USING utf8) COLLATE utf8_general_ci AS `PRODUCT` " +
+                ", CONVERT(d.CUSTOMER USING utf8) COLLATE utf8_general_ci AS `CUSTOMER_NAME` " +
+                ", d.DOCUMENT_ID AS `DOCUMENT_ID` " +
+                ", CONVERT(IFNULL(doc.DOCUMENT_NAME, CONCAT('Document ', d.DOCUMENT_ID)) USING utf8) COLLATE utf8_general_ci AS `DOCUMENT_NAME` " +
+                "FROM key_group_email_document d " +
+                "LEFT JOIN info_document doc ON (doc.DOCUMENT_ID = d.DOCUMENT_ID) " +
+                "WHERE d.GROUP_ID = " + dataItem.groupId + " ");
+
+            sql = "SELECT x.`PRODUCT`, x.`CUSTOMER_NAME`, x.`DOCUMENT_ID`, x.`DOCUMENT_NAME` " +
+                  "FROM ( " + string.Join(" UNION ALL ", parts.ToArray()) + " ) x " +
+                  "WHERE NOT (x.`PRODUCT` = '" + Esc(dataItem.productName) + "' " +
+                  "AND x.`CUSTOMER_NAME` = '" + Esc(dataItem.customerName) + "' " +
+                  "AND x.`DOCUMENT_ID` = " + dataItem.documentId + ") " +
+                  "ORDER BY (x.`PRODUCT` = '" + Esc(dataItem.productName) + "') DESC, x.`PRODUCT` ASC, " +
+                  "x.`DOCUMENT_ID` ASC, x.`CUSTOMER_NAME` ASC ";
 
             return sql;
         }

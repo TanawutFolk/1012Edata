@@ -72,7 +72,7 @@ namespace EdataManagement.SQLFactory
 
         /// <summary>
         /// Recipients of one E-data type (info_document: 2 Serial List, 3 Wafer) of one product + customer,
-        /// from key_group_email_document. No row = not moved out of EmailSetting.ini yet.
+        /// from key_group_email_document. No row = nobody is set for it (Setting > Create Group).
         /// </summary>
         public string getDocumentEmailAddress(string productName, string customerName, int documentId)
         {

@@ -480,10 +480,14 @@ namespace EdataManagement
                     string password = "0fs@inf1ner@.13";
 
 
-                    //for test
-                    //remoteFolderPath = "fftTest";
+                    // test database: the old "for test" folder on the same server instead of the customer's folder
+                    if (MailSafety.IsTestMode)
+                    {
+                        AppendToRichTextBoxLog("[TEST] SFTP folder " + MailSafety.TEST_SFTP_FOLDER + " instead of " + remoteFolderPath +
+                                               "  (DB: " + MailSafety.ConfigDatabase + ")");
+                        remoteFolderPath = MailSafety.TEST_SFTP_FOLDER;
+                    }
 
-                    //for real
                     tb_pathServer.Text = remoteFolderPath;
 
 

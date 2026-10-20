@@ -1,3 +1,5 @@
+using Bunifu.Framework.UI;
+
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -48,10 +50,23 @@ namespace EdataManagement.Views.Setting
         public static readonly Color ALERT_NONE_BACK = Color.FromArgb(243, 244, 246);
         public static readonly Color ALERT_NONE_TEXT = Color.FromArgb(107, 114, 128);
 
-        // ---- tabs / buttons ----
+        // ---- highlight text (switched TO/CC, added address in the recipients grid) ----
         public static readonly Color TAB_ACTIVE_BACK = Color.FromArgb(60, 90, 229);
         public static readonly Color TAB_ACTIVE_TEXT = Color.White;
-        public static readonly Color BUTTON_BACK = Color.FromArgb(60, 90, 229);
+
+        // ---- buttons: the look of btnLoginn on frmLogin, used by every button of the Setting screen ----
+        public static readonly Color BUTTON_BACK = Color.WhiteSmoke;
+        public static readonly Color BUTTON_TEXT = Color.Black;
+        public static readonly Color BUTTON_HOVER = Color.FromArgb(0, 192, 192);
+        public static readonly Color BUTTON_ACTIVE = Color.DimGray;        // pressed, and the open tab
+        public static readonly Color BUTTON_ACTIVE_TEXT = Color.White;
+        public static readonly Color BUTTON_DISABLED = Color.Gray;
+        public static readonly Color BUTTON_SHADOW = Color.FromArgb(35, 35, 35);
+        public const float BUTTON_FONT_SIZE = 9.75F;
+
+        // the button that writes (Save, the confirm button of frmConfirm): the old Save blue, so it stands apart from Cancel
+        public static readonly Color BUTTON_PRIMARY = Color.FromArgb(60, 90, 229);
+        public static readonly Color BUTTON_PRIMARY_TEXT = Color.White;
 
         // ---- grid ----
         public static readonly Color GRID_HEADER_BACK = Color.FromArgb(46, 139, 87);
@@ -137,6 +152,95 @@ namespace EdataManagement.Views.Setting
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             column.DefaultCellStyle.Padding = new Padding(4, 4, 4, 4);
             return column;
+        }
+
+        /// <summary>btnLoginn's look (frmLogin): WhiteSmoke, black bold Century Gothic, teal hover, 1px dark shadow.</summary>
+        public static void StyleButton(BunifuFlatButton button)
+        {
+            button.Normalcolor = BUTTON_BACK;
+            button.BackColor = BUTTON_BACK;
+            button.Activecolor = BUTTON_ACTIVE;
+            button.OnHovercolor = BUTTON_HOVER;
+            button.OnHoverTextColor = BUTTON_TEXT;
+            button.Textcolor = BUTTON_TEXT;
+            button.DisabledColor = BUTTON_DISABLED;
+            button.BorderRadius = 0;
+            button.TextAlign = ContentAlignment.MiddleCenter;
+            button.TextFont = new Font(FONT_NAME, BUTTON_FONT_SIZE, FontStyle.Bold);
+            button.Cursor = Cursors.Hand;
+            AddShadow(button);
+        }
+
+        /// <summary>btnLoginn's look but blue with white text - for Save, so it is not mistaken for Cancel.</summary>
+        public static void StylePrimaryButton(BunifuFlatButton button)
+        {
+            StyleButton(button);
+            button.Normalcolor = BUTTON_PRIMARY;
+            button.BackColor = BUTTON_PRIMARY;
+            button.Textcolor = BUTTON_PRIMARY_TEXT;
+            button.OnHoverTextColor = BUTTON_PRIMARY_TEXT;
+        }
+
+        /// <summary>The same look for a plain WinForms Button (the Close of the All Groups dialog).</summary>
+        public static void StyleButton(Button button)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+            button.FlatAppearance.MouseOverBackColor = BUTTON_HOVER;
+            button.FlatAppearance.MouseDownBackColor = BUTTON_ACTIVE;
+            button.BackColor = BUTTON_BACK;
+            button.ForeColor = BUTTON_TEXT;
+            button.Font = new Font(FONT_NAME, BUTTON_FONT_SIZE, FontStyle.Bold);
+            button.Cursor = Cursors.Hand;
+            AddShadow(button);
+        }
+
+        /// <summary>
+        /// Grey a styled BunifuFlatButton. Its Enabled hides Control.Enabled and only repaints - the click still
+        /// fires (disabling the base control draws the caption in the wrong place), so every click handler
+        /// checks for itself that it may act.
+        /// </summary>
+        public static void SetButtonEnabled(BunifuFlatButton button, bool enabled)
+        {
+            button.Enabled = enabled;
+            button.BackColor = enabled ? BUTTON_BACK : BUTTON_DISABLED;
+            button.Normalcolor = button.BackColor;
+        }
+
+        /// <summary>Tab button: DimGray + white text when it is the open page, otherwise the normal button look.</summary>
+        public static void PaintTab(BunifuFlatButton button, bool active)
+        {
+            button.selected = active;
+            button.Normalcolor = active ? BUTTON_ACTIVE : BUTTON_BACK;
+            button.BackColor = button.Normalcolor;
+            button.Textcolor = active ? BUTTON_ACTIVE_TEXT : BUTTON_TEXT;
+        }
+
+        /// <summary>
+        /// A dark panel 1px right / down, right behind the button (like frmLogin.AddButtonShadow); it follows the
+        /// button's place, size and visibility, so buttons shown / hidden by the pages keep it right.
+        /// </summary>
+        private static void AddShadow(Control button)
+        {
+            Panel shadow = new Panel { BackColor = BUTTON_SHADOW, Enabled = false, Visible = false };
+
+            EventHandler sync = delegate
+            {
+                Control parent = button.Parent;
+                if (parent == null) return;
+
+                if (shadow.Parent != parent) parent.Controls.Add(shadow);
+                shadow.Anchor = button.Anchor;
+                shadow.Bounds = new Rectangle(button.Left + 1, button.Top + 1, button.Width, button.Height);
+                shadow.Visible = button.Visible;
+                parent.Controls.SetChildIndex(shadow, parent.Controls.GetChildIndex(button) + 1);
+            };
+
+            button.LocationChanged += sync;
+            button.SizeChanged += sync;
+            button.VisibleChanged += sync;
+            button.ParentChanged += sync;
+            sync(button, EventArgs.Empty);
         }
 
         public static bool IsAdmin()

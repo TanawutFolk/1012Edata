@@ -58,6 +58,16 @@ namespace EdataManagement.Views.Setting
 
         private static readonly string[] FIELDS = { COL_SEND, COL_FORMAT, COL_GROUP, COL_SUBJECT, COL_BODY };
 
+        /// <summary>
+        /// For now a user sets only who gets the mail: the Recipient Group (Email specs only) and its addresses.
+        /// Send Method / File Format / Subject / Body show what the ticked specs have but cannot be applied or saved.
+        /// false = all five lists open again.
+        /// </summary>
+        private static readonly bool EMAIL_ONLY = true;
+
+        // most users read Thai: the messages of Save / recipient edits are short Thai
+        private const string SAVE_STOPPED = "บันทึกไม่สำเร็จ ยังไม่มีข้อมูลถูกเขียน";
+
         // "Show" filter
         private const string SHOW_ALL = "All specs";
         private const string SHOW_SENDING = "Sending";
@@ -104,6 +114,19 @@ namespace EdataManagement.Views.Setting
         public ucSpecSetting()
         {
             InitializeComponent();
+
+            foreach (Bunifu.Framework.UI.BunifuFlatButton button in new[] { btnApply, btnAllGroups, btnAddEmail, btnRcpAction })
+            {
+                SettingUi.StyleButton(button);
+            }
+
+            if (EMAIL_ONLY)
+            {
+                foreach (Label label in new[] { lbSendMethod, lbFileFormat, lbSubject, lbBody })
+                {
+                    label.Text += "  (locked)";
+                }
+            }
 
             cbProduct.SelectedIndexChanged += cbProduct_SelectedIndexChanged;
             cbCustomer.SelectedIndexChanged += cbCustomer_SelectedIndexChanged;
@@ -165,7 +188,13 @@ namespace EdataManagement.Views.Setting
             cbFilter.SelectedIndex = 0;
 
             cbProduct.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbCustomer.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            // customers: type to find (names that start with what is typed); Enter / leaving the box picks it
+            cbCustomer.DropDownStyle = ComboBoxStyle.DropDown;
+            cbCustomer.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cbCustomer.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cbCustomer.KeyDown += cbCustomer_KeyDown;
+            cbCustomer.Leave += delegate { CommitCustomerText(); };
 
             // 1480 / 980 / 980Dual / 1480VE with their product database (info_db_name)
             cbProduct.DataSource = _mainCon.getProduct();
@@ -188,8 +217,9 @@ namespace EdataManagement.Views.Setting
         {
             int specCount = ChangedSpecCount();
             int recipientCount = RecipientChangeCount();
+            int nameCount = GroupNameChangeCount();
 
-            if (specCount + recipientCount == 0)
+            if (specCount + recipientCount + nameCount == 0)
             {
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i", "Nothing has changed.");
                 return;
@@ -199,28 +229,29 @@ namespace EdataManagement.Views.Setting
             List<int> noTo = NewGroupsWithoutTo();
             if (noTo.Count > 0)
             {
-                frmError.ShowError(this, "Save stopped, nothing was written." + Environment.NewLine +
-                    string.Join(", ", noTo.Select(id => "Group #" + id + " (new)")) + " has no TO address yet." +
-                    Environment.NewLine + "Add at least one TO address, or Cancel to drop the new group.");
+                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine +
+                    string.Join(", ", noTo.Select(id => "Group #" + id + " (ใหม่)")) + " ยังไม่มีผู้รับ TO" +
+                    Environment.NewLine + "เพิ่ม TO อย่างน้อย 1 อีเมล หรือกด Cancel เพื่อยกเลิก group ใหม่");
                 return;
             }
 
-            if (!frmConfirm.Ask(this, SaveQuestion(specCount, recipientCount), "Save", "Cancel")) return;
+            if (!frmConfirm.Ask(this, SaveQuestion(specCount, recipientCount, nameCount), "บันทึก", "ยกเลิก")) return;
 
             WriteChanges();
         }
 
         /// <summary>Where it goes and what it does to sending, before anything is written.</summary>
-        private string SaveQuestion(int specCount, int recipientCount)
+        private string SaveQuestion(int specCount, int recipientCount, int nameCount)
         {
             List<DataRow> changed = ChangedRows();
             int start = changed.Count(r => ToInt(r[ORIG + COL_SEND]) == SEND_DONT_SEND && ToInt(r[COL_SEND]) != SEND_DONT_SEND);
             int stop = changed.Count(r => ToInt(r[ORIG + COL_SEND]) != SEND_DONT_SEND && ToInt(r[COL_SEND]) == SEND_DONT_SEND);
 
-            string text = "Save to " + MailSafety.ConfigDatabase + ": " + specCount + " spec(s) of " + SelectedCustomerName() +
-                          ", " + recipientCount + " recipient change(s)?";
-            if (start > 0) text += Environment.NewLine + "START sending: " + start + " spec(s)";
-            if (stop > 0) text += Environment.NewLine + "STOP sending: " + stop + " spec(s)";
+            string text = "บันทึกลง " + MailSafety.ConfigDatabase + "?" + Environment.NewLine +
+                          SelectedCustomerName() + ": แก้ spec " + specCount + " รายการ, แก้ผู้รับ " + recipientCount + " รายการ";
+            if (nameCount > 0) text += Environment.NewLine + "ตั้งชื่อ group: " + nameCount + " รายการ";
+            if (start > 0) text += Environment.NewLine + "เริ่มส่ง: " + start + " spec";
+            if (stop > 0) text += Environment.NewLine + "หยุดส่ง: " + stop + " spec";
             return text;
         }
 
@@ -232,6 +263,7 @@ namespace EdataManagement.Views.Setting
         {
             int specCount = ChangedSpecCount();
             int recipientCount = RecipientChangeCount();
+            int nameCount = GroupNameChangeCount();
             string user = SettingUi.CurrentUserCode();
             List<string> batch = new List<string>();
 
@@ -242,24 +274,25 @@ namespace EdataManagement.Views.Setting
 
                 Dictionary<int, int> groupIds;
                 if (!AddRecipientStatements(batch, user, out groupIds)) return false;
+                AddGroupNameStatements(batch, user, groupIds);
                 AddSpecStatements(batch, groupIds);
 
                 batch.Add(_emailSql.clearAppUser());
             }
             catch (Exception ex)
             {
-                frmError.ShowError(this, "Save failed, nothing was written." + Environment.NewLine + ex.Message);
+                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + ex.Message);
                 return false;
             }
 
             if (!_emailCon.saveChanges(batch))
             {
-                frmError.ShowError(this, "Save failed, nothing was written." + Environment.NewLine + _emailCon.lastError);
+                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
                 return false;
             }
 
-            ReloadAfterSave("Saved " + specCount + " spec change(s) and " + recipientCount + " recipient change(s) to " +
-                MailSafety.ConfigDatabase + ".");
+            ReloadAfterSave("บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว: แก้ spec " + specCount + " รายการ, แก้ผู้รับ " +
+                recipientCount + " รายการ" + (nameCount > 0 ? ", ตั้งชื่อ group " + nameCount + " รายการ" : ""));
             return true;
         }
 
@@ -275,6 +308,7 @@ namespace EdataManagement.Views.Setting
                 foreach (string field in FIELDS)
                 {
                     if (!IsFieldChanged(row, field)) continue;
+                    if (EMAIL_ONLY && field != COL_GROUP) continue;
 
                     int value = ToInt(row[field]);
                     if (field == COL_GROUP) value = MapGroup(groupIds, value);
@@ -307,10 +341,10 @@ namespace EdataManagement.Views.Setting
             return true;
         }
 
-        /// <summary>Changed specs + changed recipients (added / removed / TO-CC, new groups).</summary>
+        /// <summary>Changed specs + changed recipients (added / removed / TO-CC, new groups) + group names.</summary>
         private int PendingCount()
         {
-            return ChangedSpecCount() + RecipientChangeCount();
+            return ChangedSpecCount() + RecipientChangeCount() + GroupNameChangeCount();
         }
 
         private int ChangedSpecCount()
@@ -380,6 +414,9 @@ namespace EdataManagement.Views.Setting
         {
             if (_loading) return;
 
+            // -1 = text being typed (the customer on screen stays); same index = the box was only put back
+            if (cbCustomer.SelectedIndex < 0 || cbCustomer.SelectedIndex == _customerIndex) return;
+
             if (!ConfirmDropPendingChanges())
             {
                 RestoreIndex(cbCustomer, _customerIndex);
@@ -392,9 +429,58 @@ namespace EdataManagement.Views.Setting
 
         private void RestoreIndex(ComboBox combo, int index)
         {
+            bool wasLoading = _loading;
             _loading = true;
             combo.SelectedIndex = index;
-            _loading = false;
+            if (combo.DropDownStyle == ComboBoxStyle.DropDown && index >= 0 && index < combo.Items.Count)
+            {
+                combo.Text = combo.GetItemText(combo.Items[index]);   // typed text gives way to the real name
+            }
+            _loading = wasLoading;
+        }
+
+        private void cbCustomer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                CommitCustomerText();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                RestoreIndex(cbCustomer, _customerIndex);
+            }
+            else
+            {
+                return;
+            }
+
+            e.Handled = true;
+            e.SuppressKeyPress = true;
+        }
+
+        /// <summary>
+        /// What is typed becomes a customer: the exact name, else the first name starting with it; nothing like it =
+        /// back to the customer on screen. A different customer goes through the normal change (asks about unsaved edits).
+        /// </summary>
+        private void CommitCustomerText()
+        {
+            if (cbCustomer.Items.Count == 0) return;
+
+            string typed = (cbCustomer.Text ?? "").Trim();
+            int index = typed == "" ? -1 : cbCustomer.FindStringExact(typed);
+            if (index < 0 && typed != "") index = cbCustomer.FindString(typed);
+            if (index < 0) index = _customerIndex;
+
+            if (index >= 0 && index != _customerIndex)
+            {
+                // the box may already sit on it (picked from the suggestions) without the change having run
+                if (cbCustomer.SelectedIndex == index) cbCustomer_SelectedIndexChanged(cbCustomer, EventArgs.Empty);
+                else cbCustomer.SelectedIndex = index;
+
+                if (cbCustomer.SelectedIndex == _customerIndex) return;   // changed (or put back after "Keep editing")
+            }
+
+            RestoreIndex(cbCustomer, _customerIndex);
         }
 
         private string SelectedProductName()
@@ -403,9 +489,14 @@ namespace EdataManagement.Views.Setting
             return selected == null ? "" : selected["PRODUCT_NAME"].ToString();
         }
 
+        /// <summary>The customer on screen - also while a search is being typed in the box (SelectedIndex -1 then).</summary>
         private string SelectedCustomerName()
         {
             DataRowView selected = cbCustomer.SelectedItem as DataRowView;
+            if (selected == null && _customerIndex >= 0 && _customerIndex < cbCustomer.Items.Count)
+            {
+                selected = cbCustomer.Items[_customerIndex] as DataRowView;
+            }
             return selected == null ? "" : selected["CUSTOMER_NAME"].ToString();
         }
 
@@ -502,11 +593,12 @@ namespace EdataManagement.Views.Setting
             _subjects = TextLookup(ReadList(_specCon.searchSubjects()));
             _bodies = TextLookup(ReadList(_specCon.searchBodies()));
 
+            LoadGroupNames();   // the group list shows them
             _groups = NewLookup();
             foreach (DataRow row in ReadList(_specCon.searchSpecGroups()).Rows)
             {
                 int id = ToInt(row["ID"]);
-                _groups.Rows.Add(id, GroupListText(id, ToInt(row["MEMBERS"]), false), "#" + id);
+                _groups.Rows.Add(id, GroupListText(id, ToInt(row["MEMBERS"])), "#" + id);
             }
 
             BindEditorList(cbSendMethod, _sendMethods);
@@ -905,7 +997,9 @@ namespace EdataManagement.Views.Setting
             if (n == 0)
             {
                 lbEditorTitle.Text = _specs == null ? "No spec" : "No spec ticked";
-                lbEditorHint.Text = "Tick specs on the left (ALL = every spec shown), pick values, then Apply.";
+                lbEditorHint.Text = EMAIL_ONLY
+                    ? "Tick Email specs on the left, pick a Recipient Group, then Apply."
+                    : "Tick specs on the left (ALL = every spec shown), pick values, then Apply.";
                 foreach (ComboBox combo in EditorLists)
                 {
                     combo.SelectedValue = KEEP;
@@ -917,7 +1011,7 @@ namespace EdataManagement.Views.Setting
                 if (n == 1)
                 {
                     lbEditorTitle.Text = ticked[0][COL_SPEC] + "  " + ticked[0][COL_PART];
-                    lbEditorHint.Text = "Change a value, then Apply.";
+                    lbEditorHint.Text = EMAIL_ONLY ? "Pick a Recipient Group, then Apply." : "Change a value, then Apply.";
                 }
                 else
                 {
@@ -956,6 +1050,20 @@ namespace EdataManagement.Views.Setting
         private void RefreshEditorEnabled()
         {
             bool any = TickedRows().Count > 0;
+
+            if (EMAIL_ONLY)
+            {
+                // the four locked lists only show what the ticked specs have (Apply skips a disabled list);
+                // a group is only used when every ticked spec goes by Email
+                cbSendMethod.Enabled = false;
+                cbFileFormat.Enabled = false;
+                cbSubject.Enabled = false;
+                cbBody.Enabled = false;
+                cbGroup.Enabled = any && SelectedId(cbSendMethod) == SEND_EMAIL;
+                SettingUi.SetButtonEnabled(btnApply, cbGroup.Enabled);
+                return;
+            }
+
             bool dontSend = SelectedId(cbSendMethod) == SEND_DONT_SEND;
 
             cbSendMethod.Enabled = any;
@@ -963,7 +1071,7 @@ namespace EdataManagement.Views.Setting
             cbGroup.Enabled = any && !dontSend;
             cbSubject.Enabled = any && !dontSend;
             cbBody.Enabled = any && !dontSend;
-            SetButtonEnabled(btnApply, any, SettingUi.BUTTON_BACK);
+            SettingUi.SetButtonEnabled(btnApply, any);
         }
 
         private void cbSendMethod_SelectedIndexChanged(object sender, EventArgs e)
@@ -1000,8 +1108,9 @@ namespace EdataManagement.Views.Setting
 
             if (picked.Count == 0)
             {
-                SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i",
-                    "Every list says (keep as is) - pick at least one value to change.");
+                SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i", EMAIL_ONLY
+                    ? "Recipient Group says (keep as is) - pick a group to apply."
+                    : "Every list says (keep as is) - pick at least one value to change.");
                 return;
             }
 
@@ -1182,18 +1291,6 @@ namespace EdataManagement.Views.Setting
             if (column == COL_SUBJECT) return _subjects;
             if (column == COL_BODY) return _bodies;
             return null;
-        }
-
-        /// <summary>
-        /// Grey a BunifuFlatButton. Its Enabled hides Control.Enabled and only repaints - the click still
-        /// fires (disabling the base control draws the caption in the wrong place), so every click handler
-        /// here checks for itself that it may act.
-        /// </summary>
-        private static void SetButtonEnabled(Bunifu.Framework.UI.BunifuFlatButton button, bool enabled, Color back)
-        {
-            button.Enabled = enabled;
-            button.BackColor = enabled ? back : Color.Gray;
-            button.Normalcolor = button.BackColor;
         }
 
         private static bool IsTicked(DataRow row)

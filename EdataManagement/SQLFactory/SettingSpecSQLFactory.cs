@@ -131,6 +131,13 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
+        /// <summary>Names of the groups (info_group_name - Setting only, the sending side does not read it).</summary>
+        public string searchGroupNames()
+        {
+            sql = "SELECT GROUP_ID, GROUP_NAME FROM info_group_name ORDER BY GROUP_ID ASC ";
+            return sql;
+        }
+
         /// <summary>
         /// Highest group id in use - members (info_group_email) or a Serial List / Wafer group
         /// that has no member yet (key_group_email_document). A new group takes the next one.
@@ -170,6 +177,32 @@ namespace EdataManagement.SQLFactory
                   "VALUES ('" + Esc(productName) + "', 'info_group_email', " + groupId + ", LEFT('" + Esc(customerName) + "', 100), " +
                   "LEFT('" + Esc(address) + "', 50), " + (oldType.HasValue ? oldType.Value.ToString() : "NULL") + ", " +
                   (newType.HasValue ? newType.Value.ToString() : "NULL") + ", LEFT('" + Esc(user) + "', 20), NOW()) ";
+
+            return sql;
+        }
+
+        /// <summary>Name a group; an empty name takes the row away (the group is "#12" again).</summary>
+        public string saveGroupName(int groupId, string name, string user)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                sql = "DELETE FROM info_group_name WHERE GROUP_ID = " + groupId + " ";
+                return sql;
+            }
+
+            sql = "INSERT INTO info_group_name (GROUP_ID, GROUP_NAME, CREATE_BY, CREATE_DATE) " +
+                  "VALUES (" + groupId + ", LEFT('" + Esc(name) + "', 100), LEFT('" + Esc(user) + "', 20), NOW()) " +
+                  "ON DUPLICATE KEY UPDATE GROUP_NAME = VALUES(GROUP_NAME), UPDATE_BY = VALUES(CREATE_BY), UPDATE_DATE = NOW() ";
+
+            return sql;
+        }
+
+        /// <summary>Group name change: SPEC = the new name ('' = name taken away), CUSTOMER = the old one.</summary>
+        public string logGroupNameChange(string productName, int groupId, string oldName, string newName, string user)
+        {
+            sql = "INSERT INTO log_setting_edata (PRODUCT, TABLE_NAME, KEY_ID, CUSTOMER, SPEC, OLD_VALUE, NEW_VALUE, CHANGE_USER, CHANGE_DATE) " +
+                  "VALUES ('" + Esc(productName) + "', 'info_group_name', " + groupId + ", LEFT('" + Esc(oldName) + "', 100), " +
+                  "LEFT('" + Esc(newName) + "', 50), NULL, NULL, LEFT('" + Esc(user) + "', 20), NOW()) ";
 
             return sql;
         }

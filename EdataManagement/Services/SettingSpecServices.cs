@@ -65,6 +65,11 @@ namespace EdataManagement.Services
             return RunSearch(sqlFactory.searchSpecGroups());
         }
 
+        public OutputOnDbProperty searchGroupNames()
+        {
+            return RunSearch(sqlFactory.searchGroupNames());
+        }
+
         public OutputOnDbProperty maxGroupId()
         {
             return RunSearch(sqlFactory.maxGroupId());

@@ -182,8 +182,7 @@ namespace EdataManagement.Controllers
 
         /// <summary>
         /// TO or CC addresses of one E-data type (2 Serial List, 3 Wafer) of one product + customer.
-        /// Returns null when the database has no recipient for it yet, so the caller can still
-        /// fall back to Setting\EmailSetting.ini.
+        /// Returns null when the database has no group for it (or it cannot be read).
         /// </summary>
         public List<string> getDocumentEmailAddresses(string productName, string customerName, int documentId, string recipientType)
         {

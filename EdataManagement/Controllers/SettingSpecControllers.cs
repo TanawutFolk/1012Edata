@@ -85,6 +85,12 @@ namespace EdataManagement.Controllers
             return Run(() => models.searchSpecGroups());
         }
 
+        /// <summary>GROUP_ID, GROUP_NAME; lastError is set when info_group_name is not there (a database without it).</summary>
+        public DataTable searchGroupNames()
+        {
+            return Run(() => models.searchGroupNames());
+        }
+
         /// <summary>-1 when nothing is there yet; check lastError for a failed read.</summary>
         public int maxGroupId()
         {

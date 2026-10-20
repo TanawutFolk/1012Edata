@@ -69,17 +69,17 @@ namespace EdataManagement.Views
 
         public bool ReadSftpFile(string host, int port, string username, string password, string remoteFolderPath)
         {
-            // not on the production database -> do not even connect: this method creates the
-            // remote folder when it is missing, which is a write on the customer's server (see MailSafety)
-            if (Utilities.MailSafety.IsTestMode)
+            // not on the production database -> only the test folder: this method creates the remote
+            // folder when it is missing, which is a write on the customer's server (see MailSafety)
+            if (!Utilities.MailSafety.SftpFolderAllowed(remoteFolderPath))
             {
                 DataTable empty = new DataTable();
                 empty.Columns.Add("File");
                 dataGridViewCustomer.DataSource = empty;
                 bdFileCustomer.DataSource = empty;
                 tb_searchFile.Enabled = false;
-                LogUpdated?.Invoke("[TEST - NO SFTP] did not connect to " + host + " / " + remoteFolderPath +
-                                   "  (DB: " + Utilities.MailSafety.ConfigDatabase + ")\n");
+                LogUpdated?.Invoke("[TEST - NO SFTP] " + remoteFolderPath + " is not the test folder " + Utilities.MailSafety.TEST_SFTP_FOLDER +
+                                   ", did not connect  (DB: " + Utilities.MailSafety.ConfigDatabase + ")\n");
                 return true;
             }
 
@@ -442,7 +442,7 @@ namespace EdataManagement.Views
         /// <summary>
         /// After the upload: when every serial of the order is on the server, zip its serial folder(s) for the
         /// DUC upload ({customer folder}-For DUC, see Utilities.DucZipCls) and tell the user.
-        /// Test mode never reaches the server (all rows red), so there the simulated upload counts.
+        /// In test mode the server check is the test folder (MailSafety.TEST_SFTP_FOLDER).
         /// </summary>
         private void PrepareDataForDuc(string customerFolder, List<string> serials, List<string> uploadedFiles,
                                        List<string> uploadStatusList, int notOnServer)
@@ -450,8 +450,8 @@ namespace EdataManagement.Views
             HashSet<string> withFile = new HashSet<string>(uploadedFiles.Select(f => Path.GetFileNameWithoutExtension(f)),
                                                            StringComparer.OrdinalIgnoreCase);
             int noFile = serials.Count(s => !withFile.Contains(s));
-            int failed = uploadStatusList.Count(s => s.StartsWith("Failed to upload"));
-            int missing = Utilities.MailSafety.IsTestMode ? 0 : notOnServer;
+            int failed = uploadStatusList.Count(s => s.StartsWith("Failed to upload") || s.StartsWith("[TEST - NOT UPLOADED]"));
+            int missing = notOnServer;
 
             if (customerFolder == null || serials.Count == 0 || noFile > 0 || failed > 0 || missing > 0)
             {
@@ -487,13 +487,13 @@ namespace EdataManagement.Views
         {
             List<string> uploadStatusList = new List<string>();
 
-            // not on the production database -> never upload to the customer, see MailSafety
-            if (Utilities.MailSafety.IsTestMode)
+            // not on the production database -> only into the test folder, never a customer folder (see MailSafety)
+            if (!Utilities.MailSafety.SftpFolderAllowed(remoteFolderPath))
             {
                 foreach (string filePath in fileList)
                 {
                     uploadStatusList.Add("[TEST - NOT UPLOADED] " + filePath + " -> " + remoteFolderPath + "/" + Path.GetFileName(filePath) +
-                                         "  (DB: " + Utilities.MailSafety.ConfigDatabase + ")");
+                                         "  (not the test folder " + Utilities.MailSafety.TEST_SFTP_FOLDER + ", DB: " + Utilities.MailSafety.ConfigDatabase + ")");
                 }
                 return uploadStatusList;
             }

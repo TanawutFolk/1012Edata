@@ -31,6 +31,9 @@ namespace EdataManagement.Property
         // E-data type (info_document): 1 = Edata / LD data (group per spec), 2 = Serial List, 3 = Wafer (key_group_email_document)
         public int documentId { get; set; } = 1;
 
+        // every product (productName + dbProduct) to look at - who else uses a group, across products
+        public List<SettingEmailProperty> products { get; set; }
+
         public string createUser { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace EdataManagement.Views.Setting
         public ucLoginSetting()
         {
             InitializeComponent();
+            SettingUi.StyleButton(btnAddUser);
 
             btnAddUser.Click += btnAddUser_Click;
             dtgPermission.CellContentClick += dtgPermission_CellContentClick;

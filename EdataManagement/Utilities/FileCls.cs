@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Data;
 using IniParser;
 using IniParser.Model;
-using System.Configuration;
 using EdataManagement.Property;
 using EdataManagement.Controllers;
 
@@ -894,72 +893,6 @@ namespace EdataManagement.Utilities
             }
 
             return resultTable;
-        }
-
-        public List<string> GetEmailAddresses(string section, string key)
-        {
-            try
-            {
-                string filePath = ConfigurationManager.AppSettings["SettingEmail"].ToString();
-                List<string> emailAddresses = new List<string>();
-
-                if (File.Exists(filePath))
-                {
-                    string[] lines = File.ReadAllLines(filePath);
-                    bool sectionFound = false;
-
-                    // แปลง section และ key ให้เป็นตัวพิมพ์ใหญ่
-                    string upperSection = section.ToUpper();
-                    string upperKey = key.ToUpper();
-
-                    foreach (string line in lines)
-                    {
-                        string upperLine = line.ToUpper().Trim();
-                        if (upperLine.StartsWith($"[{upperSection}]"))
-                        {
-                            sectionFound = true;
-                            continue;
-                        }
-
-                        if (sectionFound)
-                        {
-                            if (upperLine.StartsWith("[") && upperLine.EndsWith("]"))
-                            {
-                                // พบ section ใหม่, หยุดการค้นหา
-                                break;
-                            }
-
-                            if (upperLine.StartsWith($"{upperKey}="))
-                            {
-                                string[] addresses = line.Substring(line.IndexOf('=') + 1).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                                foreach (string address in addresses)
-                                {
-                                    emailAddresses.Add(address.Trim());
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("ไม่พบไฟล์ email setting :" + filePath, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                }
-
-                if (emailAddresses.Count == 0)
-                {
-                    MessageBox.Show("โปรดตรวจสอบไฟล์ email setting :" + filePath + "\n" + "[ " + section + " ] และ " + key + "= มีตามนี้หรือไม่", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                return emailAddresses.Count > 0 ? emailAddresses : null;
-
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("พบข้อบกพร่อง : " + ex.InnerException , "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
         }
     }
 }

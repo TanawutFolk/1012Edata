@@ -60,6 +60,13 @@ namespace EdataManagement.Views.Setting
             LoadDatabaseSelector();
             cbDatabase.SelectedIndexChanged += cbDatabase_SelectedIndexChanged;
 
+            // every button looks like btnLoginn on frmLogin; Save keeps its blue so it stands apart from Cancel
+            foreach (BunifuFlatButton button in new[] { btnSettingSpec, btnSettingLogin, btnCancel })
+            {
+                SettingUi.StyleButton(button);
+            }
+            SettingUi.StylePrimaryButton(btnSave);
+
             // a USER never sees the permission tab
             btnSettingLogin.Visible = SettingUi.IsAdmin();
 
@@ -176,7 +183,7 @@ namespace EdataManagement.Views.Setting
 
             foreach (BunifuFlatButton button in TabButtons)
             {
-                PaintTab(button, button == tab);
+                SettingUi.PaintTab(button, button == tab);
             }
 
             ISettingPage settingPage = (ISettingPage)page;
@@ -206,15 +213,6 @@ namespace EdataManagement.Views.Setting
 
             _pages[tab] = page;
             return page;
-        }
-
-        /// <summary>Highlight the active tab button (IsTab is off, so the colors are set here).</summary>
-        private void PaintTab(BunifuFlatButton button, bool active)
-        {
-            button.selected = active;
-            button.Normalcolor = active ? SettingUi.TAB_ACTIVE_BACK : Color.White;
-            button.BackColor = active ? SettingUi.TAB_ACTIVE_BACK : Color.White;
-            button.Textcolor = active ? SettingUi.TAB_ACTIVE_TEXT : Color.Black;
         }
 
         private void RefreshSaveButton()

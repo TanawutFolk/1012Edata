@@ -52,6 +52,12 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty searchGroupNames()
+        {
+            _resultData = _services.searchGroupNames();
+            return _resultData;
+        }
+
         public OutputOnDbProperty maxGroupId()
         {
             _resultData = _services.maxGroupId();

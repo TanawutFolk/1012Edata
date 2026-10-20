@@ -39,7 +39,7 @@
             // lbConfirmModal
             // 
             this.lbConfirmModal.AutoSize = true;
-            this.lbConfirmModal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbConfirmModal.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbConfirmModal.Location = new System.Drawing.Point(72, 156);
             this.lbConfirmModal.Name = "lbConfirmModal";
             this.lbConfirmModal.Size = new System.Drawing.Size(51, 20);
@@ -77,7 +77,7 @@
             this.btnCancel.IconVisible = true;
             this.btnCancel.IconZoom = 90D;
             this.btnCancel.IsTab = false;
-            this.btnCancel.Location = new System.Drawing.Point(268, 217);
+            this.btnCancel.Location = new System.Drawing.Point(268, 225);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
             this.btnCancel.OnHovercolor = System.Drawing.Color.Silver;
@@ -94,7 +94,7 @@
             // btnSavee
             // 
             this.btnSavee.Activecolor = System.Drawing.Color.Lime;
-            this.btnSavee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(51)))));
+            this.btnSavee.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnSavee.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnSavee.BorderRadius = 0;
             this.btnSavee.ButtonText = "Save";
@@ -112,9 +112,9 @@
             this.btnSavee.IconVisible = true;
             this.btnSavee.IconZoom = 90D;
             this.btnSavee.IsTab = false;
-            this.btnSavee.Location = new System.Drawing.Point(12, 217);
+            this.btnSavee.Location = new System.Drawing.Point(12, 225);
             this.btnSavee.Name = "btnSavee";
-            this.btnSavee.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(204)))), ((int)(((byte)(51)))));
+            this.btnSavee.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnSavee.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnSavee.OnHoverTextColor = System.Drawing.Color.White;
             this.btnSavee.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);

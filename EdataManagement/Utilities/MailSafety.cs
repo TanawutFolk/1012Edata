@@ -22,12 +22,23 @@ namespace EdataManagement.Utilities
     /// Group 1000 remains internal-only; Group 0 is explicitly allowed to include external
     /// recipients because it is the selected QA test group. Any recipient outside these groups
     /// stays a draft. Ignored on qa_oc.
+    ///
+    /// SFTP in test mode goes to the real server but only into TEST_SFTP_FOLDER (the old "for test"
+    /// folder), never into a customer folder: ftpUserControl refuses any other folder.
     /// </summary>
     public static class MailSafety
     {
         public const string PRODUCTION_DATABASE = "qa_oc";
         public const string TEST_SUBJECT_PREFIX = "[TEST - NOT SENT] ";
         public const string INTERNAL_DOMAIN = "@furukawaelectric.com";
+        public const string TEST_SFTP_FOLDER = "fftTest";
+
+        /// <summary>A test-mode SFTP read / upload may only touch TEST_SFTP_FOLDER; production may go anywhere.</summary>
+        public static bool SftpFolderAllowed(string remoteFolderPath)
+        {
+            return !IsTestMode ||
+                   string.Equals((remoteFolderPath ?? "").Trim().Trim('/'), TEST_SFTP_FOLDER, StringComparison.OrdinalIgnoreCase);
+        }
 
         /// <summary>Database of ConnectionQAOC, empty when it cannot be read.</summary>
         public static string ConfigDatabase

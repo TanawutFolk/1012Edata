@@ -108,7 +108,8 @@ namespace EdataManagement.Views.Setting
                         ? ""
                         : "PRODUCT LIKE '%" + keyword + "%' OR CUSTOMER_NAME LIKE '%" + keyword + "%'"
                           + " OR TO_LIST LIKE '%" + keyword + "%' OR CC_LIST LIKE '%" + keyword + "%'"
-                          + " OR CONVERT(GROUP_ID, 'System.String') LIKE '%" + keyword + "%'";
+                          + " OR CONVERT(GROUP_ID, 'System.String') LIKE '%" + keyword + "%'"
+                          + (matrix.Columns.Contains("GROUP_NAME") ? " OR GROUP_NAME LIKE '%" + keyword + "%'" : "");
 
                     lbCount.Text = view.Count + " row(s)"
                         + (keyword.Length == 0 ? "" : " of " + matrix.Rows.Count);
@@ -117,7 +118,7 @@ namespace EdataManagement.Views.Setting
                 // ---- bottom bar ----
                 Panel bottom = new Panel();
                 bottom.Dock = DockStyle.Bottom;
-                bottom.Height = 56;
+                bottom.Size = new Size(dialog.ClientSize.Width, 56);   // full width before Close is anchored to its right edge
                 bottom.BackColor = Color.White;
 
                 Label lbHint = new Label();
@@ -131,11 +132,10 @@ namespace EdataManagement.Views.Setting
                 close.Size = new Size(110, 32);
                 close.Location = new Point(dialog.ClientSize.Width - 130, 12);
                 close.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-                close.FlatStyle = FlatStyle.Flat;
-                close.BackColor = Color.White;
                 close.Click += delegate { dialog.Close(); };
 
                 bottom.Controls.Add(close);
+                SettingUi.StyleButton(close);
                 bottom.Controls.Add(lbHint);
 
                 dialog.Controls.Add(grid);
@@ -154,7 +154,14 @@ namespace EdataManagement.Views.Setting
             SettingUi.SetColumn(grid, "PRODUCT", "PRODUCT", 70);
             SettingUi.SetColumn(grid, "CUSTOMER_NAME", "CUSTOMER", 150);
             SettingUi.SetColumn(grid, "GROUP_ID", "GROUP", 80);
+            SettingUi.SetColumn(grid, "GROUP_NAME", "GROUP NAME", 140);
             SettingUi.SetColumn(grid, "SPEC_COUNT", "SPECS", 60);
+
+            // the name (added after the query) sits next to the group number
+            if (grid.Columns.Contains("GROUP_NAME") && grid.Columns.Contains("GROUP_ID"))
+            {
+                grid.Columns["GROUP_NAME"].DisplayIndex = grid.Columns["GROUP_ID"].DisplayIndex + 1;
+            }
             SettingUi.SetColumn(grid, "TO_COUNT", "TO", 45);
             SettingUi.SetColumn(grid, "CC_COUNT", "CC", 45);
             SettingUi.SetColumn(grid, "TO_LIST", "TO (recipients)", 250);

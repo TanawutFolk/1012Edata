@@ -1,7 +1,9 @@
 # 1480Dual E-data (1012) — งานค้าง / สถานะ ณ 2026-10-05
 
-> **2026-10-05:** เรื่อง "โฟลเดอร์ชั้นนอก" ของ Molex format 14 ตัดสินแล้ว = **ไม่มีชั้นนอก** (ดูข้อ 3.4) โค้ดตอนนี้ทำแบบนี้อยู่แล้ว ไม่ต้องแก้
-> (2026-09-29 เคยหยุดไว้เพื่อรอเรื่องนี้)
+> **2026-10-16 เปลี่ยนแล้ว:** Molex format 14 **มีชั้นนอก** `MOLEX-Data for 1012 program` (user เลือกชื่อเอง เพราะ `MOLEK:Data for 1012` ในรูปใส่ `:` ไม่ได้)
+> layout: `yyMMdd-Shipping Data\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{order folder}\{txt}` + `...\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n.zip` (เปิด zip เจอโฟลเดอร์ order ทันที)
+> โค้ด: `prepareCase14TxtZip` ชื่อชั้นนอก = `{customerName}-Data for 1012 program` — build ผ่าน ยังไม่ได้รันเทส
+> (2026-10-05 เคยตัดสินว่าไม่มีชั้นนอก — ข้อ 3.4 ด้านล่างเป็นประวัติ)
 
 ---
 
@@ -49,14 +51,17 @@
 ### 3.2 ที่ตัดสินใจแล้ว (ผู้ใช้ตอบ 2026-09-29)
 - sub-folder ใช้ชื่อตามของจริง `yymmdd-MOLEX(48Dual)-n` + `-n.zip`
 - copy **เฉพาะ txt** ใส่ไว้ใน **โฟลเดอร์ order ชื่อเดิม**: `-n\{order folder}\{txt}` (แก้แล้วหลังผู้ใช้ส่งรูป)
-- เกณฑ์ 10 MB / 256 ไฟล์ นับจากขนาด **ก่อน zip**
-- 1 zip = 1 เมล
+  - ผู้ใช้ยืนยันซ้ำ 2026-10-16 ว่า "txt อย่างเดียว" แม้ zip ที่ส่งจริง 260512 จะมีไฟล์ `260512-{order}(PN).xls` อยู่ด้วย (ไม่ต้อง copy xls)
+- เกณฑ์ 10 MB / 256 ไฟล์ นับจากขนาด **ก่อน zip** (ใช้แบ่ง `-n` / zip เท่านั้น)
+- ~~1 zip = 1 เมล~~ → **2026-10-19 เปลี่ยน:** ทุก zip ของวันนั้นแนบเมลเดียวกัน (แบบ case 10 ที่แนบทุกไฟล์ในเมลเดียว) ขึ้นเมลใหม่เมื่อ zip รวมกันจะเกิน 10 MiB (นับขนาด zip), zip เดียวที่เกินไปเมลของตัวเอง, subject `(i/N)` เฉพาะตอนมีหลายเมล
+  - เหตุผล (user): "ส่งแค่ 2 zip shipping วันเดียวกัน แยก 2 เมลมันแปลก" — ของจริง 260512: txt 10PCS 6.96 MB → zip 0.93 MB
+  - format 3 (MOLEX/OPLINK ของ 1480/980Dual) ยังเป็น 1 zip = 1 เมล (ยังไม่ได้แก้)
 - subject 7 (`...for customerName` → "for MOLEX") + body 8 — ผู้ใช้เปลี่ยนใจจาก "Molex(Oplink)" กลับเป็น subject 7 เอง
 
 ### 3.3 ชื่อไฟล์ txt (ถอดจากของจริง `NA_301235900610001_10PCS_FRL1441D4045_260512-1.txt`)
 `{Customer_Part_No}_{FECOrderNo ตัด '-'}_{Qty}PCS_{Part_No ก่อน '-' ตัวแรก}_{yyMMdd}-{SubFolder}.txt` — 1 ไฟล์ต่อ 1 order (รวมทุก serial)
 
-### 3.4 ✅ ตัดสินแล้ว (2026-10-05) — ไม่มีโฟลเดอร์ชั้นนอก
+### 3.4 (ประวัติ — ถูกแทนด้วยชั้นนอก `MOLEX-Data for 1012 program` เมื่อ 2026-10-16 ดูหัวไฟล์) ตัดสินเมื่อ 2026-10-05 — ไม่มีโฟลเดอร์ชั้นนอก
 
 user แจ้งว่า Molex ของ 1480Dual ใช้ flow เดียวกับ Molex ของ 1480 (spec flow 1-6 ของ 1480 format 3 ที่ user ส่งมา 2026-10-05)
 **ต่างกันแค่ไฟล์ที่เตรียม:** 1480 / 980Dual copy ทุกไฟล์ยกเว้น `For QA check`, 1480Dual copy **เฉพาะ txt**
@@ -189,3 +194,7 @@ DELETE FROM `1480dual_test_tanawut`.db_check_sheet WHERE TestReportNo LIKE 'TST1
    - ลงโปรแกรมใหม่: โค้ดยังไม่ได้ commit, `App.config` ต้องกลับเป็น `qa_oc` (ตอนนี้ `qa_oc_test`) — พอเป็น qa_oc เมลจะถึงลูกค้าจริง
    - (ถ้าต้องการ) audit trigger ใน qa_oc
 5. **MailSafety** (DB ไม่ใช่ qa_oc): เมลเป็น Draft ไม่มีผู้รับ ยกเว้นผู้รับ**ทุกคน**อยู่ใน group ของ `App.config` `TestMailGroupId` (=1000) และเป็น @furukawaelectric.com → ส่งจริง เนื้อเมลเหมือนของจริงทุกอย่าง, SFTP ข้ามเสมอ
+6. **ชื่อลูกค้า MOLEX(OPLINK)** (2026-10-15, พักไว้ตามที่ผู้ใช้สั่ง "เอาไว้ก่อน แต่จดไว้") — User เรียก 1480Dual MOLEX (Y-3ER4002C) ว่า "MOLEX(OPLINK)" แต่ใน DB เป็น `MOLEX`
+   - ห้ามเปลี่ยน `info_cus_condition.Customer` เพราะชื่อนี้ใช้ทำชื่อโฟลเดอร์ `yyMMdd-MOLEX(48Dual)` / `-n` / zip / เนื้อเมล / query
+   - ข้อเสนอ: Hardcode เฉพาะชื่อที่แสดง (1480Dual, MOLEX) → "MOLEX(OPLINK)" ใน combo ลูกค้าของ frmMain (`frmMain.cs:206-208`) และ Spec Setting, ValueMember ยังเป็น `MOLEX`; ถ้ามีหลายเคสค่อยย้ายเป็นตารางใน config DB
+   - เวอร์ชันก่อนไม่เคยมี alias (combo = ชื่อจาก DB ตรง ๆ); `qa_oc.info_customer` (CUSTOMER_NAME → IN_EMAIL_NAME) เป็นตารางเก่า 1012 ไม่ได้ใช้

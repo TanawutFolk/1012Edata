@@ -493,13 +493,13 @@
             this.btnRcpAction.IconVisible = true;
             this.btnRcpAction.IconZoom = 90D;
             this.btnRcpAction.IsTab = false;
-            this.btnRcpAction.Location = new System.Drawing.Point(282, 38);
+            this.btnRcpAction.Location = new System.Drawing.Point(262, 38);
             this.btnRcpAction.Name = "btnRcpAction";
             this.btnRcpAction.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
             this.btnRcpAction.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(70)))), ((int)(((byte)(190)))));
             this.btnRcpAction.OnHoverTextColor = System.Drawing.Color.White;
             this.btnRcpAction.selected = false;
-            this.btnRcpAction.Size = new System.Drawing.Size(100, 28);
+            this.btnRcpAction.Size = new System.Drawing.Size(120, 28);
             this.btnRcpAction.TabIndex = 3;
             this.btnRcpAction.Text = "New Group";
             this.btnRcpAction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
