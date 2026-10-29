@@ -42,7 +42,7 @@ namespace EdataManagement.Utilities
 
         FileCls fileCls = new FileCls();
 
-        private const string Case10SpecialPOAllPath = @"\\192.168.2.197\Butterfly1480\10-48-ProductControl\07-Shipping_PO\PO from FEC\Shipping-PO-all.xlsm";
+        private const string Case10SpecialPOAllPath = @"\\192.168.2.197\Butterfly1480\10-48-ProductControl\07-Shipping_PO\PO from FEC\Old file\Shipping-PO-all-2026 (Jan-Sep).xlsm";
 
         // info_document ids of the E-data types that go out as their own mail
         private const int DOC_SERIAL_LIST = 2;
