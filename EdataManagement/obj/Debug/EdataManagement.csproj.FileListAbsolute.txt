@@ -233,4 +233,3 @@ C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataMana
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe.config
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.exe
 C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\obj\Debug\1012 Send E-data 48-98 Direct V4.0.0.pdb
-C:\Users\tanawut.pat\Desktop\1012\1012 Send E-data 48-98 Direct V3.6.0\EdataManagement\bin\Debug\MySql.Data.dll
