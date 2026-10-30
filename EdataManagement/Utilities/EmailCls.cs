@@ -2820,6 +2820,9 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         // by program 1084 in Shipping Data\Send, 1012 now prepares them itself.
         private static readonly string[] CASE3_PREPARE_CUSTOMERS = { "MOLEX", "MOLEX-SG", "OPLINK", "OPLINK-SUBMARINE" };
 
+        // the -n folders and zips go in here, not next to the customer folders in Shipping Data
+        private const string CASE3_OUTPUT_FOLDER = "Send by 1012 program";
+
         private static bool IsCase3PrepareCustomer(string customerName)
         {
             return CASE3_PREPARE_CUSTOMERS.Any(c => c.Equals(customerName?.Trim(), StringComparison.OrdinalIgnoreCase));
@@ -2827,11 +2830,13 @@ emailProp = _emailCon.getEmailAddress(emailProp);
 
         //   1. (all orders only) test report folders must not outnumber the orders in the database, and every order
         //      needs its folder yyMMdd-{FEC order}(short Part No)-{sub}
-        //   2-4. copy each test report folder (everything except "For QA check") into Shipping Data\yyMMdd-{customer}({product})-n,
+        //   2-4. copy each test report folder (everything except "For QA check") into
+        //        Shipping Data\Send by 1012 program\yyMMdd-{customer}({product})-n,
         //        a new -n whenever the next folder would pass 10 MB / 256 files - a test report folder is never split
         //   5. zip each -n next to it as yyMMdd-{customer}({product})-n.zip ({test report folder}/{files}, like 1084)
         //   6. one mail per zip, subject and body as the old format 3: "(i/N)" after the subject, folder names in the body
-        // Nothing is overwritten: when a -n folder or zip is already there it stops (maybe prepared or sent already).
+        // Nothing is overwritten: when a -n folder or zip is already there it stops (maybe prepared or sent already) -
+        // also when it is still in Shipping Data itself, where versions before Send by 1012 program put it.
         private EmailProperty prepareCase3PrepareZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
                                                      EmailProperty.replaceWord rpWord,
                                                      DataTable dtFile, DataTable dtInfoEmail,
@@ -2897,18 +2902,19 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             }
 
             // prepared (or sent) already? never overwrite - the user checks and deletes it first
+            string outerFolder = Path.Combine(emailProp.pathShipping, CASE3_OUTPUT_FOLDER);
             Regex ownOutput = new Regex("^" + Regex.Escape(baseName) + @"-\d+(\.zip)?$", RegexOptions.IgnoreCase);
-            string[] existing = Directory.GetFileSystemEntries(emailProp.pathShipping)
-                .Select(Path.GetFileName)
-                .Where(n => ownOutput.IsMatch(n))
-                .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
+            string[] existing = new[] { emailProp.pathShipping, outerFolder }
+                .Where(Directory.Exists)
+                .SelectMany(Directory.GetFileSystemEntries)
+                .Where(p => ownOutput.IsMatch(Path.GetFileName(p)))
+                .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
                 .ToArray();
             if (existing.Length > 0)
             {
                 MessageBox.Show($"พบข้อมูลที่เตรียมไว้แล้ว อาจเตรียมหรือส่ง E-data ของ shipment นี้ไปแล้ว\n" +
                                 $"กรุณาตรวจสอบ ถ้าจะเตรียมใหม่ให้ลบรายการเหล่านี้ก่อน:\n" +
-                                string.Join("\n", existing) + "\n" +
-                                $"ใน: {emailProp.pathShipping}",
+                                string.Join("\n", existing),
                                 "มีข้อมูลที่เตรียมไว้แล้ว", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 emailProp.isValid = false;
                 return emailProp;
@@ -2958,11 +2964,12 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             }
             groups.Add(current);
 
-            // 2, 3, 5. yyMMdd-{customer}({product})-n\{test report folder}\... and the zip of exactly those files
+            // 2, 3, 5. Send by 1012 program\yyMMdd-{customer}({product})-n\{test report folder}\... and the zip of exactly those files
+            Directory.CreateDirectory(outerFolder);
             List<string> zipPaths = new List<string>();
             for (int g = 0; g < groups.Count; g++)
             {
-                string folder = Path.Combine(emailProp.pathShipping, $"{baseName}-{g + 1}");
+                string folder = Path.Combine(outerFolder, $"{baseName}-{g + 1}");
                 string zipPath = folder + ".zip";
                 int expectedFiles = 0;
 
