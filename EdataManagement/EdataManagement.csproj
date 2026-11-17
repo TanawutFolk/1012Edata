@@ -217,6 +217,9 @@
       <DependentUpon>ucSpecSetting.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Views\Setting\AddressPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Views\Setting\EmailGroupsDialog.cs">
       <SubType>Form</SubType>
     </Compile>

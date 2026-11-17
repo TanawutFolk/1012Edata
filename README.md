@@ -1,4 +1,4 @@
-# 1012 Send E-data (EdataManagement)
+﻿# 1012 Send E-data (EdataManagement)
 
 โปรแกรมเตรียมและส่ง E-data (ไฟล์ผลเทสของ shipment) ให้ลูกค้า ทางอีเมล (Outlook) หรือ SFTP
 เลือก Product + วันที่ ship + ลูกค้า แล้วโปรแกรมจะหาไฟล์ใน `yyMMdd-Shipping Data` ตรวจความครบ แบ่งโฟลเดอร์ / zip และสร้างเมลตามค่าที่ตั้งไว้ของแต่ละ spec
@@ -109,7 +109,7 @@ yyMMdd-Shipping Data\
 - **Login**: รหัสพนักงานต้องอยู่ใน `mfg.info_employees`, ไม่ลาออก, และอยู่ใน `user_setting_edata` (INUSE = 1) → ได้ ROLE (`ADMIN` / `USER`)
   - การเช็ครหัสผ่าน portal (Security Center API) **ปิดอยู่** – ช่อง Password ไม่ถูกอ่าน (`frmLogin.btnLoginn_Click`)
 - **Spec** (`ucSpecSetting`): send method / file format / group / subject / body ของแต่ละ spec; กรอบ Recipients ทางขวาแสดงผู้รับของ group (ดูอย่างเดียว)
-- **Manage by Email** (`EmailGroupsDialog`, ปุ่มในกรอบ Recipients หรือดับเบิลคลิกอีเมล): ที่เดียวที่แก้ผู้รับ – เปิดอีเมลหนึ่ง ติ๊ก group / สลับ TO-CC หลาย group แล้ว Save ครั้งเดียว (`info_group_email`), ตั้งชื่อ group (`info_group_name`), ADMIN สร้าง group ใหม่ได้; log ใช้ `PRODUCT = 'BY EMAIL'`
+- **Manage Recipients** (`EmailGroupsDialog`, ปุ่มในกรอบ Recipients หรือดับเบิลคลิกอีเมล): ที่เดียวที่แก้ผู้รับ – ซ้าย: เปิดอีเมลหนึ่งแล้วติ๊ก / สลับ TO-CC หลาย group, ขวา: คลิก group แล้วเพิ่ม / ลบ / สลับ TO-CC หลายคน; ทั้งสองฝั่ง Save ครั้งเดียว (`info_group_email`), ตั้งชื่อ group (`info_group_name`), ADMIN สร้าง group ใหม่ได้ (ต้องมี TO); log ใช้ `PRODUCT = 'BY EMAIL'`
   - group ของ Serial List / Wafer (`key_group_email_document`) แก้ผู้รับได้ที่นี่ แต่การผูก group ใหม่ให้ลูกค้าต้องใช้ SQL script
 - **Login Permission** (`ucLoginSetting`): เห็นเฉพาะ ADMIN
 - **Database selector**: สลับ `qa_oc_test` ↔ `qa_oc` – เขียนลง `.exe.config` แล้วเปิดโปรแกรมใหม่ (`DatabaseSelection`)

@@ -1,4 +1,4 @@
-using EdataManagement.Controllers;
+﻿using EdataManagement.Controllers;
 using EdataManagement.Property;
 using EdataManagement.Utilities;
 
@@ -14,8 +14,8 @@ namespace EdataManagement.Views.Setting
     /// <summary>
     /// Recipients panel of ucSpecSetting: who is on the group of the ticked specs - the Recipient Group list decides
     /// which - or, with nothing ticked, on the group most Email specs of the customer use. Read only.
-    /// Members, group names and new groups are edited in Manage by Email (EmailGroupsDialog: one address on every
-    /// group at once), opened by the button here or by double-clicking an address. That window saves by itself, so it
+    /// Members, group names and new groups are edited in Manage Recipients (EmailGroupsDialog: by address or by
+    /// group), opened by the button here - on the group shown - or by double-clicking an address. That window saves by itself, so it
     /// opens only while no spec edit is staged, and the page is read again after it saved.
     /// </summary>
     public partial class ucSpecSetting
@@ -39,7 +39,7 @@ namespace EdataManagement.Views.Setting
 
         private void WireRecipientEvents()
         {
-            btnRcpAction.Click += delegate { OpenManageByEmail(""); };
+            btnRcpAction.Click += delegate { OpenManageRecipients(""); };
             dtgRecipients.CellDoubleClick += dtgRecipients_CellDoubleClick;
             dtgRecipients.CellFormatting += dtgRecipients_CellFormatting;
             dtgRecipients.DataBindingComplete += delegate { FormatRecipientGrid(); };
@@ -52,17 +52,17 @@ namespace EdataManagement.Views.Setting
             SettingUi.StyleGrid(dtgRecipients, 30, 9F, 32);
 
             // the one way to edit recipients; always there, next to the title
-            btnRcpAction.ButtonText = "Manage by Email";
+            btnRcpAction.ButtonText = "Manage Recipients";
             btnRcpAction.Text = btnRcpAction.ButtonText;
             btnRcpAction.SetBounds(pnRecipients.ClientSize.Width - 12 - 170, 6, 170, 28);
             btnRcpAction.Visible = true;
             lbRcpTitle.Width = btnRcpAction.Left - 8 - lbRcpTitle.Left;
-            toolTipAlert.SetToolTip(btnRcpAction, "เพิ่ม / ลบ / สลับ TO-CC ของอีเมลเดียวในหลาย group พร้อมกัน, ตั้งชื่อ group, สร้าง group ใหม่");
+            toolTipAlert.SetToolTip(btnRcpAction, "เพิ่ม / ลบ / สลับ TO-CC ผู้รับ: ทีละคนหลาย group หรือทีละ group หลายคน, ตั้งชื่อ group, สร้าง group ใหม่");
 
             // the grid takes the room of the old Add row; one line under it says how to edit
             Label hint = new Label();
             hint.AutoSize = false;
-            hint.Text = "ดับเบิลคลิกอีเมลเพื่อแก้ group ของคนนั้น";
+            hint.Text = "ดูอย่างเดียว - กด Manage Recipients เพื่อแก้ หรือดับเบิลคลิกอีเมล";
             hint.Font = lbRcpNote.Font;
             hint.ForeColor = lbRcpNote.ForeColor;
             hint.TextAlign = ContentAlignment.MiddleLeft;
@@ -250,14 +250,14 @@ namespace EdataManagement.Views.Setting
             if (e.RowIndex < 0) return;
 
             DataRowView item = dtgRecipients.Rows[e.RowIndex].DataBoundItem as DataRowView;
-            if (item != null) OpenManageByEmail(Convert.ToString(item[COL_RCP_ADDRESS]));
+            if (item != null) OpenManageRecipients(Convert.ToString(item[COL_RCP_ADDRESS]));
         }
 
         // =====================================================================
-        // Manage by Email
+        // Manage Recipients
         // =====================================================================
         /// <summary>address = the one to open at once ("" = the user picks).</summary>
-        private void OpenManageByEmail(string address)
+        private void OpenManageRecipients(string address)
         {
             if (_emailCon == null) return;
 
@@ -266,14 +266,14 @@ namespace EdataManagement.Views.Setting
             if (pending > 0)
             {
                 frmError.ShowError(this, "มีการแก้ spec ที่ยังไม่ได้ Save " + pending + " รายการ" + Environment.NewLine +
-                    "กด Save หรือ Cancel ก่อน แล้วค่อยเปิด Manage by Email");
+                    "กด Save หรือ Cancel ก่อน แล้วค่อยเปิด Manage Recipients");
                 return;
             }
 
-            int saved = EmailGroupsDialog.Open(this, AllProducts(), address);
+            int saved = EmailGroupsDialog.Open(this, AllProducts(), address, _shownGroupId);
             if (saved > 0)
             {
-                ReloadAfterSave("บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว: Manage by Email " + saved + " รายการ");
+                ReloadAfterSave("บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว: Manage Recipients " + saved + " รายการ");
             }
         }
 
@@ -293,7 +293,7 @@ namespace EdataManagement.Views.Setting
             return members;
         }
 
-        /// <summary>Forget what was read (Save / Manage by Email / another customer): the next look reads again.</summary>
+        /// <summary>Forget what was read (Save / Manage Recipients / another customer): the next look reads again.</summary>
         private void ClearRecipientCache()
         {
             _members.Clear();

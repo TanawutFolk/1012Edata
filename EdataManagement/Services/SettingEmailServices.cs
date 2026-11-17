@@ -130,6 +130,14 @@ namespace EdataManagement.Services
             return resultData;
         }
 
+        public OutputOnDbProperty searchAllMembers()
+        {
+            UseSettingConnection();
+            sql = sqlFactory.searchAllMembers();
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
         public OutputOnDbProperty searchAllDocumentGroups()
         {
             UseSettingConnection();

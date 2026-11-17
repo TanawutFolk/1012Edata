@@ -297,6 +297,17 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
+        /// <summary>Every member of every group (the address as info_email spells it) - Manage Recipients edits them in memory.</summary>
+        public string searchAllMembers()
+        {
+            sql = "SELECT ge.GROUP_ID, ge.RECIPIENT_ID, ge.EMAIL_ID, e.EMAIL_ADDRESS " +
+                  "FROM info_group_email ge " +
+                  "INNER JOIN info_email e ON (e.EMAIL_ID = ge.EMAIL_ID) " +
+                  "ORDER BY ge.GROUP_ID ASC, ge.RECIPIENT_ID ASC, e.EMAIL_ADDRESS ASC ";
+
+            return sql;
+        }
+
         /// <summary>Every Serial List / Wafer group with its product + customer (who a group's mail goes to).</summary>
         public string searchAllDocumentGroups()
         {

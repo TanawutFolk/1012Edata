@@ -14,12 +14,14 @@ using System.Windows.Forms;
 namespace EdataManagement.Views.Setting
 {
     /// <summary>
-    /// "Manage by Email" window - the only place recipients are edited: one address and every group, ticked where it
-    /// is on. Tick / untick / TO-CC on as many groups as needed and Save once.
-    /// Also here: the name of a group (double-click GROUP; info_group_name, shown in Setting only) and, for ADMIN,
-    /// "+ Group ใหม่" - a new group; it waits as a row here and is written with its first TO address (the database has
-    /// no group table, a group exists through its members). Specs are moved to it on the Spec page.
-    /// Writes insert / delete / TO-CC of info_group_email, a new info_email row, info_group_name, and one
+    /// "Manage Recipients" window - the only place recipients are edited. Two ways into the same data:
+    ///   left   every group; open an address (box on top) and tick / untick / TO-CC it on as many groups as needed
+    ///   right  the members of the group clicked on the left; add / remove / TO-CC as many addresses as needed
+    /// Every member of every group is held in memory (as read / as edited), so edits from both sides pile up and one
+    /// Save writes them all. Also here: the name of a group (double-click GROUP; info_group_name, shown in Setting
+    /// only) and, for ADMIN, "+ Group ใหม่" - a new group is written with its first members and needs a TO (the
+    /// database has no group table, a group exists through its members). Specs are moved to it on the Spec page.
+    /// Writes insert / delete / TO-CC of info_group_email, new info_email rows, info_group_name, and one
     /// log_setting_edata row per change (PRODUCT = BY EMAIL, CUSTOMER = who gets the group's mail), in one transaction.
     /// Opened by ucSpecSetting only while that page has nothing staged; Open returns how many changes were saved.
     /// </summary>
@@ -29,16 +31,16 @@ namespace EdataManagement.Views.Setting
         private const int RCP_CC = 2;
         private const int GROUP_INTERNAL = 0;
         private const int GROUP_NAME_MAX = 100;
-        private const int CONFIRM_MAX_LINES = 15;
+        private const int CONFIRM_MAX_LINES = 14;
         private const int USED_BY_MAX_CHARS = 90;
+        private const int MEMBER_PANEL_WIDTH = 470;
 
         private const string LOG_PRODUCT = "BY EMAIL";
         private const string EMAIL_PATTERN = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         private const string SAVE_STOPPED = "บันทึกไม่สำเร็จ ยังไม่มีข้อมูลถูกเขียน";
-        private const string HINT = "ติ๊ก group ที่ต้องการ แล้วกด Save  ·  คลิก TYPE เพื่อสลับ TO / CC  ·  ดับเบิลคลิก GROUP เพื่อตั้งชื่อ";
-        private const string NEW_GROUP_USE = "(group ใหม่ - ยังไม่บันทึกจนกว่าจะมี TO: เปิดอีเมล ติ๊ก group นี้ แล้ว Save)";
+        private const string HINT = "ซ้าย: เลือกอีเมลแล้วติ๊ก group  ·  ขวา: คลิก group แล้วเพิ่ม / ลบคน  ·  คลิก TYPE สลับ TO / CC  ·  ดับเบิลคลิก GROUP ตั้งชื่อ";
 
-        // columns of _groups (and of the grid)
+        // columns of _groups (left grid)
         private const string COL_CHECK = "CHECKED";
         private const string COL_GROUP_ID = "GROUP_ID";
         private const string COL_GROUP = "GROUP_TEXT";
@@ -47,10 +49,23 @@ namespace EdataManagement.Views.Setting
         private const string COL_USED_BY = "USED_BY";
         private const string COL_CHANGE = "CHANGE";
 
-        /// <summary>One add / remove / TO-CC switch of the opened address on one group. 0 = not on the group.</summary>
+        // columns of _memberRows (right grid)
+        private const string COL_ADDRESS = "EMAIL_ADDRESS";
+        private const string COL_REMOVED = "REMOVED";
+        private const string COL_ACTION = "colAction";
+
+        /// <summary>An address on a group as read: TO / CC and the EMAIL_ID that is really on that group.</summary>
+        private class Member
+        {
+            public int Type;
+            public int EmailId;
+        }
+
+        /// <summary>One add / remove / TO-CC switch of one address on one group. 0 = not on the group.</summary>
         private class Change
         {
             public int GroupId;     // a group made here: the id shown while staging, mapped at Save
+            public string Address;
             public int EmailId;     // the EMAIL_ID on the group; -1 = an add, the id is found / made at Save
             public int Old;
             public int New;
@@ -70,57 +85,64 @@ namespace EdataManagement.Views.Setting
 
         private readonly List<SettingEmailProperty> _products;
 
-        /// <summary>One row per group, bound to the grid; _rowOf finds it by GROUP_ID.</summary>
+        /// <summary>One row per group, bound to the left grid; _rowOf finds it by GROUP_ID.</summary>
         private readonly DataTable _groups = new DataTable();
         private readonly DataView _view;
         private readonly Dictionary<int, DataRow> _rowOf = new Dictionary<int, DataRow>();
 
-        /// <summary>TO on each group as read - Save refuses to leave a group that customers use without one.</summary>
-        private readonly Dictionary<int, int> _toCount = new Dictionary<int, int>();
+        /// <summary>Members of the group clicked on the left, bound to the right grid (rebuilt on every change).</summary>
+        private readonly DataTable _memberRows = new DataTable();
+
+        /// <summary>Members of every group: as read / as edited here (group -> address -> ...). Addresses ignore case.</summary>
+        private readonly Dictionary<int, Dictionary<string, Member>> _loaded = new Dictionary<int, Dictionary<string, Member>>();
+        private readonly Dictionary<int, Dictionary<string, int>> _now = new Dictionary<int, Dictionary<string, int>>();
 
         /// <summary>Who gets each group's mail: "1480 OPLINK", "1480 HISILICON (Serial List)" ...</summary>
         private readonly Dictionary<int, List<string>> _usedBy = new Dictionary<int, List<string>>();
 
-        /// <summary>Who is on each group as read, one address per line under "TO" / "CC" - the hover text of MEMBERS.</summary>
-        private readonly Dictionary<int, string> _memberList = new Dictionary<int, string>();
-
-        /// <summary>Addresses of info_email as spelled there.</summary>
+        /// <summary>Addresses of info_email as spelled there, and the EMAIL_ID of each (the first when it is there twice).</summary>
         private readonly List<string> _addresses = new List<string>();
+        private readonly Dictionary<string, int> _emailIdOf = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>Group names as read / typed here and not saved yet ("" = no name). False = no info_group_name table.</summary>
         private readonly Dictionary<int, string> _names = new Dictionary<int, string>();
         private readonly Dictionary<int, string> _namesStaged = new Dictionary<int, string>();
         private bool _namesReadable;
 
-        /// <summary>Groups made here, not in the database yet.</summary>
+        /// <summary>Groups made here, not in the database yet; after a Save: the id each one was written with.</summary>
         private readonly List<int> _newGroups = new List<int>();
+        private Dictionary<int, int> _writtenGroupIds = new Dictionary<int, int>();
 
-        // the opened address: its groups as read (group -> TO / CC, group -> EMAIL_ID there) and as ticked now
+        /// <summary>The address the left side ticks ("" = none) and the group the right side shows (-1 = none).</summary>
         private string _address = "";
-        private readonly Dictionary<int, int> _before = new Dictionary<int, int>();
-        private readonly Dictionary<int, int> _beforeEmailId = new Dictionary<int, int>();
-        private readonly Dictionary<int, int> _now = new Dictionary<int, int>();
+        private int _selectedGroup = -1;
 
         private int _savedCount;
 
         /// <summary>What the loading sheet covers: the opening page first, this window once it is shown.</summary>
         private Control _busyOwner;
 
-        private readonly ComboBox cbEmail = new ComboBox();
+        private readonly AddressPicker cbEmail = new AddressPicker();
         private readonly Label lbEmailInfo = new Label();
         private readonly TextBox txtFind = new TextBox();
         private readonly Label lbCount = new Label();
         private readonly DataGridView grid = new DataGridView();
+        private readonly Label lbMemberTitle = new Label();
+        private readonly Label lbMemberNote = new Label();
+        private readonly DataGridView gridMembers = new DataGridView();
+        private readonly AddressPicker cbAdd = new AddressPicker();
+        private readonly ComboBox cbAddType = new ComboBox();
+        private readonly Button btnAdd = new Button();
         private readonly Label lbSummary = new Label();
         private readonly Button btnSave = new Button();
         private readonly ToolTip toolTip = new ToolTip();
         private readonly Font _bold = new Font(SettingUi.FONT_NAME, 9.75F, FontStyle.Bold);
 
         /// <summary>
-        /// Opens the window (address = the one to open at once, "" = the user picks);
+        /// Opens the window (address = the one to open at once, "" = none; groupId = the group to show, -1 = none);
         /// the number of changes written while it was open (0 = nothing saved).
         /// </summary>
-        public static int Open(Control owner, List<SettingEmailProperty> products, string address)
+        public static int Open(Control owner, List<SettingEmailProperty> products, string address, int groupId)
         {
             using (EmailGroupsDialog dialog = new EmailGroupsDialog(products))
             {
@@ -135,11 +157,10 @@ namespace EdataManagement.Views.Setting
                     return 0;
                 }
 
-                if (!string.IsNullOrEmpty(address))
-                {
-                    dialog.cbEmail.Text = address;
-                    dialog.OpenAddress(address);
-                }
+                if (dialog._rowOf.ContainsKey(groupId)) dialog._selectedGroup = groupId;
+                if (!string.IsNullOrEmpty(address)) dialog.OpenAddress(address);
+                dialog.RefreshRows();
+                dialog.Shown += delegate { dialog.SelectGroupRow(); };
 
                 dialog.ShowDialog(owner);
                 return dialog._savedCount;
@@ -159,6 +180,11 @@ namespace EdataManagement.Views.Setting
             _groups.Columns.Add(COL_CHANGE, typeof(string));
             _view = new DataView(_groups);
 
+            _memberRows.Columns.Add(COL_ADDRESS, typeof(string));
+            _memberRows.Columns.Add(COL_TYPE, typeof(string));
+            _memberRows.Columns.Add(COL_CHANGE, typeof(string));
+            _memberRows.Columns.Add(COL_REMOVED, typeof(bool));
+
             BuildUi();
         }
 
@@ -167,15 +193,15 @@ namespace EdataManagement.Views.Setting
         // =====================================================================
         private void BuildUi()
         {
-            Text = "Manage by Email - one address on every group (" + MailSafety.ConfigDatabase + ")";
+            Text = "Manage Recipients (" + MailSafety.ConfigDatabase + ")";
             StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(1180, 660);
-            MinimumSize = new Size(900, 480);
+            ClientSize = new Size(1340, 680);
+            MinimumSize = new Size(1100, 500);
             MinimizeBox = false;
             BackColor = Color.White;
             Font = new Font(SettingUi.FONT_NAME, 9.75F, FontStyle.Regular);
 
-            // ---- top: the address, search ----
+            // ---- top: the address for the left side, search ----
             Panel top = new Panel();
             top.Dock = DockStyle.Top;
             top.Size = new Size(ClientSize.Width, 92);   // full width before + Group ใหม่ is anchored to its right edge
@@ -188,29 +214,16 @@ namespace EdataManagement.Views.Setting
 
             top.Controls.Add(MakeLabel("อีเมล", labelLeft, 18));
 
-            // type to find: addresses that start with what is typed (like the customer box of the Spec page)
-            cbEmail.DropDownStyle = ComboBoxStyle.DropDown;
-            cbEmail.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cbEmail.AutoCompleteSource = AutoCompleteSource.ListItems;
-            cbEmail.Location = new Point(boxLeft, 14);
-            cbEmail.Size = new Size(boxWidth, 26);
-            cbEmail.MaxDropDownItems = 20;
-            // SelectionChangeCommitted comes before Text follows the picked item
-            cbEmail.SelectionChangeCommitted += delegate { OpenAddress(Convert.ToString(cbEmail.SelectedItem)); };
-            cbEmail.KeyDown += delegate (object s, KeyEventArgs e)
-            {
-                if (e.KeyCode != Keys.Enter) return;
-                e.SuppressKeyPress = true;
-                OpenAddress(cbEmail.Text);
-            };
+            // picked in the list or typed + Enter: show on the left where the address is
+            cbEmail.SetBounds(boxLeft, 13, boxWidth + 98, 28);
+            cbEmail.Placeholder = "พิมพ์หรือเลือกอีเมล แล้วกด Enter (อีเมลใหม่ก็พิมพ์ได้)";
+            cbEmail.InfoOf = delegate (string address) { return GroupCountText(address); };
+            cbEmail.DimOf = delegate (string address) { return GroupCount(address) == 0; };
+            cbEmail.Chosen += delegate (string address, bool fromList) { OpenAddress(address); };
             top.Controls.Add(cbEmail);
 
-            Button btnOpen = MakeButton("เปิด", buttonLeft, 13, 90);
-            btnOpen.Click += delegate { OpenAddress(cbEmail.Text); };
-            top.Controls.Add(btnOpen);
-
             lbEmailInfo.AutoSize = true;
-            lbEmailInfo.Location = new Point(buttonLeft + 100, 18);
+            lbEmailInfo.Location = new Point(buttonLeft + 106, 18);
             lbEmailInfo.ForeColor = SettingUi.TYPE_CC_TEXT;
             top.Controls.Add(lbEmailInfo);
 
@@ -228,23 +241,22 @@ namespace EdataManagement.Views.Setting
 
             if (SettingUi.IsAdmin())
             {
-                Button btnNewGroup = MakeButton("+ Group ใหม่", ClientSize.Width - 16 - 130, 53, 130);
-                btnNewGroup.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                Button btnNewGroup = MakeButton("+ Group ใหม่", buttonLeft + 110, 53, 130);
                 btnNewGroup.Click += delegate { AddNewGroup(); };
                 top.Controls.Add(btnNewGroup);
-                toolTip.SetToolTip(btnNewGroup, "สร้าง group ใหม่ที่มีอีเมลที่เปิดอยู่เป็น TO (ADMIN)");
+                toolTip.SetToolTip(btnNewGroup, "สร้าง group ใหม่ แล้วเพิ่มคนทางขวา (ต้องมี TO อย่างน้อย 1) - ADMIN");
             }
 
-            // ---- grid ----
+            // ---- left: groups ----
             grid.Dock = DockStyle.Fill;
             SettingUi.StyleGrid(grid, 32);
             grid.AutoGenerateColumns = false;
             grid.Columns.Add(MakeCheckColumn());
             grid.Columns.Add(MakeTextColumn(COL_GROUP, "GROUP", 150));
-            grid.Columns.Add(MakeTextColumn(COL_TYPE, "TYPE", 55));
+            grid.Columns.Add(MakeTextColumn(COL_TYPE, "TYPE", 50));
             grid.Columns.Add(MakeTextColumn(COL_MEMBERS, "MEMBERS", 85));
-            grid.Columns.Add(MakeTextColumn(COL_USED_BY, "USED BY (ใครได้เมลของ group นี้)", 380));
-            grid.Columns.Add(MakeTextColumn(COL_CHANGE, "CHANGE", 150));
+            grid.Columns.Add(MakeTextColumn(COL_USED_BY, "USED BY (ใครได้เมลของ group นี้)", 250));
+            grid.Columns.Add(MakeTextColumn(COL_CHANGE, "CHANGE", 110));
             grid.Columns[COL_TYPE].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grid.DataSource = _view;
 
@@ -253,7 +265,80 @@ namespace EdataManagement.Views.Setting
             grid.CellFormatting += grid_CellFormatting;
             grid.CellMouseEnter += grid_CellMouseEnter;
             grid.CellMouseLeave += delegate { grid.Cursor = Cursors.Default; };
-            grid.DataBindingComplete += delegate { grid.ClearSelection(); };
+
+            // ---- right: members of the clicked group ----
+            Panel right = new Panel();
+            right.Dock = DockStyle.Right;
+            right.Size = new Size(MEMBER_PANEL_WIDTH, 400);
+            right.BackColor = SettingUi.GRID_ALT_ROW;
+
+            const int pad = 12;
+            int inner = MEMBER_PANEL_WIDTH - pad * 2;
+
+            lbMemberTitle.AutoSize = false;
+            lbMemberTitle.AutoEllipsis = true;
+            lbMemberTitle.Font = new Font(SettingUi.FONT_NAME, 11.25F, FontStyle.Bold);
+            lbMemberTitle.ForeColor = SettingUi.GRID_TEXT;
+            lbMemberTitle.SetBounds(pad, 8, inner, 24);
+            right.Controls.Add(lbMemberTitle);
+
+            lbMemberNote.AutoSize = false;
+            lbMemberNote.AutoEllipsis = true;
+            lbMemberNote.Font = new Font(SettingUi.FONT_NAME, 8.25F, FontStyle.Regular);
+            lbMemberNote.ForeColor = SettingUi.TYPE_CC_TEXT;
+            lbMemberNote.SetBounds(pad, 34, inner, 18);
+            right.Controls.Add(lbMemberNote);
+
+            gridMembers.SetBounds(pad, 58, inner, 400 - 58 - 50);
+            gridMembers.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            SettingUi.StyleGrid(gridMembers, 30, 9F, 32);
+            gridMembers.AutoGenerateColumns = false;
+            gridMembers.Columns.Add(MakeTextColumn(COL_ADDRESS, "EMAIL ADDRESS", 250));
+            gridMembers.Columns.Add(MakeTextColumn(COL_TYPE, "TYPE", 50));
+            gridMembers.Columns.Add(MakeTextColumn(COL_CHANGE, "CHANGE", 70));
+            gridMembers.Columns.Add(SettingUi.MakeButtonColumn(COL_ACTION, "", 55, SettingUi.REMOVE_TEXT));
+            gridMembers.Columns[COL_TYPE].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gridMembers.DataSource = _memberRows;
+
+            gridMembers.CellClick += gridMembers_CellClick;
+            gridMembers.CellDoubleClick += gridMembers_CellDoubleClick;
+            gridMembers.CellFormatting += gridMembers_CellFormatting;
+            gridMembers.CellMouseEnter += gridMembers_CellMouseEnter;
+            gridMembers.CellMouseLeave += delegate { gridMembers.Cursor = Cursors.Default; };
+            gridMembers.DataBindingComplete += delegate { gridMembers.ClearSelection(); };
+            right.Controls.Add(gridMembers);
+
+            // add row under the grid: address, TO / CC, เพิ่ม
+            const int addTop = 400 - 40;
+            // picking in the list only fills the box (TO / CC may still be changed); Enter on it or เพิ่ม adds
+            cbAdd.SetBounds(pad, addTop + 1, inner - 64 - 80 - 12, 28);
+            cbAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            cbAdd.Placeholder = "อีเมลที่จะเพิ่มเข้า group นี้";
+            cbAdd.InfoOf = delegate (string address)
+            {
+                return NowType(_selectedGroup, address) != 0 ? "อยู่ใน group นี้แล้ว" : GroupCountText(address);
+            };
+            cbAdd.DimOf = delegate (string address) { return NowType(_selectedGroup, address) != 0; };
+            cbAdd.Chosen += delegate (string address, bool fromList)
+            {
+                if (!fromList) AddMember();
+            };
+            right.Controls.Add(cbAdd);
+
+            cbAddType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbAddType.Items.Add("TO");
+            cbAddType.Items.Add("CC");
+            cbAddType.SelectedIndex = 0;
+            cbAddType.SetBounds(cbAdd.Right + 6, addTop + 2, 64, 26);
+            cbAddType.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            right.Controls.Add(cbAddType);
+
+            btnAdd.Text = "เพิ่ม";
+            btnAdd.SetBounds(cbAddType.Right + 6, addTop, 80, 30);
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAdd.Click += delegate { AddMember(); };
+            right.Controls.Add(btnAdd);
+            SettingUi.StyleButton(btnAdd);
 
             // ---- bottom: what Save will do ----
             Panel bottom = new Panel();
@@ -285,9 +370,11 @@ namespace EdataManagement.Views.Setting
             btnSave.BackColor = SettingUi.BUTTON_PRIMARY;
             btnSave.ForeColor = SettingUi.BUTTON_PRIMARY_TEXT;
 
+            // docking goes from the last one added inwards: (banner) top, bottom, right, the grid takes the rest
             Controls.Add(grid);
-            Controls.Add(top);
+            Controls.Add(right);
             Controls.Add(bottom);
+            Controls.Add(top);
 
             // on qa_oc a Save here changes who the customers' mail really goes to
             if (!MailSafety.IsTestMode)
@@ -307,14 +394,15 @@ namespace EdataManagement.Views.Setting
 
             FormClosing += delegate (object s, FormClosingEventArgs e)
             {
-                // a new group nobody is ticked on is not written either: it counts as unsaved
-                int n = PendingCount() + _newGroups.Count(id => !_now.ContainsKey(id));
+                // a new group nobody is on is not written either: it counts as unsaved
+                int n = PendingCount() + _newGroups.Count(id => NowOf(id).Count == 0);
                 if (n > 0 && !frmConfirm.Ask(this, "ทิ้งการแก้ที่ยังไม่ได้ Save (" + n + " รายการ)?", "ทิ้ง", "แก้ต่อ"))
                 {
                     e.Cancel = true;
                 }
             };
 
+            RefreshMembers();
             UpdateSummary();
         }
 
@@ -401,17 +489,17 @@ namespace EdataManagement.Views.Setting
         // =====================================================================
         // read
         // =====================================================================
-        /// <summary>Addresses, groups, names, members and who uses each group; "" = done, else the error.</summary>
+        /// <summary>Addresses, every member of every group, names and who uses each group; "" = done, else the error.</summary>
         private string LoadAll()
         {
-            DataTable emails, counts, specs, documents, names;
+            DataTable emails, members, specs, documents, names;
 
             using (SettingBusy.Begin(_busyOwner, SettingBusy.LOADING))
             {
                 emails = Busy(() => _emailCon.searchEmailList());
                 if (_emailCon.lastError != "") return _emailCon.lastError;
 
-                counts = Busy(() => _emailCon.searchAllGroups());
+                members = Busy(() => _emailCon.searchAllMembers());
                 if (_emailCon.lastError != "") return _emailCon.lastError;
 
                 specs = Busy(() => _emailCon.searchGroupMatrix(_products));
@@ -433,33 +521,43 @@ namespace EdataManagement.Views.Setting
             }
 
             _addresses.Clear();
-            _addresses.AddRange(emails.Rows.Cast<DataRow>()
-                .Select(r => Convert.ToString(r["EMAIL_ADDRESS"]).Trim())
-                .Where(a => a != "")
-                .Distinct(StringComparer.OrdinalIgnoreCase));
-
-            string typed = cbEmail.Text;
-            cbEmail.Items.Clear();
-            cbEmail.Items.AddRange(_addresses.Cast<object>().ToArray());
-            cbEmail.Text = typed;
-
-            _toCount.Clear();
-            _usedBy.Clear();
-            _newGroups.Clear();
-            _memberList.Clear();
-            Dictionary<int, string> members = new Dictionary<int, string>();
-
-            foreach (DataRow row in counts.Rows)
+            _emailIdOf.Clear();
+            foreach (DataRow row in emails.Rows)
             {
-                int id = ToInt(row["GROUP_ID"]);
-                int to = ToInt(row["TO_COUNT"]);
-                _toCount[id] = to;
-                members[id] = "TO " + to + " / CC " + ToInt(row["CC_COUNT"]);
-                _memberList[id] = "Group #" + id + Environment.NewLine +
-                    "TO:" + Environment.NewLine + AddressLines(row["TO_LIST"]) + Environment.NewLine +
-                    "CC:" + Environment.NewLine + AddressLines(row["CC_LIST"]);
+                string address = Convert.ToString(row["EMAIL_ADDRESS"]).Trim();
+                if (address == "" || _emailIdOf.ContainsKey(address)) continue;
+
+                _addresses.Add(address);
+                _emailIdOf[address] = ToInt(row["EMAIL_ID"]);
             }
 
+            cbEmail.SetItems(_addresses);
+            cbAdd.SetItems(_addresses);
+
+            _loaded.Clear();
+            _now.Clear();
+            _newGroups.Clear();
+            foreach (DataRow row in members.Rows)
+            {
+                int id = ToInt(row["GROUP_ID"]);
+                string address = Convert.ToString(row["EMAIL_ADDRESS"]).Trim();
+                int type = ToInt(row["RECIPIENT_ID"]);
+
+                Dictionary<string, Member> group;
+                if (!_loaded.TryGetValue(id, out group))
+                {
+                    group = new Dictionary<string, Member>(StringComparer.OrdinalIgnoreCase);
+                    _loaded[id] = group;
+                }
+
+                // info_email holds a few addresses twice: the first one found stands for the address
+                if (group.ContainsKey(address)) continue;
+
+                group[address] = new Member { Type = type, EmailId = ToInt(row["EMAIL_ID"]) };
+                NowOf(id)[address] = type;
+            }
+
+            _usedBy.Clear();
             foreach (DataRow row in specs.Rows)
             {
                 AddUse(ToInt(row["GROUP_ID"]), row["PRODUCT"] + " " + row["CUSTOMER_NAME"]);
@@ -471,7 +569,7 @@ namespace EdataManagement.Views.Setting
             }
 
             // #0 is also read by other programs (uITLA ...), not only by the key tables of 1012
-            if (members.ContainsKey(GROUP_INTERNAL) || _usedBy.ContainsKey(GROUP_INTERNAL))
+            if (_loaded.ContainsKey(GROUP_INTERNAL) || _usedBy.ContainsKey(GROUP_INTERNAL))
             {
                 AddUse(GROUP_INTERNAL, "uITLA / โปรแกรมอื่น");
             }
@@ -479,15 +577,13 @@ namespace EdataManagement.Views.Setting
             _groups.Rows.Clear();
             _rowOf.Clear();
 
-            foreach (int id in members.Keys.Union(_usedBy.Keys).OrderBy(id => id))
+            foreach (int id in _loaded.Keys.Union(_usedBy.Keys).OrderBy(id => id))
             {
                 string used = UsedByText(id, USED_BY_MAX_CHARS);
-
-                string membersText;
-                if (!members.TryGetValue(id, out membersText)) membersText = "ว่าง";
-
-                _rowOf[id] = _groups.Rows.Add(false, id, GroupText(id), "", membersText, used == "" ? "(ไม่มีลูกค้าใช้)" : used, "");
+                _rowOf[id] = _groups.Rows.Add(false, id, GroupText(id), "", "", used == "" ? "(ไม่มีลูกค้าใช้)" : used, "");
             }
+
+            if (!_rowOf.ContainsKey(_selectedGroup)) _selectedGroup = -1;
 
             ApplyFilter();
             return "";
@@ -526,6 +622,52 @@ namespace EdataManagement.Views.Setting
             return _addresses.FirstOrDefault(a => SameAddress(a, address));
         }
 
+        // ---- members in memory ----
+
+        /// <summary>Members of a group as edited (made empty the first time it is asked for).</summary>
+        private Dictionary<string, int> NowOf(int groupId)
+        {
+            Dictionary<string, int> group;
+            if (!_now.TryGetValue(groupId, out group))
+            {
+                group = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                _now[groupId] = group;
+            }
+            return group;
+        }
+
+        private int NowType(int groupId, string address)
+        {
+            int type;
+            return address != "" && NowOf(groupId).TryGetValue(address, out type) ? type : 0;
+        }
+
+        private Member LoadedMember(int groupId, string address)
+        {
+            Dictionary<string, Member> group;
+            Member member;
+            return _loaded.TryGetValue(groupId, out group) && group.TryGetValue(address, out member) ? member : null;
+        }
+
+        private int LoadedType(int groupId, string address)
+        {
+            Member member = address == "" ? null : LoadedMember(groupId, address);
+            return member == null ? 0 : member.Type;
+        }
+
+        private IEnumerable<string> LoadedAddresses(int groupId)
+        {
+            Dictionary<string, Member> group;
+            return _loaded.TryGetValue(groupId, out group) ? group.Keys : Enumerable.Empty<string>();
+        }
+
+        private int CountNow(int groupId, int type)
+        {
+            return NowOf(groupId).Values.Count(t => t == type);
+        }
+
+        // ---- names ----
+
         /// <summary>Name on screen: typed here, else as read; "" = none.</summary>
         private string NameOf(int groupId)
         {
@@ -548,12 +690,13 @@ namespace EdataManagement.Views.Setting
         }
 
         // =====================================================================
-        // the opened address
+        // left side: the opened address
         // =====================================================================
+        /// <summary>Show on the left where the address is; nothing staged is lost by opening another one.</summary>
         private void OpenAddress(string typed)
         {
             string address = (typed ?? "").Trim();
-            if (address == "" || SameAddress(address, _address)) return;
+            if (address == "") return;
 
             if (!Regex.IsMatch(address, EMAIL_PATTERN))
             {
@@ -561,73 +704,60 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
-            // names belong to the groups, not to the address: they stay staged
-            int pending = Changes().Count;
-            if (pending > 0 && !frmConfirm.Ask(this,
-                    "ทิ้งการแก้ของ " + _address + " (" + pending + " รายการ) แล้วเปิด " + address + "?", "ทิ้ง", "ยกเลิก"))
-            {
-                cbEmail.Text = _address;
-                return;
-            }
-
-            DataTable rows = Busy(() => _emailCon.searchGroupsOfAddress(new SettingEmailProperty { emailAddress = address }));
-            if (_emailCon.lastError != "")
-            {
-                frmError.ShowError(this, "อ่าน group ของ " + address + " ไม่ได้" + Environment.NewLine + _emailCon.lastError);
-                return;
-            }
-
             _address = KnownAddress(address) ?? address;
-            cbEmail.Text = _address;
-
-            // matched by the address: each row brings the EMAIL_ID that is really on that group
-            _before.Clear();
-            _beforeEmailId.Clear();
-            _now.Clear();
-            foreach (DataRow row in rows.Rows)
-            {
-                int groupId = ToInt(row["GROUP_ID"]);
-                _before[groupId] = ToInt(row["RECIPIENT_ID"]);
-                _beforeEmailId[groupId] = ToInt(row["EMAIL_ID"]);
-                _now[groupId] = _before[groupId];
-            }
-
-            if (KnownAddress(_address) == null)
-            {
-                lbEmailInfo.Text = "อีเมลใหม่ ยังไม่มีในระบบ จะถูกเพิ่มตอน Save";
-                lbEmailInfo.ForeColor = SettingUi.TAB_ACTIVE_BACK;
-            }
-            else
-            {
-                lbEmailInfo.Text = _before.Count == 0 ? "ยังไม่อยู่ใน group ไหน" : "อยู่ใน " + _before.Count + " group";
-                lbEmailInfo.ForeColor = SettingUi.TYPE_CC_TEXT;
-            }
+            cbEmail.Value = _address;
 
             RefreshRows();
             UpdateSummary();
+        }
+
+        /// <summary>On how many groups an address is now (as edited).</summary>
+        private int GroupCount(string address)
+        {
+            return _now.Count(p => p.Value.ContainsKey(address));
+        }
+
+        private string GroupCountText(string address)
+        {
+            int groups = GroupCount(address);
+            return groups == 0 ? "ไม่อยู่ group ไหน" : groups + " group";
+        }
+
+        private void UpdateEmailInfo()
+        {
+            if (_address == "")
+            {
+                lbEmailInfo.Text = "";
+                return;
+            }
+
+            int groups = GroupCount(_address);
+            bool isNew = KnownAddress(_address) == null;
+
+            lbEmailInfo.Text = (isNew ? "อีเมลใหม่ จะถูกเพิ่มตอน Save  ·  " : "") +
+                               (groups == 0 ? "ยังไม่อยู่ใน group ไหน" : "อยู่ใน " + groups + " group");
+            lbEmailInfo.ForeColor = isNew ? SettingUi.TAB_ACTIVE_BACK : SettingUi.TYPE_CC_TEXT;
         }
 
         // =====================================================================
         // new group / group name
         // =====================================================================
         /// <summary>
-        /// A new row to tick addresses on: the opened address starts on it as TO, with none open it waits empty.
-        /// It is written (with its real id) by the Save that puts its first TO on it.
+        /// A new, empty group, shown on the right to be filled. It is written (with its real id) by the Save that
+        /// finds members on it; one of them must be TO.
         /// </summary>
         private void AddNewGroup()
         {
             if (!SettingUi.IsAdmin()) return;
 
-            string first = _address == "" ? "เปิดอีเมลแล้วติ๊ก group นี้เป็น TO เพื่อบันทึก" : _address + " จะเป็น TO";
-
             string name = "";
             if (_namesReadable)
             {
-                name = AskText("Group ใหม่", "ชื่อ group ใหม่ (เว้นว่างได้) - " + first, "");
+                name = AskText("Group ใหม่", "ชื่อ group ใหม่ (เว้นว่างได้) - เพิ่มคนทางขวา ต้องมี TO อย่างน้อย 1", "");
                 if (name == null) return;
                 name = CleanName(name);
             }
-            else if (!frmConfirm.Ask(this, "สร้าง group ใหม่?" + Environment.NewLine + first, "สร้าง", "ยกเลิก"))
+            else if (!frmConfirm.Ask(this, "สร้าง group ใหม่?" + Environment.NewLine + "เพิ่มคนทางขวา ต้องมี TO อย่างน้อย 1", "สร้าง", "ยกเลิก"))
             {
                 return;
             }
@@ -643,12 +773,14 @@ namespace EdataManagement.Views.Setting
 
             _newGroups.Add(id);
             if (name != "") _namesStaged[id] = name;
-            if (_address != "") _now[id] = RCP_TO;
-            _rowOf[id] = _groups.Rows.Add(false, id, GroupText(id), "", "ใหม่", NEW_GROUP_USE, "");
+            _rowOf[id] = _groups.Rows.Add(false, id, GroupText(id), "", "", "(group ใหม่ - หลัง Save ไปเลือกให้ spec ที่หน้า Spec Setting)", "");
 
             txtFind.Text = "";
+            _selectedGroup = id;
             RefreshRows();
+            SelectGroupRow();
             UpdateSummary();
+            cbAdd.FocusBox();
         }
 
         private void RenameGroup(int groupId)
@@ -677,37 +809,47 @@ namespace EdataManagement.Views.Setting
         }
 
         // =====================================================================
-        // grid
+        // left grid
         // =====================================================================
+        /// <summary>Any click shows the group on the right; the tick / TYPE cells also edit the opened address.</summary>
         private void grid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0 || _address == "") return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
 
             DataRowView item = grid.Rows[e.RowIndex].DataBoundItem as DataRowView;
             if (item == null) return;
 
             int groupId = ToInt(item[COL_GROUP_ID]);
             string column = grid.Columns[e.ColumnIndex].Name;
+            _selectedGroup = groupId;
 
-            if (column == COL_CHECK)
+            if (_address != "")
             {
-                if (_now.ContainsKey(groupId))
+                Dictionary<string, int> members = NowOf(groupId);
+
+                if (column == COL_CHECK)
                 {
-                    _now.Remove(groupId);
+                    if (members.ContainsKey(_address))
+                    {
+                        members.Remove(_address);
+                    }
+                    else
+                    {
+                        // ticked again: as it was read, else TO (click TYPE for CC)
+                        int loaded = LoadedType(groupId, _address);
+                        members[_address] = loaded != 0 ? loaded : RCP_TO;
+                    }
                 }
-                else
+                else if (column == COL_TYPE && members.ContainsKey(_address))
                 {
-                    // ticked again: as it was read, else TO (click TYPE for CC)
-                    int type;
-                    _now[groupId] = _before.TryGetValue(groupId, out type) ? type : RCP_TO;
+                    members[_address] = members[_address] == RCP_TO ? RCP_CC : RCP_TO;
                 }
             }
-            else if (column == COL_TYPE && _now.ContainsKey(groupId))
+            else if (column == COL_CHECK)
             {
-                _now[groupId] = _now[groupId] == RCP_TO ? RCP_CC : RCP_TO;
-            }
-            else
-            {
+                lbSummary.Text = "เลือกอีเมลในช่องด้านบนก่อน ถึงจะติ๊ก group ทางซ้ายได้  (หรือเพิ่มคนเข้า group นี้ทางขวา)" +
+                                 Environment.NewLine + HINT;
+                RefreshRows();
                 return;
             }
 
@@ -738,7 +880,7 @@ namespace EdataManagement.Views.Setting
             }
             else if (column == COL_CHANGE && value != "")
             {
-                fore = value.StartsWith("- ") ? SettingUi.REMOVE_TEXT : SettingUi.TAB_ACTIVE_BACK;
+                fore = value.StartsWith("-") ? SettingUi.REMOVE_TEXT : SettingUi.TAB_ACTIVE_BACK;
             }
             else if (column == COL_USED_BY && value.StartsWith("("))
             {
@@ -756,7 +898,7 @@ namespace EdataManagement.Views.Setting
             e.CellStyle.SelectionForeColor = fore;
         }
 
-        /// <summary>Hand on what can be clicked; the full customer list of a group on hover.</summary>
+        /// <summary>Hand on what can be clicked; the full customer / member list of a group on hover.</summary>
         private void grid_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -767,56 +909,78 @@ namespace EdataManagement.Views.Setting
             string column = grid.Columns[e.ColumnIndex].Name;
             int groupId = ToInt(item[COL_GROUP_ID]);
 
-            bool clickable = _address != "" && (column == COL_CHECK || (column == COL_TYPE && _now.ContainsKey(groupId)));
+            bool clickable = _address != "" && (column == COL_CHECK || (column == COL_TYPE && NowType(groupId, _address) != 0));
             grid.Cursor = clickable ? Cursors.Hand : Cursors.Default;
 
+            DataGridViewCell cell = grid.Rows[e.RowIndex].Cells[e.ColumnIndex];
             if (column == COL_USED_BY)
             {
                 List<string> names;
-                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = _usedBy.TryGetValue(groupId, out names)
+                cell.ToolTipText = _usedBy.TryGetValue(groupId, out names)
                     ? "Group #" + groupId + " ส่งเมลของ:" + Environment.NewLine + FullList(names)
                     : "";
             }
-            else if (column == COL_MEMBERS)
-            {
-                string list;
-                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = _memberList.TryGetValue(groupId, out list) ? list : "";
-            }
             else if (column == COL_GROUP)
             {
-                grid.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "ดับเบิลคลิกเพื่อตั้งชื่อ group";
+                cell.ToolTipText = "คลิกเพื่อดูสมาชิกทางขวา  ·  ดับเบิลคลิกเพื่อตั้งชื่อ group";
+            }
+            else if (column == COL_CHECK || column == COL_TYPE)
+            {
+                cell.ToolTipText = _address == "" ? "เลือกอีเมลในช่องด้านบนก่อน" : _address;
             }
         }
 
+        /// <summary>Put what is in memory on both grids.</summary>
         private void RefreshRows()
         {
             foreach (KeyValuePair<int, DataRow> pair in _rowOf)
             {
-                int now = Get(_now, pair.Key);
-                pair.Value[COL_CHECK] = now != 0;
-                pair.Value[COL_GROUP] = GroupText(pair.Key);
-                pair.Value[COL_TYPE] = TypeName(now);
-                pair.Value[COL_CHANGE] = ChangeText(pair.Key);
+                int id = pair.Key;
+                int mine = NowType(id, _address);
+                int total = NowOf(id).Count;
+
+                pair.Value[COL_CHECK] = mine != 0;
+                pair.Value[COL_GROUP] = GroupText(id);
+                pair.Value[COL_TYPE] = TypeName(mine);
+                pair.Value[COL_MEMBERS] = total == 0 ? "ว่าง" : "TO " + CountNow(id, RCP_TO) + " / CC " + CountNow(id, RCP_CC);
+                pair.Value[COL_CHANGE] = GroupChangeText(id);
             }
+
             grid.Invalidate();
+            UpdateEmailInfo();
+            RefreshMembers();
         }
 
-        /// <summary>"+ เพิ่ม TO" / "- ลบ" / "TO → CC", and "ชื่อใหม่" when the name was typed here.</summary>
-        private string ChangeText(int groupId)
+        /// <summary>"+2  -1  สลับ 1  ชื่อใหม่" - what is staged on the group, from either side.</summary>
+        private string GroupChangeText(int groupId)
         {
-            int before = Get(_before, groupId);
-            int now = Get(_now, groupId);
+            List<Change> changes = ChangesOf(groupId);
+            int added = changes.Count(c => c.Old == 0);
+            int removed = changes.Count(c => c.New == 0);
+            int switched = changes.Count - added - removed;
 
-            string text = "";
-            if (before == 0 && now != 0) text = "+ เพิ่ม " + TypeName(now);
-            else if (before != 0 && now == 0) text = "- ลบ";
-            else if (before != now) text = TypeName(before) + " → " + TypeName(now);
+            List<string> parts = new List<string>();
+            if (removed > 0) parts.Add("-" + removed);
+            if (added > 0) parts.Add("+" + added);
+            if (switched > 0) parts.Add("สลับ " + switched);
+            if (!_newGroups.Contains(groupId) && _namesStaged.ContainsKey(groupId)) parts.Add("ชื่อใหม่");
 
-            if (!_newGroups.Contains(groupId) && _namesStaged.ContainsKey(groupId))
+            return string.Join("  ", parts.ToArray());
+        }
+
+        /// <summary>Keep the highlighted row of the left grid on the group shown on the right.</summary>
+        private void SelectGroupRow()
+        {
+            grid.ClearSelection();
+            foreach (DataGridViewRow row in grid.Rows)
             {
-                text = (text == "" ? "" : text + ", ") + "ชื่อใหม่";
+                DataRowView item = row.DataBoundItem as DataRowView;
+                if (item == null || ToInt(item[COL_GROUP_ID]) != _selectedGroup) continue;
+
+                row.Selected = true;
+                if (!row.Displayed) grid.FirstDisplayedScrollingRowIndex = row.Index;
+                return;
             }
-            return text;
         }
 
         private void ApplyFilter()
@@ -829,41 +993,228 @@ namespace EdataManagement.Views.Setting
                 : "GROUP_TEXT LIKE '%" + keyword + "%' OR USED_BY LIKE '%" + keyword + "%'";
 
             lbCount.Text = _view.Count + " group" + (keyword.Length == 0 ? "" : " จาก " + _groups.Rows.Count);
+            SelectGroupRow();
+        }
+
+        // =====================================================================
+        // right side: members of the clicked group
+        // =====================================================================
+        /// <summary>Rebuild the member list of the group shown: TO, then CC, then the ones being removed.</summary>
+        private void RefreshMembers()
+        {
+            bool has = _rowOf.ContainsKey(_selectedGroup);
+
+            cbAdd.Enabled = has;
+            cbAddType.Enabled = has;
+            btnAdd.Enabled = has;
+            btnAdd.BackColor = has ? SettingUi.BUTTON_BACK : SettingUi.BUTTON_DISABLED;
+
+            _memberRows.Rows.Clear();
+
+            if (!has)
+            {
+                lbMemberTitle.Text = "สมาชิกของ group";
+                lbMemberNote.Text = "คลิก group ทางซ้ายเพื่อดูและแก้สมาชิก";
+                return;
+            }
+
+            int id = _selectedGroup;
+            Dictionary<string, int> now = NowOf(id);
+
+            lbMemberTitle.Text = "Group " + GroupText(id);
+            toolTip.SetToolTip(lbMemberTitle, lbMemberTitle.Text);
+
+            string used = UsedByText(id, 200);
+            lbMemberNote.Text = _newGroups.Contains(id)
+                ? "group ใหม่ - เพิ่มคนด้านล่าง ต้องมี TO อย่างน้อย 1 แล้วกด Save"
+                : now.Count + " คน  ·  " + (used == "" ? "ไม่มีลูกค้าใช้" : "ส่งเมลของ " + used);
+            lbMemberNote.ForeColor = id == GROUP_INTERNAL ? SettingUi.ALERT_WARN_TEXT : SettingUi.TYPE_CC_TEXT;
+            toolTip.SetToolTip(lbMemberNote, lbMemberNote.Text);
+
+            foreach (string address in now.Keys.OrderBy(a => now[a]).ThenBy(a => a, StringComparer.OrdinalIgnoreCase))
+            {
+                int loaded = LoadedType(id, address);
+                string change = loaded == 0 ? "+ เพิ่ม" : loaded != now[address] ? TypeName(loaded) + " → " + TypeName(now[address]) : "";
+                _memberRows.Rows.Add(address, TypeName(now[address]), change, false);
+            }
+
+            foreach (string address in LoadedAddresses(id).Where(a => !now.ContainsKey(a)).OrderBy(a => a, StringComparer.OrdinalIgnoreCase))
+            {
+                _memberRows.Rows.Add(address, TypeName(LoadedType(id, address)), "- ลบ", true);
+            }
+
+            gridMembers.ClearSelection();
+        }
+
+        private void AddMember()
+        {
+            if (!_rowOf.ContainsKey(_selectedGroup)) return;
+
+            string address = (cbAdd.Value ?? "").Trim();
+            if (address == "") return;
+
+            if (!Regex.IsMatch(address, EMAIL_PATTERN))
+            {
+                frmError.ShowError(this, "รูปแบบอีเมลไม่ถูกต้อง");
+                return;
+            }
+
+            address = KnownAddress(address) ?? address;
+            Dictionary<string, int> members = NowOf(_selectedGroup);
+
+            if (members.ContainsKey(address))
+            {
+                frmError.ShowError(this, address + " อยู่ใน Group #" + _selectedGroup + " แล้ว");
+                return;
+            }
+
+            members[address] = Convert.ToString(cbAddType.SelectedItem) == "CC" ? RCP_CC : RCP_TO;
+            cbAdd.Value = "";
+
+            RefreshRows();
+            UpdateSummary();
+            cbAdd.FocusBox();
+        }
+
+        /// <summary>TYPE switches TO / CC, ลบ takes the address out, คืน puts a removed one back; nothing is written yet.</summary>
+        private void gridMembers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || !_rowOf.ContainsKey(_selectedGroup)) return;
+
+            DataRowView item = gridMembers.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (item == null) return;
+
+            string column = gridMembers.Columns[e.ColumnIndex].Name;
+            string address = Convert.ToString(item[COL_ADDRESS]);
+            bool removed = (bool)item[COL_REMOVED];
+            Dictionary<string, int> members = NowOf(_selectedGroup);
+
+            if (column == COL_ACTION)
+            {
+                if (removed) members[address] = LoadedType(_selectedGroup, address);
+                else members.Remove(address);
+            }
+            else if (column == COL_TYPE && !removed)
+            {
+                members[address] = members[address] == RCP_TO ? RCP_CC : RCP_TO;
+            }
+            else
+            {
+                return;
+            }
+
+            RefreshRows();
+            UpdateSummary();
+        }
+
+        /// <summary>Double-click an address: open it on the left, to see / tick its other groups.</summary>
+        private void gridMembers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || gridMembers.Columns[e.ColumnIndex].Name != COL_ADDRESS) return;
+
+            DataRowView item = gridMembers.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (item != null) OpenAddress(Convert.ToString(item[COL_ADDRESS]));
+        }
+
+        private void gridMembers_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= gridMembers.Rows.Count) return;
+
+            DataRowView item = gridMembers.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            if (item == null) return;
+
+            string column = gridMembers.Columns[e.ColumnIndex].Name;
+            bool removed = (bool)item[COL_REMOVED];
+            string change = Convert.ToString(item[COL_CHANGE]);
+
+            if (column == COL_ACTION)
+            {
+                // caption per row: take out / put back
+                e.Value = removed ? "คืน" : "ลบ";
+                e.CellStyle.ForeColor = removed ? SettingUi.TYPE_TO_TEXT : SettingUi.REMOVE_TEXT;
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor;
+                e.FormattingApplied = true;
+                return;
+            }
+
+            Color fore;
+            if (removed)
+            {
+                fore = column == COL_CHANGE ? SettingUi.REMOVE_TEXT : SettingUi.TYPE_CC_TEXT;
+            }
+            else if (column == COL_TYPE)
+            {
+                fore = Convert.ToString(e.Value) == "TO" ? SettingUi.TYPE_TO_TEXT : SettingUi.TYPE_CC_TEXT;
+                e.CellStyle.Font = _bold;
+            }
+            else if (change != "" && (column == COL_CHANGE || column == COL_ADDRESS))
+            {
+                fore = SettingUi.TAB_ACTIVE_BACK;
+            }
+            else
+            {
+                return;
+            }
+
+            e.CellStyle.ForeColor = fore;
+            e.CellStyle.SelectionForeColor = fore;
+        }
+
+        private void gridMembers_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            string column = gridMembers.Columns[e.ColumnIndex].Name;
+            gridMembers.Cursor = column == COL_ACTION || column == COL_TYPE ? Cursors.Hand : Cursors.Default;
+
+            if (column == COL_ADDRESS)
+            {
+                gridMembers.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = "ดับเบิลคลิกเพื่อดู group อื่นของคนนี้ทางซ้าย";
+            }
         }
 
         // =====================================================================
         // changes / Save
         // =====================================================================
-        /// <summary>Every add / remove / TO-CC switch of the opened address Save would write, by group.</summary>
-        private List<Change> Changes()
+        /// <summary>Adds / removes / TO-CC switches staged on one group, by address.</summary>
+        private List<Change> ChangesOf(int groupId)
         {
             List<Change> changes = new List<Change>();
-            if (_address == "") return changes;
+            Dictionary<string, int> now = NowOf(groupId);
 
-            foreach (int groupId in _before.Keys.Union(_now.Keys).OrderBy(id => id))
+            foreach (string address in LoadedAddresses(groupId).Union(now.Keys, StringComparer.OrdinalIgnoreCase)
+                         .OrderBy(a => a, StringComparer.OrdinalIgnoreCase))
             {
-                int before = Get(_before, groupId);
-                int now = Get(_now, groupId);
-                if (before == now) continue;
+                Member loaded = LoadedMember(groupId, address);
+                int before = loaded == null ? 0 : loaded.Type;
+                int after = NowType(groupId, address);
+                if (before == after) continue;
 
                 changes.Add(new Change
                 {
                     GroupId = groupId,
-                    EmailId = before == 0 ? -1 : _beforeEmailId[groupId],
+                    Address = address,
+                    EmailId = loaded == null ? -1 : loaded.EmailId,
                     Old = before,
-                    New = now
+                    New = after
                 });
             }
 
             return changes;
         }
 
-        /// <summary>Names typed here that differ from the database; a new group counts only while the address is ticked on it.</summary>
+        /// <summary>Everything Save would write to info_group_email, by group.</summary>
+        private List<Change> Changes()
+        {
+            return _loaded.Keys.Union(_now.Keys).OrderBy(id => id).SelectMany(id => ChangesOf(id)).ToList();
+        }
+
+        /// <summary>Names typed here that differ from the database; a new group counts only once somebody is on it.</summary>
         private List<NameChange> NameChanges()
         {
             return _namesStaged
                 .Where(p => p.Value != LoadedNameOf(p.Key))
-                .Where(p => !_newGroups.Contains(p.Key) || _now.ContainsKey(p.Key))
+                .Where(p => !_newGroups.Contains(p.Key) || NowOf(p.Key).Count > 0)
                 .OrderBy(p => p.Key)
                 .Select(p => new NameChange { GroupId = p.Key, Old = LoadedNameOf(p.Key), New = p.Value })
                 .ToList();
@@ -882,17 +1233,16 @@ namespace EdataManagement.Views.Setting
 
             if (total == 0)
             {
-                lbSummary.Text = _address == ""
-                    ? "เลือกหรือพิมพ์อีเมลในช่องด้านบน แล้วกด เปิด  (อีเมลใหม่ก็พิมพ์ได้)"
-                    : HINT;
+                lbSummary.Text = HINT;
             }
             else
             {
                 int added = changes.Count(c => c.Old == 0);
                 int removed = changes.Count(c => c.New == 0);
                 int switched = changes.Count - added - removed;
+                int groups = changes.Select(c => c.GroupId).Distinct().Count();
 
-                lbSummary.Text = "จะบันทึก " + total + " รายการ: เพิ่ม " + added + ", ลบ " + removed +
+                lbSummary.Text = "จะบันทึก " + total + " รายการ ใน " + groups + " group: เพิ่ม " + added + ", ลบ " + removed +
                                  ", สลับ TO/CC " + switched + (names > 0 ? ", ชื่อ group " + names : "") +
                                  Environment.NewLine + HINT;
             }
@@ -908,7 +1258,7 @@ namespace EdataManagement.Views.Setting
             if (changes.Count + names.Count == 0)
             {
                 lbSummary.Text = (_newGroups.Count > 0
-                    ? "group ใหม่ยังไม่มี TO: เปิดอีเมล ติ๊ก group ใหม่ แล้วกด Save"
+                    ? "group ใหม่ยังไม่มีคน: คลิก group ใหม่ แล้วเพิ่มคนทางขวา (ต้องมี TO)"
                     : "ไม่มีอะไรเปลี่ยน") + Environment.NewLine + HINT;
                 return;
             }
@@ -917,8 +1267,8 @@ namespace EdataManagement.Views.Setting
             if (noTo.Count > 0)
             {
                 frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine +
-                    string.Join(", ", noTo.Select(id => "Group #" + id).ToArray()) + " จะไม่มีผู้รับ TO เหลือ" + Environment.NewLine +
-                    "เพิ่ม TO คนอื่นใน group นั้นก่อน หรือเปลี่ยนเป็น CC แทนการลบ");
+                    string.Join(", ", noTo.Select(id => "Group #" + id).ToArray()) + " จะไม่มีผู้รับ TO" + Environment.NewLine +
+                    "group ต้องมี TO อย่างน้อย 1 คน: เพิ่ม TO หรือเปลี่ยนคนใน group เป็น TO ก่อน");
                 return;
             }
 
@@ -945,12 +1295,9 @@ namespace EdataManagement.Views.Setting
             int saved = changes.Count + names.Count;
             _savedCount += saved;
 
-            // read everything again, so the window shows what the database now holds
-            string address = _address;
-            _address = "";
-            _before.Clear();
-            _beforeEmailId.Clear();
-            _now.Clear();
+            // read everything again, so the window shows what the database now holds;
+            // the group on the right stays (a new one under the id it was written with)
+            _selectedGroup = MapGroup(_writtenGroupIds, _selectedGroup);
 
             string error = LoadAll();
             if (error != "")
@@ -960,45 +1307,42 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
-            if (address != "") OpenAddress(address);
-            else UpdateSummary();
+            if (_address != "") _address = KnownAddress(_address) ?? _address;
 
+            RefreshRows();
+            SelectGroupRow();
+            UpdateSummary();
             lbSummary.Text = "บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว " + saved + " รายการ" + Environment.NewLine + HINT;
         }
 
         /// <summary>
-        /// Groups whose mail would go to nobody: used by customers, with a TO now and none after the changes -
-        /// and a group made here whose first address is not TO.
+        /// Groups whose mail would go to nobody after the changes: a group made here with nobody on TO, and a group
+        /// customers use that has a TO now and would have none.
         /// </summary>
         private List<int> GroupsLeftWithoutTo(List<Change> changes)
         {
             List<int> noTo = new List<int>();
-            foreach (Change change in changes)
+            foreach (int groupId in changes.Select(c => c.GroupId).Distinct().OrderBy(id => id))
             {
-                if (_newGroups.Contains(change.GroupId))
-                {
-                    if (change.New != RCP_TO) noTo.Add(change.GroupId);
-                    continue;
-                }
+                if (CountNow(groupId, RCP_TO) > 0) continue;
 
-                int before = Get(_toCount, change.GroupId);
-                int after = before + (change.New == RCP_TO ? 1 : 0) - (change.Old == RCP_TO ? 1 : 0);
-
-                if (before > 0 && after <= 0 && _usedBy.ContainsKey(change.GroupId)) noTo.Add(change.GroupId);
+                bool hadTo = LoadedAddresses(groupId).Any(a => LoadedType(groupId, a) == RCP_TO);
+                if (_newGroups.Contains(groupId) || (hadTo && _usedBy.ContainsKey(groupId))) noTo.Add(groupId);
             }
             return noTo;
         }
 
         /// <summary>
         /// Statements of one Save in the order they run (one transaction); null = a read failed (shown).
-        /// A group made here gets its id now (the next free one), not the one shown while staging.
+        /// A group made here gets its id now (the next free one), not the one shown while staging; a new address
+        /// gets its info_email row first.
         /// </summary>
         private List<string> SaveStatements(List<Change> changes, List<NameChange> names, string user)
         {
             List<string> batch = new List<string>();
             Dictionary<int, int> groupIds = new Dictionary<int, int>();
 
-            List<int> newGroups = changes.Select(c => c.GroupId).Where(id => _newGroups.Contains(id)).OrderBy(id => id).ToList();
+            List<int> newGroups = changes.Select(c => c.GroupId).Where(id => _newGroups.Contains(id)).Distinct().OrderBy(id => id).ToList();
             if (newGroups.Count > 0)
             {
                 int max = Busy(() => _specCon.maxGroupId());
@@ -1018,28 +1362,46 @@ namespace EdataManagement.Views.Setting
             // one connection for the whole Save: the audit triggers pick up who is saving from @app_user
             batch.Add(_emailSql.setAppUser(user));
 
-            int newEmailId = int.MinValue;   // the address's id for its adds, found / made once
-            foreach (Change change in changes)
-            {
-                int groupId = MapGroup(groupIds, change.GroupId);
+            // EMAIL_ID of every address that joins a group: the one it has, else a new info_email row
+            Dictionary<string, int> emailIds = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            int lastEmailId = int.MinValue;   // read once, when the first new address needs an id
 
-                if (change.Old == 0)
+            foreach (string address in changes.Where(c => c.Old == 0).Select(c => c.Address).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                int id;
+                if (!_emailIdOf.TryGetValue(address, out id))
                 {
-                    if (newEmailId == int.MinValue)
+                    if (lastEmailId == int.MinValue)
                     {
-                        newEmailId = EmailIdForAdd(batch, user);
-                        if (newEmailId == int.MinValue) return null;
+                        lastEmailId = Busy(() => _emailCon.maxEmailId());
+                        if (_emailCon.lastError != "")
+                        {
+                            frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
+                            return null;
+                        }
                     }
-                    batch.Add(_emailSql.insertGroupMember(Member(groupId, newEmailId, change.New)));
+
+                    lastEmailId++;
+                    id = lastEmailId;
+                    batch.Add(_emailSql.insertEmail(new SettingEmailProperty { emailId = id, emailAddress = address, createUser = user }));
                 }
-                else if (change.New == 0)
-                {
-                    batch.Add(_emailSql.deleteGroupMember(Member(groupId, change.EmailId, 0)));
-                }
-                else
-                {
-                    batch.Add(_emailSql.updateRecipientType(Member(groupId, change.EmailId, change.New)));
-                }
+                emailIds[address] = id;
+            }
+
+            // removals first, so an address taken out and another put in never meet on the unique key
+            foreach (Change change in changes.Where(c => c.New == 0))
+            {
+                batch.Add(_emailSql.deleteGroupMember(Member2(MapGroup(groupIds, change.GroupId), change.EmailId, 0)));
+            }
+
+            foreach (Change change in changes.Where(c => c.Old != 0 && c.New != 0))
+            {
+                batch.Add(_emailSql.updateRecipientType(Member2(MapGroup(groupIds, change.GroupId), change.EmailId, change.New)));
+            }
+
+            foreach (Change change in changes.Where(c => c.Old == 0))
+            {
+                batch.Add(_emailSql.insertGroupMember(Member2(MapGroup(groupIds, change.GroupId), emailIds[change.Address], change.New)));
             }
 
             foreach (NameChange name in names)
@@ -1050,13 +1412,15 @@ namespace EdataManagement.Views.Setting
             }
 
             // log: one row per new group, per address per group (CUSTOMER = who gets the group's mail), per name
+            foreach (int staged in newGroups)
+            {
+                batch.Add(_specSql.logNewGroup(LOG_PRODUCT, groupIds[staged], "", user));
+            }
+
             foreach (Change change in changes)
             {
-                int groupId = MapGroup(groupIds, change.GroupId);
-
-                if (_newGroups.Contains(change.GroupId)) batch.Add(_specSql.logNewGroup(LOG_PRODUCT, groupId, "", user));
-
-                batch.Add(_specSql.logRecipientChange(LOG_PRODUCT, groupId, UsedByText(change.GroupId, 100), _address,
+                batch.Add(_specSql.logRecipientChange(LOG_PRODUCT, MapGroup(groupIds, change.GroupId),
+                    UsedByText(change.GroupId, 100), change.Address,
                     change.Old == 0 ? (int?)null : change.Old, change.New == 0 ? (int?)null : change.New, user));
             }
 
@@ -1067,44 +1431,44 @@ namespace EdataManagement.Views.Setting
             }
 
             batch.Add(_emailSql.clearAppUser());
+
+            _writtenGroupIds = groupIds;
             return batch;
         }
 
-        /// <summary>What Save writes and whose mail it touches, before anything is written.</summary>
+        /// <summary>What Save writes, group by group, and whose mail it touches - before anything is written.</summary>
         private string SaveQuestion(List<Change> changes, List<NameChange> names)
         {
             List<string> lines = new List<string>();
             lines.Add("บันทึกลง " + MailSafety.ConfigDatabase + "?");
 
-            if (changes.Count > 0)
+            List<int> groups = changes.Select(c => c.GroupId).Distinct().OrderBy(id => id).ToList();
+            foreach (int groupId in groups.Take(CONFIRM_MAX_LINES))
+            {
+                List<Change> mine = changes.Where(c => c.GroupId == groupId).ToList();
+                List<string> parts = new List<string>();
+
+                List<Change> added = mine.Where(c => c.Old == 0).ToList();
+                List<Change> removed = mine.Where(c => c.New == 0).ToList();
+                List<Change> switched = mine.Where(c => c.Old != 0 && c.New != 0).ToList();
+
+                if (added.Count > 0) parts.Add("เพิ่ม " + People(added.Select(c => ShortName(c.Address) + " (" + TypeName(c.New) + ")")));
+                if (removed.Count > 0) parts.Add("ลบ " + People(removed.Select(c => ShortName(c.Address))));
+                if (switched.Count > 0) parts.Add("สลับ " + People(switched.Select(c => ShortName(c.Address) + " → " + TypeName(c.New))));
+
+                string used = _newGroups.Contains(groupId) ? "group ใหม่" : UsedByCount(groupId);
+                lines.Add("");
+                lines.Add(GroupText(groupId) + "  [" + used + "]");
+                lines.Add("  " + string.Join("  ·  ", parts.ToArray()));
+            }
+            if (groups.Count > CONFIRM_MAX_LINES) lines.Add("... และอีก " + (groups.Count - CONFIRM_MAX_LINES) + " group");
+
+            List<string> newAddresses = changes.Where(c => c.Old == 0 && !_emailIdOf.ContainsKey(c.Address))
+                .Select(c => c.Address).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+            if (newAddresses.Count > 0)
             {
                 lines.Add("");
-                lines.Add(_address + (KnownAddress(_address) == null ? "  (อีเมลใหม่)" : ""));
-
-                List<Change> created = changes.Where(c => _newGroups.Contains(c.GroupId)).ToList();
-                List<Change> added = changes.Where(c => c.Old == 0 && !_newGroups.Contains(c.GroupId)).ToList();
-                List<Change> removed = changes.Where(c => c.New == 0).ToList();
-                List<Change> switched = changes.Where(c => c.Old != 0 && c.New != 0).ToList();
-
-                if (created.Count > 0) lines.Add("  สร้าง group ใหม่ (เป็น TO): " + string.Join(", ", created.Select(c => GroupText(c.GroupId)).ToArray()));
-                if (added.Count > 0) lines.Add("  เพิ่มเข้า: " + string.Join(", ", added.Select(c => "#" + c.GroupId + " " + TypeName(c.New)).ToArray()));
-                if (removed.Count > 0) lines.Add("  ลบออกจาก: " + string.Join(", ", removed.Select(c => "#" + c.GroupId).ToArray()));
-                if (switched.Count > 0) lines.Add("  สลับ TO/CC: " + string.Join(", ", switched.Select(c => "#" + c.GroupId + " → " + TypeName(c.New)).ToArray()));
-
-                List<int> groups = changes.Select(c => c.GroupId).Where(id => !_newGroups.Contains(id)).OrderBy(id => id).ToList();
-                if (groups.Count > 0)
-                {
-                    lines.Add("");
-                    lines.Add("มีผลกับเมลของ:");
-                    foreach (int groupId in groups.Take(CONFIRM_MAX_LINES))
-                    {
-                        string used = UsedByText(groupId, USED_BY_MAX_CHARS);
-                        lines.Add("  - #" + groupId + ": " + (used == "" ? "(ไม่มีลูกค้าใช้)" : used));
-                    }
-                    if (groups.Count > CONFIRM_MAX_LINES) lines.Add("  ... และอีก " + (groups.Count - CONFIRM_MAX_LINES) + " group");
-
-                    if (groups.Contains(GROUP_INTERNAL)) lines.Add("#0 ใช้ร่วมกับลูกค้าอื่นและโปรแกรมอื่น (เช่น uITLA)");
-                }
+                lines.Add("อีเมลใหม่ในระบบ: " + People(newAddresses));
             }
 
             List<NameChange> renamed = names.Where(n => !_newGroups.Contains(n.GroupId)).ToList();
@@ -1115,42 +1479,32 @@ namespace EdataManagement.Views.Setting
                     .Select(n => "#" + n.GroupId + " = " + (n.New == "" ? "(ไม่มีชื่อ)" : n.New)).ToArray()));
             }
 
+            if (groups.Contains(GROUP_INTERNAL))
+            {
+                lines.Add("");
+                lines.Add("#0 ใช้ร่วมกับลูกค้าอื่นและโปรแกรมอื่น (เช่น uITLA)");
+            }
+
             return string.Join(Environment.NewLine, lines.ToArray());
         }
 
-        /// <summary>
-        /// EMAIL_ID for the groups the opened address joins: the one it already has on a group, else the one info_email
-        /// has, else a new one (its INSERT goes into the batch). int.MinValue = a read failed (shown).
-        /// </summary>
-        private int EmailIdForAdd(List<string> batch, string user)
+        /// <summary>"a, b, c และอีก 4" - a few names, the rest counted.</summary>
+        private static string People(IEnumerable<string> names)
         {
-            if (_beforeEmailId.Count > 0) return _beforeEmailId.Values.First();
+            List<string> all = names.ToList();
+            return string.Join(", ", all.Take(4).ToArray()) + (all.Count > 4 ? " และอีก " + (all.Count - 4) : "");
+        }
 
-            DataTable found = Busy(() => _emailCon.searchEmailByAddress(new SettingEmailProperty { emailAddress = _address }));
-            if (_emailCon.lastError != "")
-            {
-                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
-                return int.MinValue;
-            }
-
-            if (found.Rows.Count > 0) return ToInt(found.Rows[0]["EMAIL_ID"]);
-
-            int id = Busy(() => _emailCon.maxEmailId());
-            if (_emailCon.lastError != "")
-            {
-                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
-                return int.MinValue;
-            }
-
-            id++;
-            batch.Add(_emailSql.insertEmail(new SettingEmailProperty { emailId = id, emailAddress = _address, createUser = user }));
-            return id;
+        private string UsedByCount(int groupId)
+        {
+            List<string> names;
+            return _usedBy.TryGetValue(groupId, out names) && names.Count > 0 ? "ใช้กับ " + names.Count + " ลูกค้า" : "ไม่มีลูกค้าใช้";
         }
 
         // =====================================================================
         // helpers
         // =====================================================================
-        private static SettingEmailProperty Member(int groupId, int emailId, int recipientId)
+        private static SettingEmailProperty Member2(int groupId, int emailId, int recipientId)
         {
             return new SettingEmailProperty { groupId = groupId, emailId = emailId, recipientId = recipientId };
         }
@@ -1159,12 +1513,6 @@ namespace EdataManagement.Views.Setting
         {
             int written;
             return groupIds.TryGetValue(groupId, out written) ? written : groupId;
-        }
-
-        private static int Get(Dictionary<int, int> map, int key)
-        {
-            int value;
-            return map.TryGetValue(key, out value) ? value : 0;
         }
 
         private static string TypeName(int type)
@@ -1177,22 +1525,18 @@ namespace EdataManagement.Views.Setting
             return string.Equals((a ?? "").Trim(), (b ?? "").Trim(), StringComparison.OrdinalIgnoreCase);
         }
 
+        private static string ShortName(string address)
+        {
+            int at = address.IndexOf('@');
+            return at > 0 ? address.Substring(0, at) : address;
+        }
+
         /// <summary>One name per line, capped so the tooltip stays on screen.</summary>
         private static string FullList(List<string> names)
         {
-            string text = string.Join(Environment.NewLine, names.Take(CONFIRM_MAX_LINES * 2).Select(n => "  - " + n).ToArray());
-            if (names.Count > CONFIRM_MAX_LINES * 2) text += Environment.NewLine + "  ... และอีก " + (names.Count - CONFIRM_MAX_LINES * 2);
+            string text = string.Join(Environment.NewLine, names.Take(30).Select(n => "  - " + n).ToArray());
+            if (names.Count > 30) text += Environment.NewLine + "  ... และอีก " + (names.Count - 30);
             return text;
-        }
-
-        /// <summary>"a@x, b@x" (GROUP_CONCAT) as one indented address per line; "  -" when there is none.</summary>
-        private static string AddressLines(object list)
-        {
-            string text = list == null || list == DBNull.Value ? "" : Convert.ToString(list);
-            if (text.Trim() == "") return "  -";
-
-            return string.Join(Environment.NewLine,
-                text.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Select(a => "  " + a).ToArray());
         }
 
         private static int ToInt(object value)

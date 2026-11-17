@@ -104,7 +104,12 @@ namespace EdataManagement.Views.Setting
         private bool _initialized;
         private bool _loading;
         private int _productIndex = -1;
-        private int _customerIndex = -1;
+        /// <summary>Customers of the product (the picker lists them), their spec counts, and the one on screen ("" = none).</summary>
+        private List<string> _customers = new List<string>();
+        private readonly Dictionary<string, string> _customerInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> _customersNoEmail = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private string _customer = "";
+        private AddressPicker pkCustomer;
 
         /// <summary>Shown once on the alert bar (after Apply / Save) instead of the summary.</summary>
         private string _notice = "";
@@ -129,7 +134,6 @@ namespace EdataManagement.Views.Setting
             }
 
             cbProduct.SelectedIndexChanged += cbProduct_SelectedIndexChanged;
-            cbCustomer.SelectedIndexChanged += cbCustomer_SelectedIndexChanged;
             cbFilter.SelectedIndexChanged += cbFilter_SelectedIndexChanged;
             txtSearch.OnValueChanged += txtSearch_OnValueChanged;
             cbSendMethod.SelectedIndexChanged += cbSendMethod_SelectedIndexChanged;
@@ -203,12 +207,7 @@ namespace EdataManagement.Views.Setting
 
             cbProduct.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // customers: type to find (names that start with what is typed); Enter / leaving the box picks it
-            cbCustomer.DropDownStyle = ComboBoxStyle.DropDown;
-            cbCustomer.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cbCustomer.AutoCompleteSource = AutoCompleteSource.ListItems;
-            cbCustomer.KeyDown += cbCustomer_KeyDown;
-            cbCustomer.Leave += delegate { CommitCustomerText(); };
+            SetupCustomerPicker();
 
             // 1480 / 980 / 980Dual / 1480VE with their product database (info_db_name)
             cbProduct.DataSource = Busy(() => _mainCon.getProduct());
@@ -338,7 +337,7 @@ namespace EdataManagement.Views.Setting
             return true;
         }
 
-        /// <summary>Changed specs (recipients are saved by Manage by Email itself).</summary>
+        /// <summary>Changed specs (recipients are saved by Manage Recipients itself).</summary>
         private int PendingCount()
         {
             return ChangedSpecCount();
@@ -406,20 +405,57 @@ namespace EdataManagement.Views.Setting
             LoadCustomers();
         }
 
-        private void cbCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// The customer box: the picker of Manage Recipients (type any part of the name, one list) in the place of
+        /// the designer ComboBox, which stays hidden and unused.
+        /// </summary>
+        private void SetupCustomerPicker()
         {
-            if (_loading) return;
+            cbCustomer.Visible = false;
 
-            // -1 = text being typed (the customer on screen stays); same index = the box was only put back
-            if (cbCustomer.SelectedIndex < 0 || cbCustomer.SelectedIndex == _customerIndex) return;
-
-            if (!ConfirmDropPendingChanges())
+            pkCustomer = new AddressPicker();
+            pkCustomer.Bounds = cbCustomer.Bounds;
+            pkCustomer.Anchor = cbCustomer.Anchor;
+            pkCustomer.TabIndex = cbCustomer.TabIndex;
+            pkCustomer.SetBoxFontSize(cbCustomer.Font.Size);
+            pkCustomer.AllowNew = false;
+            pkCustomer.NothingText = "ไม่พบลูกค้าที่ตรงกับที่พิมพ์";
+            pkCustomer.Placeholder = "พิมพ์หรือเลือกลูกค้า";
+            pkCustomer.InfoOf = delegate (string name)
             {
-                RestoreIndex(cbCustomer, _customerIndex);
+                string info;
+                return _customerInfo.TryGetValue(name, out info) ? info : null;
+            };
+            pkCustomer.DimOf = delegate (string name) { return _customersNoEmail.Contains(name); };
+            pkCustomer.Chosen += delegate (string typed, bool fromList) { ChooseCustomer(typed); };
+            pkCustomer.FocusLeft += delegate { pkCustomer.Value = _customer; };   // typed text gives way to the real name
+
+            Controls.Add(pkCustomer);
+            pkCustomer.BringToFront();
+        }
+
+        /// <summary>
+        /// What is picked / typed becomes the customer: the exact name, else the first name starting with it, else the
+        /// first containing it; nothing like it = back to the customer on screen. A different customer asks about
+        /// unsaved edits first.
+        /// </summary>
+        private void ChooseCustomer(string typed)
+        {
+            string text = (typed ?? "").Trim();
+
+            string name = text == "" ? null
+                : _customers.FirstOrDefault(c => string.Equals(c, text, StringComparison.OrdinalIgnoreCase))
+                  ?? _customers.FirstOrDefault(c => c.StartsWith(text, StringComparison.OrdinalIgnoreCase))
+                  ?? _customers.FirstOrDefault(c => c.IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0);
+
+            if (name == null || name == _customer || !ConfirmDropPendingChanges())
+            {
+                pkCustomer.Value = _customer;
                 return;
             }
 
-            _customerIndex = cbCustomer.SelectedIndex;
+            _customer = name;
+            pkCustomer.Value = name;
             LoadSpecs();
         }
 
@@ -435,65 +471,16 @@ namespace EdataManagement.Views.Setting
             _loading = wasLoading;
         }
 
-        private void cbCustomer_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                CommitCustomerText();
-            }
-            else if (e.KeyCode == Keys.Escape)
-            {
-                RestoreIndex(cbCustomer, _customerIndex);
-            }
-            else
-            {
-                return;
-            }
-
-            e.Handled = true;
-            e.SuppressKeyPress = true;
-        }
-
-        /// <summary>
-        /// What is typed becomes a customer: the exact name, else the first name starting with it; nothing like it =
-        /// back to the customer on screen. A different customer goes through the normal change (asks about unsaved edits).
-        /// </summary>
-        private void CommitCustomerText()
-        {
-            if (cbCustomer.Items.Count == 0) return;
-
-            string typed = (cbCustomer.Text ?? "").Trim();
-            int index = typed == "" ? -1 : cbCustomer.FindStringExact(typed);
-            if (index < 0 && typed != "") index = cbCustomer.FindString(typed);
-            if (index < 0) index = _customerIndex;
-
-            if (index >= 0 && index != _customerIndex)
-            {
-                // the box may already sit on it (picked from the suggestions) without the change having run
-                if (cbCustomer.SelectedIndex == index) cbCustomer_SelectedIndexChanged(cbCustomer, EventArgs.Empty);
-                else cbCustomer.SelectedIndex = index;
-
-                if (cbCustomer.SelectedIndex == _customerIndex) return;   // changed (or put back after "Keep editing")
-            }
-
-            RestoreIndex(cbCustomer, _customerIndex);
-        }
-
         private string SelectedProductName()
         {
             DataRowView selected = cbProduct.SelectedItem as DataRowView;
             return selected == null ? "" : selected["PRODUCT_NAME"].ToString();
         }
 
-        /// <summary>The customer on screen - also while a search is being typed in the box (SelectedIndex -1 then).</summary>
+        /// <summary>The customer on screen - also while a search is being typed in the box.</summary>
         private string SelectedCustomerName()
         {
-            DataRowView selected = cbCustomer.SelectedItem as DataRowView;
-            if (selected == null && _customerIndex >= 0 && _customerIndex < cbCustomer.Items.Count)
-            {
-                selected = cbCustomer.Items[_customerIndex] as DataRowView;
-            }
-            return selected == null ? "" : selected["CUSTOMER_NAME"].ToString();
+            return _customer;
         }
 
         private void LoadCustomers()
@@ -513,13 +500,25 @@ namespace EdataManagement.Views.Setting
             DataTable customers = Busy(() => _specCon.searchCustomers(prop));
             string error = _specCon.lastError;
 
-            _loading = true;
-            cbCustomer.DataSource = null;
-
-            if (customers.Rows.Count == 0)
+            _customers = new List<string>();
+            _customerInfo.Clear();
+            _customersNoEmail.Clear();
+            foreach (DataRow row in customers.Rows)
             {
-                _loading = false;
-                _customerIndex = -1;
+                string name = Convert.ToString(row["CUSTOMER_NAME"]);
+                int total = ToInt(row["TOTAL_SPECS"]);
+                int email = ToInt(row["EMAIL_SPECS"]);
+
+                _customers.Add(name);
+                _customerInfo[name] = email > 0 ? "Email " + email + " / " + total + " spec" : total + " spec, ไม่ส่ง Email";
+                if (email == 0) _customersNoEmail.Add(name);
+            }
+            pkCustomer.SetItems(_customers);
+
+            if (_customers.Count == 0)
+            {
+                _customer = "";
+                pkCustomer.Value = "";
                 ShowSpecs(null);
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i",
                     error != "" ? "Could not read the customers of " + product + "." : "No customer of " + product + " has an in-use spec.");
@@ -527,12 +526,8 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
-            cbCustomer.DataSource = customers;
-            cbCustomer.DisplayMember = "CUSTOMER_NAME";
-            cbCustomer.ValueMember = "CUSTOMER_NAME";
-            _loading = false;
-
-            _customerIndex = cbCustomer.SelectedIndex;
+            _customer = _customers[0];
+            pkCustomer.Value = _customer;
             LoadSpecs();
         }
 

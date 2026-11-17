@@ -92,6 +92,12 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty searchAllMembers()
+        {
+            _resultData = _services.searchAllMembers();
+            return _resultData;
+        }
+
         public OutputOnDbProperty searchAllDocumentGroups()
         {
             _resultData = _services.searchAllDocumentGroups();

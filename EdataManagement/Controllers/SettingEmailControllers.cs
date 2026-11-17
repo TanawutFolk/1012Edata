@@ -119,6 +119,11 @@ namespace EdataManagement.Controllers
             return Run(() => models.searchGroupsOfAddress(dataItem));
         }
 
+        public DataTable searchAllMembers()
+        {
+            return Run(() => models.searchAllMembers());
+        }
+
         public DataTable searchAllDocumentGroups()
         {
             return Run(() => models.searchAllDocumentGroups());
