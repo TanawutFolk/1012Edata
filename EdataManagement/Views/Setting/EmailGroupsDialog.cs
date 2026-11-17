@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using CheckBoxState = System.Windows.Forms.VisualStyles.CheckBoxState;
 
 namespace EdataManagement.Views.Setting
 {
@@ -38,7 +39,7 @@ namespace EdataManagement.Views.Setting
         private const string LOG_PRODUCT = "BY EMAIL";
         private const string EMAIL_PATTERN = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
         private const string SAVE_STOPPED = "บันทึกไม่สำเร็จ ยังไม่มีข้อมูลถูกเขียน";
-        private const string HINT = "ซ้าย: เลือกอีเมลแล้วติ๊ก group  ·  ขวา: คลิก group แล้วเพิ่ม / ลบคน  ·  คลิก TYPE สลับ TO / CC  ·  ดับเบิลคลิก GROUP ตั้งชื่อ";
+        private const string HINT = "ซ้าย: เลือกอีเมลแล้วติ๊ก group (คลิกหัวคอลัมน์ติ๊ก / TYPE = ทุก group ที่แสดง)  ·  ขวา: คลิก group แล้วเพิ่ม / ลบคน  ·  คลิก TYPE สลับ TO / CC  ·  ดับเบิลคลิก GROUP ตั้งชื่อ";
 
         // columns of _groups (left grid)
         private const string COL_CHECK = "CHECKED";
@@ -216,7 +217,7 @@ namespace EdataManagement.Views.Setting
 
             // picked in the list or typed + Enter: show on the left where the address is
             cbEmail.SetBounds(boxLeft, 13, boxWidth + 98, 28);
-            cbEmail.Placeholder = "พิมพ์หรือเลือกอีเมล แล้วกด Enter (อีเมลใหม่ก็พิมพ์ได้)";
+            cbEmail.Placeholder = "ค้นหา Email ที่มีในระบบ หรือ ใส่ Email ใหม่สำหรับเพิ่ม Email ใหม่";
             cbEmail.InfoOf = delegate (string address) { return GroupCountText(address); };
             cbEmail.DimOf = delegate (string address) { return GroupCount(address) == 0; };
             cbEmail.Chosen += delegate (string address, bool fromList) { OpenAddress(address); };
@@ -253,14 +254,19 @@ namespace EdataManagement.Views.Setting
             grid.AutoGenerateColumns = false;
             grid.Columns.Add(MakeCheckColumn());
             grid.Columns.Add(MakeTextColumn(COL_GROUP, "GROUP", 150));
-            grid.Columns.Add(MakeTextColumn(COL_TYPE, "TYPE", 50));
+            grid.Columns.Add(MakeTextColumn(COL_TYPE, "TYPE ⇄", 55));
             grid.Columns.Add(MakeTextColumn(COL_MEMBERS, "MEMBERS", 85));
             grid.Columns.Add(MakeTextColumn(COL_USED_BY, "USED BY (ใครได้เมลของ group นี้)", 250));
             grid.Columns.Add(MakeTextColumn(COL_CHANGE, "CHANGE", 110));
             grid.Columns[COL_TYPE].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grid.DataSource = _view;
 
+            grid.Columns[COL_CHECK].ToolTipText = "ติ๊ก / เอาติ๊กออก ทุก group ที่แสดงอยู่ (ใช้คู่กับช่องค้นหาได้)";
+            grid.Columns[COL_TYPE].ToolTipText = "สลับ TO / CC ทุก group ที่ติ๊กและแสดงอยู่: ทุกอันเป็น TO อยู่ = เปลี่ยนเป็น CC, นอกนั้น = เปลี่ยนเป็น TO";
+
             grid.CellClick += grid_CellClick;
+            grid.CellPainting += grid_CellPainting;
+            grid.ColumnHeaderMouseClick += grid_ColumnHeaderMouseClick;
             grid.CellDoubleClick += grid_CellDoubleClick;
             grid.CellFormatting += grid_CellFormatting;
             grid.CellMouseEnter += grid_CellMouseEnter;
@@ -851,6 +857,96 @@ namespace EdataManagement.Views.Setting
                                  Environment.NewLine + HINT;
                 RefreshRows();
                 return;
+            }
+
+            RefreshRows();
+            UpdateSummary();
+        }
+
+        // ---- the tick box in the header: every group on screen (what the search shows) at once ----
+
+        private List<int> ShownGroups()
+        {
+            return _view.Cast<DataRowView>().Select(v => ToInt(v[COL_GROUP_ID])).ToList();
+        }
+
+        /// <summary>The opened address ticked on none / some / all of the groups on screen.</summary>
+        private CheckBoxState HeaderCheckState()
+        {
+            if (_address == "") return CheckBoxState.UncheckedDisabled;
+
+            List<int> shown = ShownGroups();
+            int ticked = shown.Count(id => NowType(id, _address) != 0);
+            if (ticked == 0) return CheckBoxState.UncheckedNormal;
+            return ticked == shown.Count ? CheckBoxState.CheckedNormal : CheckBoxState.MixedNormal;
+        }
+
+        private void grid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex != -1 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != COL_CHECK) return;
+
+            e.PaintBackground(e.CellBounds, false);
+
+            // in line with the row boxes, which sit in the cell less its left padding
+            int padLeft = grid.DefaultCellStyle.Padding.Left;
+            Size box = CheckBoxRenderer.GetGlyphSize(e.Graphics, CheckBoxState.UncheckedNormal);
+            Point at = new Point(e.CellBounds.Left + padLeft + (e.CellBounds.Width - padLeft - box.Width) / 2,
+                                 e.CellBounds.Top + (e.CellBounds.Height - box.Height) / 2);
+            CheckBoxRenderer.DrawCheckBox(e.Graphics, at, HeaderCheckState());
+
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Header of the tick column: none or some ticked = tick every group on screen, all ticked = take every one off.
+        /// Header of TYPE: the ticked groups on screen all TO = all CC, else all TO. Nothing is written yet.
+        /// </summary>
+        private void grid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.ColumnIndex < 0) return;
+
+            string column = grid.Columns[e.ColumnIndex].Name;
+            if (column != COL_CHECK && column != COL_TYPE) return;
+
+            if (_address == "")
+            {
+                lbSummary.Text = "เลือกอีเมลในช่องด้านบนก่อน ถึงจะติ๊ก group ได้" + Environment.NewLine + HINT;
+                return;
+            }
+
+            if (column == COL_TYPE)
+            {
+                List<int> ticked = ShownGroups().Where(id => NowType(id, _address) != 0).ToList();
+                if (ticked.Count == 0)
+                {
+                    lbSummary.Text = "ยังไม่ได้ติ๊ก group ไหน - ติ๊กก่อนแล้วค่อยสลับ TO / CC" + Environment.NewLine + HINT;
+                    return;
+                }
+
+                int type = ticked.All(id => NowType(id, _address) == RCP_TO) ? RCP_CC : RCP_TO;
+                foreach (int groupId in ticked) NowOf(groupId)[_address] = type;
+
+                RefreshRows();
+                UpdateSummary();
+                return;
+            }
+
+            bool tickAll = HeaderCheckState() != CheckBoxState.CheckedNormal;
+
+            foreach (int groupId in ShownGroups())
+            {
+                Dictionary<string, int> members = NowOf(groupId);
+
+                if (!tickAll)
+                {
+                    members.Remove(_address);
+                }
+                else if (!members.ContainsKey(_address))
+                {
+                    // as it was read, else TO (click TYPE for CC)
+                    int loaded = LoadedType(groupId, _address);
+                    members[_address] = loaded != 0 ? loaded : RCP_TO;
+                }
             }
 
             RefreshRows();

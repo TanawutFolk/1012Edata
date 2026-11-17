@@ -51,25 +51,16 @@ namespace EdataManagement.Views.Setting
 
             SettingUi.StyleGrid(dtgRecipients, 30, 9F, 32);
 
-            // the one way to edit recipients; always there, next to the title
-            btnRcpAction.ButtonText = "Manage Recipients";
+            // the one way to edit recipients: under the list, level with Apply of the editor next to it;
+            // the title gets the whole width
+            btnRcpAction.ButtonText = "Manage Email and Group";
             btnRcpAction.Text = btnRcpAction.ButtonText;
-            btnRcpAction.SetBounds(pnRecipients.ClientSize.Width - 12 - 170, 6, 170, 28);
+            btnRcpAction.SetBounds(dtgRecipients.Left, btnApply.Top, dtgRecipients.Width, btnApply.Height);
             btnRcpAction.Visible = true;
-            lbRcpTitle.Width = btnRcpAction.Left - 8 - lbRcpTitle.Left;
+            lbRcpTitle.Width = dtgRecipients.Right - lbRcpTitle.Left;
             toolTipAlert.SetToolTip(btnRcpAction, "เพิ่ม / ลบ / สลับ TO-CC ผู้รับ: ทีละคนหลาย group หรือทีละ group หลายคน, ตั้งชื่อ group, สร้าง group ใหม่");
 
-            // the grid takes the room of the old Add row; one line under it says how to edit
-            Label hint = new Label();
-            hint.AutoSize = false;
-            hint.Text = "ดูอย่างเดียว - กด Manage Recipients เพื่อแก้ หรือดับเบิลคลิกอีเมล";
-            hint.Font = lbRcpNote.Font;
-            hint.ForeColor = lbRcpNote.ForeColor;
-            hint.TextAlign = ContentAlignment.MiddleLeft;
-            hint.SetBounds(dtgRecipients.Left, pnRecipients.ClientSize.Height - 30, dtgRecipients.Width, 22);
-            pnRecipients.Controls.Add(hint);
-
-            dtgRecipients.Height = hint.Top - 6 - dtgRecipients.Top;
+            dtgRecipients.Height = btnRcpAction.Top - 10 - dtgRecipients.Top;
             lbRcpEmpty.Height = dtgRecipients.Height;
 
             ShowRecipientsMessage("Recipients", "");

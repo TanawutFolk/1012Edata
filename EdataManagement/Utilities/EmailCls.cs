@@ -2366,24 +2366,39 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             }
         }
 
-        // One mail may carry at most this much E-data; above it the txt files are split into numbered sub-folders, one mail each.
+        // One mail may carry at most this much E-data; above it the files are split into numbered sub-folders, one mail each.
+        // 256 files: format 3 (the 1128 flow says "more than 256 files").
         private const long CASE13_MAX_MAIL_BYTES = 10L * 1024 * 1024;
         private const int CASE13_MAX_MAIL_FILES = 256;
 
-        // Format 13 (1480Dual txt per serial). For every order row:
+        // 1480Dual formats 13 and 14: 250 files (customer request 2026-11-17).
+        private const int DUAL1480_MAX_MAIL_FILES = 250;
+
+        // Format 13 (1480Dual txt per serial). For every order row (= one test report):
         //   1. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
         //   2. ...\yyMMdd-{FEC order}(full Part No)_Edata
         //   3. number of *.txt must equal Qty (serial rows of that test report in shipping)
-        // The txt files of all orders go out together; over 10 MB or 256 files they are copied into
-        // {customer folder}\yyMMdd-{customer}({product})_Edata-1, -2, ... and every sub-folder is one mail.
+        // Mails (customer request 2026-11-17): the txt names are serials, so nobody can tell which test report a file
+        // belongs to -
+        //   * a mail carries the files of ONE test report, never mixed with another
+        //   * a test report over 10 MB or 250 files is split into several mails; its files are then copied into
+        //     {customer folder}\{test report folder}_Edata-1, -2, ... (one sub-folder = one mail)
+        //   * "FolderName" in the body = the test report name yyMMdd-{FEC order}(full Part No)
+        //   * subject ends with (i/N) when the day has more than one mail
         private EmailProperty prepareCase13TxtEdata(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows,
                                                     EmailProperty.replaceWord rpWord,
                                                     DataTable dtFile, DataTable dtInfoEmail,
                                                     DataGridView dgvFile, DataGridView dgvInfoEmail)
         {
             string datePrefix = emailProp.shipDate.ToString("yyMMdd");
-            List<string> txtFiles = new List<string>();
-            List<string> orderNos = new List<string>();
+
+            // one per test report, in the order of the grid
+            List<string> reportNames = new List<string>();        // yyMMdd-{FEC order}(Part No) - what the mail body names
+            List<string> reportFolderNames = new List<string>();  // the folder really found (with -{sub} when it has one)
+            List<string> reportOrders = new List<string>();
+            List<string> reportCustomerPNs = new List<string>();
+            List<string> reportTestReportNos = new List<string>();
+            List<string[]> reportFiles = new List<string[]>();
 
             if (!Directory.Exists(emailProp.folderCustomer))
             {
@@ -2403,10 +2418,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 string subFolder = dtShipRow.Cells["subFolder"].Value?.ToString()?.Trim() ?? "";
                 string testReportNo = dtShipRow.Cells["TestReportNo"].Value?.ToString()?.Trim() ?? "";
                 string qtyText = dtShipRow.Cells["Qty"].Value?.ToString()?.Trim() ?? "";
-
-                rpWord.customerPN = dtShipRow.Cells["customerPN"].Value?.ToString()?.Trim() ?? "";
-                if (string.IsNullOrEmpty(rpWord.testReportNo))
-                    rpWord.testReportNo = testReportNo;
+                string customerPN = dtShipRow.Cells["customerPN"].Value?.ToString()?.Trim() ?? "";
 
                 string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
                 string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
@@ -2457,20 +2469,26 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                     return emailProp;
                 }
 
-                txtFiles.AddRange(txtInOrder);
-                if (!orderNos.Contains(fecOrderNo))
-                    orderNos.Add(fecOrderNo);
+                if (txtInOrder.Length == 0)
+                    continue;
+
+                reportNames.Add(orderName);
+                reportFolderNames.Add(Path.GetFileName(orderFolder));
+                reportOrders.Add(fecOrderNo);
+                reportCustomerPNs.Add(customerPN);
+                reportTestReportNos.Add(testReportNo);
+                reportFiles.Add(txtInOrder);
             }
 
-            if (txtFiles.Count == 0)
+            if (reportFiles.Count == 0)
             {
                 MessageBox.Show("ไม่พบไฟล์ txt ที่จะส่ง", "ไม่พบไฟล์", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 emailProp.isValid = false;
                 return emailProp;
             }
 
-            // all orders go into one mail / one set of sub-folders, so a serial name may appear only once
-            List<string> duplicateNames = txtFiles
+            // a serial belongs to one test report only - the same txt name in two of them means the folders are wrong
+            List<string> duplicateNames = reportFiles.SelectMany(files => files)
                 .GroupBy(f => Path.GetFileName(f), StringComparer.OrdinalIgnoreCase)
                 .Where(g => g.Count() > 1)
                 .Select(g => string.Join("\n", g))
@@ -2483,68 +2501,79 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 return emailProp;
             }
 
-            // 4. split when over 10 MB or 256 files
-            long totalBytes = txtFiles.Sum(f => new FileInfo(f).Length);
+            // 4. mails: one test report each, split when it is over 10 MB or 250 files
             List<List<string>> mails = new List<List<string>>();
+            List<int> mailReport = new List<int>();   // index of the test report of each mail
 
-            if (totalBytes > CASE13_MAX_MAIL_BYTES || txtFiles.Count > CASE13_MAX_MAIL_FILES)
+            for (int r = 0; r < reportFiles.Count; r++)
             {
+                List<List<string>> parts = new List<List<string>>();
                 List<string> current = new List<string>();
                 long currentBytes = 0;
-                foreach (string file in txtFiles)
+                foreach (string file in reportFiles[r])
                 {
                     long size = new FileInfo(file).Length;
                     if (current.Count > 0 &&
-                        (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= CASE13_MAX_MAIL_FILES))
+                        (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= DUAL1480_MAX_MAIL_FILES))
                     {
-                        mails.Add(current);
+                        parts.Add(current);
                         current = new List<string>();
                         currentBytes = 0;
                     }
                     current.Add(file);
                     currentBytes += size;
                 }
-                mails.Add(current);
+                parts.Add(current);
 
-                // same input always gives the same split, so a second run only overwrites the same copies
-                string splitBaseName = $"{datePrefix}-{rpWord.customerName}({rpWord.productNameInEmail})_Edata";
-                for (int m = 0; m < mails.Count; m++)
+                if (parts.Count == 1)
                 {
-                    string splitFolder = Path.Combine(emailProp.folderCustomer, $"{splitBaseName}-{m + 1}");
-                    Directory.CreateDirectory(splitFolder);
-
-                    List<string> copies = new List<string>();
-                    foreach (string file in mails[m])
-                    {
-                        string target = Path.Combine(splitFolder, Path.GetFileName(file));
-                        File.Copy(file, target, true);
-                        copies.Add(target);
-                        dtFile.Rows.Add(splitFolder, target);
-                    }
-                    mails[m] = copies;
+                    // attached straight from its _Edata folder
+                    foreach (string file in parts[0])
+                        dtFile.Rows.Add(Path.GetDirectoryName(file), file);
                 }
-            }
-            else
-            {
-                mails.Add(txtFiles);
-                foreach (string file in txtFiles)
-                    dtFile.Rows.Add(Path.GetDirectoryName(file), file);
+                else
+                {
+                    // same input always gives the same split, so a second run only overwrites the same copies
+                    for (int p = 0; p < parts.Count; p++)
+                    {
+                        string splitFolder = Path.Combine(emailProp.folderCustomer, $"{reportFolderNames[r]}_Edata-{p + 1}");
+                        Directory.CreateDirectory(splitFolder);
+
+                        List<string> copies = new List<string>();
+                        foreach (string file in parts[p])
+                        {
+                            string target = Path.Combine(splitFolder, Path.GetFileName(file));
+                            File.Copy(file, target, true);
+                            copies.Add(target);
+                            dtFile.Rows.Add(splitFolder, target);
+                        }
+                        parts[p] = copies;
+                    }
+                }
+
+                foreach (List<string> part in parts)
+                {
+                    mails.Add(part);
+                    mailReport.Add(r);
+                }
             }
 
             emailProp = _emailCon.getEmailAddress(emailProp);
 
-            rpWord.manuFactureNo = string.Join(", ", orderNos);
             rpWord.shipDate = emailProp.shipDate;
             rpWord.formatDate = _emailCon.allFormatDate();
             rpWord.signature = _emailCon.getSignature(emailProp);
 
             for (int m = 0; m < mails.Count; m++)
             {
+                int r = mailReport[m];
+
+                rpWord.manuFactureNo = reportOrders[r];
+                rpWord.customerPN = reportCustomerPNs[r];
+                rpWord.testReportNo = reportTestReportNos[r];
                 rpWord.Qty = mails[m].Count.ToString();
-                // "FolderName" in the body: names (not UNC paths) of the E-data folders in this mail
-                rpWord.folderName = string.Join("<BR>", mails[m]
-                    .Select(f => Path.GetFileName(Path.GetDirectoryName(f)))
-                    .Distinct(StringComparer.OrdinalIgnoreCase));
+                // "FolderName" in the body: the test report this mail belongs to
+                rpWord.folderName = reportNames[r];
                 rpWord.subject = _emailCon.getSubject(emailProp);
                 rpWord.body = _emailCon.getBody(emailProp);
                 rpWord.subject = strProcessSubject(rpWord);
@@ -2578,7 +2607,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         //   3. {Customer PN}_{FEC order without '-'}_{Qty}PCS_{Part No up to the first '-'}_{yyMMdd}-{sub}.txt in it
         //      e.g. NA_301235900610001_10PCS_FRL1441D4045_260512-1.txt
         // Each txt is copied (only the txt) into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report folder name}\ -
-        // a new -n whenever the next file would pass 10 MB / 256 files (size before zip) - and each -n is zipped next
+        // a new -n whenever the next file would pass 10 MB / 250 files (size before zip) - and each -n is zipped next
         // to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout. The zips go out together in one mail (like case 10
         // attaches every file); a second mail only when the zips together would pass 10 MB.
         private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
@@ -2692,7 +2721,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             {
                 long size = new FileInfo(file).Length;
                 if (current.Count > 0 &&
-                    (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= CASE13_MAX_MAIL_FILES))
+                    (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= DUAL1480_MAX_MAIL_FILES))
                 {
                     groups.Add(current);
                     current = new List<string>();

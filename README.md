@@ -70,7 +70,7 @@ Product DB ที่ 1012 อ่าน: `info_cus_condition`, `shipping`, `db_ch
 | 1–8 | format เดิมของ 1012 | case 6 / 7 / 8 มีเมล Serial List / Wafer แยก (ผู้รับจาก `key_group_email_document`) |
 | 3 (MOLEX, MOLEX-SG, OPLINK, OPLINK-SUBMARINE) | 1480, 980Dual | `prepareCase3PrepareZip` – ดูข้อ 4.1 |
 | 10 | XTERA-INC, SMTC-CORP | ชื่อไฟล์ `yyMMdd-{Shipping-PO-all คอลัมน์ V}(short Part No).xls` อ่าน PO จาก `Case10SpecialPOAllPath` |
-| 13 | 1480Dual COHERENT / INFINERA | `prepareCase13TxtEdata` – แนบ txt ใน `_Edata`, เกิน 10 MiB / 256 ไฟล์ แบ่งเป็นหลายเมล `(i/N)` |
+| 13 | 1480Dual COHERENT / INFINERA | `prepareCase13TxtEdata` – แนบ txt ใน `_Edata`, 1 เมล = 1 เทสรีพอต (ห้ามปน), เทสรีพอตเกิน 10 MiB / 250 ไฟล์ แบ่งเป็นหลายเมล `(i/N)`, เนื้อเมลบอกชื่อเทสรีพอต |
 | 14 | 1480Dual MOLEX | `prepareCase14TxtZip` – ดูข้อ 4.2 |
 
 ### 4.1 Format 3 – MOLEX / OPLINK ของ 1480, 980Dual
@@ -97,7 +97,7 @@ yyMMdd-Shipping Data\
       yyMMdd-MOLEX(48Dual)-n.zip
 ```
 - copy เฉพาะ txt (`{Customer PN}_{FEC order ตัด '-'}_{Qty}PCS_{Part No ก่อน '-'}_{yyMMdd}-{sub}.txt`)
-- แบ่ง `-n` ตาม 10 MB / 256 ไฟล์ (ขนาดก่อน zip)
+- แบ่ง `-n` ตาม 10 MB / 250 ไฟล์ (ขนาดก่อน zip)
 - หลาย zip รวมในเมลเดียวจนกว่าขนาด zip รวมจะเกิน 10 MiB
 
 รายละเอียดและงานค้างของ 1480Dual: [`PENDING_1480Dual.md`](PENDING_1480Dual.md)
@@ -146,6 +146,7 @@ yyMMdd-Shipping Data\
 | `key_group_email_document.sql` (+ `_import_20260924.sql`) | ผู้รับเมล Serial List / Wafer ต่อ product + ลูกค้า (แทน `EmailSetting.ini` ที่เลิกใช้แล้ว) |
 | `info_group_name.sql` | ชื่อ group ผู้รับ |
 | `1480dual_prepare_qa_oc.sql` | เตรียมตาราง `*_1480dual` ใน config DB |
+| `1480dual_body_test_report_name.sql` | body 12 (= body 8 + บรรทัด `FolderName`) ให้ทุก spec 1480Dual format 13 / 14 – ชื่อเทสรีพอต (13) / ชื่อ zip (14) ในเนื้อเมล; รันซ้ำได้ |
 | `audit_key_tables.sql` | audit trigger ของตาราง key |
 | `test_data\make_1480dual_format1{3,4}_test.ps1` | สร้างข้อมูลเทส 1480Dual |
 

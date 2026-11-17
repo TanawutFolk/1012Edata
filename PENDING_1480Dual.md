@@ -1,4 +1,4 @@
-# 1480Dual E-data (1012) — งานค้าง / สถานะ ณ 2026-10-05
+﻿# 1480Dual E-data (1012) — งานค้าง / สถานะ ณ 2026-10-05
 
 > **2026-10-16 เปลี่ยนแล้ว:** Molex format 14 **มีชั้นนอก** `MOLEX-Data for 1012 program` (user เลือกชื่อเอง เพราะ `MOLEK:Data for 1012` ในรูปใส่ `:` ไม่ได้)
 > layout: `yyMMdd-Shipping Data\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{order folder}\{txt}` + `...\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n.zip` (เปิด zip เจอโฟลเดอร์ order ทันที)
@@ -28,7 +28,10 @@
 1. `{customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}` (หรือไม่มี `-{sub}`) ไม่เจอ → "ไม่พบเทสรีพอตหมายเลข ..."
 2. `...\yyMMdd-{FEC order}(full Part No)_Edata` ไม่เจอ → "ไม่พบเทสรีพอตหมายเลข ..."
 3. จำนวน `*.txt` ต้องเท่ากับ Qty (จำนวนแถว serial ใน `shipping` ของเทสรีพอตนั้น)
-4. รวม txt ทุก order — เกิน 10 MiB หรือ 256 ไฟล์ → copy ไป `{customer folder}\yyMMdd-{Customer}(48Dual)_Edata-n`, 1 โฟลเดอร์ = 1 เมล, subject ต่อท้าย `(i/N)`
+4. **1 เมล = 1 เทสรีพอต ห้ามปนกัน** (request ลูกค้า 2026-11-17: ไฟล์ชื่อ serial ดูไม่ออกว่าของเทสรีพอตไหน) — เทสรีพอตที่เกิน 10 MiB หรือ **250** ไฟล์ แบ่งหลายเมล โดย copy ไป `{customer folder}\{โฟลเดอร์เทสรีพอต}_Edata-n` (1 โฟลเดอร์ = 1 เมล), ไม่เกินแนบจาก `_Edata` ตรงๆ; subject ต่อท้าย `(i/N)` เมื่อวันนั้นมีหลายเมล
+   - "FolderName" ในเนื้อเมล = ชื่อเทสรีพอต `yyMMdd-{FEC order}(full Part No)` (ไม่มี `-1`), ManufactureNo = order ของเมลนั้น
+   - body 8 ไม่มี `FolderName` (และ 1480 ใช้อยู่ 154 spec) → **body 12** = `We attached file(s) of electric data in this e-mail.<BR>FolderName` ให้ทุก spec format 13 / 14: `DatabaseScripts\1480dual_body_test_report_name.sql` — รันแล้วใน qa_oc_test 2026-11-17 (KEY 7, 8, 901, 902), **qa_oc ยังไม่ได้รัน** (ต้องรันหลังตั้งค่า spec จริงเป็น format 13 / 14)
+   - เพดาน 250 ใช้กับ format 13 และ 14 (1480Dual); format 3 ยัง 256 ตาม 1128
 5. เนื้อเมล: subject 7 + body 8 + signature (ผู้ใช้ยืนยัน "ถูกต้อง ที่ผมต้องการคือแบบนี้แหละ")
 
 หมายเหตุ: ของที่ส่งจริงเมื่อ 260804 (`\\office_SRV\C06_Shipping-Data\1480Dual\260804-Shipping Data\send\260804-COHERENT(48Dual)-1.zip`) เป็น zip ทั้งโฟลเดอร์ order (Cover.xls, LDS, xls, _Edata\txt) — ผู้ใช้เลือก **คงแบบแนบ txt** (2026-09-29)
@@ -52,7 +55,7 @@
 - sub-folder ใช้ชื่อตามของจริง `yymmdd-MOLEX(48Dual)-n` + `-n.zip`
 - copy **เฉพาะ txt** ใส่ไว้ใน **โฟลเดอร์ order ชื่อเดิม**: `-n\{order folder}\{txt}` (แก้แล้วหลังผู้ใช้ส่งรูป)
   - ผู้ใช้ยืนยันซ้ำ 2026-10-16 ว่า "txt อย่างเดียว" แม้ zip ที่ส่งจริง 260512 จะมีไฟล์ `260512-{order}(PN).xls` อยู่ด้วย (ไม่ต้อง copy xls)
-- เกณฑ์ 10 MB / 256 ไฟล์ นับจากขนาด **ก่อน zip** (ใช้แบ่ง `-n` / zip เท่านั้น)
+- เกณฑ์ 10 MB / **250** ไฟล์ (เดิม 256 ตาม flowchart, เปลี่ยน 2026-11-17 ตาม request) นับจากขนาด **ก่อน zip** (ใช้แบ่ง `-n` / zip เท่านั้น)
 - ~~1 zip = 1 เมล~~ → **2026-10-19 เปลี่ยน:** ทุก zip ของวันนั้นแนบเมลเดียวกัน (แบบ case 10 ที่แนบทุกไฟล์ในเมลเดียว) ขึ้นเมลใหม่เมื่อ zip รวมกันจะเกิน 10 MiB (นับขนาด zip), zip เดียวที่เกินไปเมลของตัวเอง, subject `(i/N)` เฉพาะตอนมีหลายเมล
   - เหตุผล (user): "ส่งแค่ 2 zip shipping วันเดียวกัน แยก 2 เมลมันแปลก" — ของจริง 260512: txt 10PCS 6.96 MB → zip 0.93 MB
   - format 3 (MOLEX/OPLINK ของ 1480/980Dual) ยังเป็น 1 zip = 1 เมล (ยังไม่ได้แก้)
@@ -75,7 +78,7 @@ user แจ้งว่า Molex ของ 1480Dual ใช้ flow เดีย�
 ```
 - ชื่อลูกค้าใน `-n` = `info_cus_condition.Customer` (`MOLEX`) — ไม่ใช่ `Molex`, ไม่มี `LD_Data`
 - suffix ใช้ `-1` (ไม่ใช่ `_1`)
-- order เดียวเกิน 10 MB / 256 ไฟล์ → อยู่ `-n` ของตัวเอง (ไม่ผ่า order)
+- order เดียวเกิน 10 MB / 250 ไฟล์ → อยู่ `-n` ของตัวเอง (ไม่ผ่า order)
 - ข้อความ error คงแบบเดิม (หัวกล่อง + ข้อความภาษาไทย) — user ยืนยัน 2026-10-05
 - 1084 ไม่รองรับ 1480Dual เลย → ไม่มีปัญหาโฟลเดอร์ `-n` ที่ root ไปขวาง 1084 (ต่างจาก 1480 / 980Dual)
 
@@ -172,7 +175,7 @@ user แจ้งว่า Molex ของ 1480Dual ใช้ flow เดีย�
 | 260923 | COHERENT | ไม่มี _Edata | ไม่พบเทสรีพอตหมายเลข |
 | 260924 | COHERENT | DB 3 / txt 2 | จำนวนไฟล์ txt ไม่ตรง |
 | 260925 | COHERENT | ไม่มีโฟลเดอร์ order | ไม่พบเทสรีพอตหมายเลข |
-| 260926 | INFINERA | 300 ไฟล์เล็ก | 2 เมล (256/44) |
+| 260926 | INFINERA | 300 ไฟล์เล็ก | 2 เมล (250/50) |
 | 260512 | MOLEX (OPLINK) | **ของจริง** order 3012359006-10-001, 10PCS, TR 26-MCG-0001, KEY 7 | 1 zip / 1 เมล |
 | 260804 | COHERENT | **ของจริง** order 3013140112-10-001, 1PCS (AW261AAE04), TR 26-MCG-0002, KEY 8 | 1 เมล |
 | 260512 (+3 order) | MOLEX | 2026-11-12: user ใส่ txt 10 MiB พอดีไว้ 4 order (10-001..004) บน share, เพิ่มแถว DB 10-002..004 (TST14S-0512B/C/D) — txt บีบเหลือ ~10 KB | 4 zip (1 order ต่อ zip) / **1 เมล** |

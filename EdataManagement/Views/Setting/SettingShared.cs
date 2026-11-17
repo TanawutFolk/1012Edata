@@ -173,6 +173,39 @@ namespace EdataManagement.Views.Setting
             button.TextFont = new Font(FONT_NAME, BUTTON_FONT_SIZE, FontStyle.Bold);
             button.Cursor = Cursors.Hand;
             AddShadow(button);
+            ResetHoverOnReturn(button);
+        }
+
+        /// <summary>
+        /// A button that opens a window over itself (Manage, Save -> confirm ...) never gets its MouseLeave - the mouse
+        /// leaves over the new window - so Bunifu keeps the hover colour after that window closes. When the button's
+        /// window is active again and the mouse is not on the button, the normal colour is put back.
+        /// </summary>
+        private static void ResetHoverOnReturn(BunifuFlatButton button)
+        {
+            Form hooked = null;
+
+            EventHandler reset = delegate
+            {
+                if (button.IsDisposed || !button.IsHandleCreated) return;
+                if (button.ClientRectangle.Contains(button.PointToClient(Cursor.Position))) return;
+                if (button.BackColor != button.Normalcolor) button.BackColor = button.Normalcolor;
+            };
+
+            // the form is known only once the button sits in it
+            EventHandler hook = delegate
+            {
+                Form form = button.FindForm();
+                if (form == null || form == hooked) return;
+
+                if (hooked != null) hooked.Activated -= reset;
+                hooked = form;
+                form.Activated += reset;
+            };
+
+            button.ParentChanged += hook;
+            button.HandleCreated += hook;
+            hook(button, EventArgs.Empty);
         }
 
         /// <summary>btnLoginn's look but blue with white text - for Save, so it is not mistaken for Cancel.</summary>
