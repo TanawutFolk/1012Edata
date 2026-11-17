@@ -1,4 +1,4 @@
-using EdataManagement.Controllers;
+﻿using EdataManagement.Controllers;
 using EdataManagement.Property;
 
 using System;
@@ -110,7 +110,7 @@ namespace EdataManagement.Views.Setting
 
         private void LoadPermissionUsers()
         {
-            DataTable users = _userCon.searchAllUsers();
+            DataTable users = SettingBusy.Run(this, SettingBusy.LOADING, () => _userCon.searchAllUsers());
 
             if (!string.IsNullOrEmpty(_userCon.lastError))
             {
@@ -230,13 +230,7 @@ namespace EdataManagement.Views.Setting
 
                 prop.inuse = active ? 0 : 1;
 
-                if (!_userCon.updateUserInuse(prop))
-                {
-                    frmError.ShowError(this, _userCon.lastError);
-                    return;
-                }
-
-                LoadPermissionUsers();
+                WriteAndReload(() => _userCon.updateUserInuse(prop));
                 return;
             }
 
@@ -258,13 +252,7 @@ namespace EdataManagement.Views.Setting
                     prop.empCode + " : " + (wasAdmin ? "ADMIN -> USER" : "USER -> ADMIN") + " ?",
                     "Change role", "Cancel")) return;
 
-                if (!_userCon.updateUserRole(prop))
-                {
-                    frmError.ShowError(this, _userCon.lastError);
-                    return;
-                }
-
-                LoadPermissionUsers();
+                WriteAndReload(() => _userCon.updateUserRole(prop));
             }
         }
 
@@ -291,7 +279,8 @@ namespace EdataManagement.Views.Setting
             }
 
             // employee must exist, so a typo does not create a dead permission row
-            SettingUserProperty employee = _userCon.searchEmployee(new SettingUserProperty { empCode = empCode });
+            SettingUserProperty employee = SettingBusy.Run(this, SettingBusy.LOADING,
+                () => _userCon.searchEmployee(new SettingUserProperty { empCode = empCode }));
 
             if (!string.IsNullOrEmpty(_userCon.lastError))
             {
@@ -329,20 +318,29 @@ namespace EdataManagement.Views.Setting
                 createUser = SettingUi.CurrentUserCode()
             };
 
-            if (!_userCon.insertUser(prop))
-            {
-                frmError.ShowError(this, _userCon.lastError);
-                return;
-            }
+            if (WriteAndReload(() => _userCon.insertUser(prop))) txtAddEmpCode.Text = "";
+        }
 
-            txtAddEmpCode.Text = "";
-            LoadPermissionUsers();
+        /// <summary>One change and the reload after it under one loading sheet; false = the write failed (shown).</summary>
+        private bool WriteAndReload(Func<bool> write)
+        {
+            using (SettingBusy.Begin(this, SettingBusy.SAVING))
+            {
+                if (!SettingBusy.Run(this, SettingBusy.SAVING, write))
+                {
+                    frmError.ShowError(this, _userCon.lastError);
+                    return false;
+                }
+
+                LoadPermissionUsers();
+                return true;
+            }
         }
 
         /// <summary>Block the change when it would remove the last active ADMIN.</summary>
         private bool EnsureAnotherAdminExists(SettingUserProperty prop, string action)
         {
-            int others = _userCon.countActiveAdmins(prop);
+            int others = SettingBusy.Run(this, SettingBusy.LOADING, () => _userCon.countActiveAdmins(prop));
 
             if (others > 0) return true;
 

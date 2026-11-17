@@ -109,6 +109,21 @@ namespace EdataManagement.Controllers
             return Run(() => models.searchEmailByAddress(dataItem));
         }
 
+        public DataTable searchEmailList()
+        {
+            return Run(() => models.searchEmailList());
+        }
+
+        public DataTable searchGroupsOfAddress(SettingEmailProperty dataItem)
+        {
+            return Run(() => models.searchGroupsOfAddress(dataItem));
+        }
+
+        public DataTable searchAllDocumentGroups()
+        {
+            return Run(() => models.searchAllDocumentGroups());
+        }
+
         public int maxEmailId()
         {
             DataTable dt = Run(() => models.maxEmailId());

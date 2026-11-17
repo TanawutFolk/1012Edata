@@ -115,7 +115,7 @@ namespace EdataManagement.Views.Setting
         {
             InitializeComponent();
 
-            foreach (Bunifu.Framework.UI.BunifuFlatButton button in new[] { btnApply, btnAllGroups, btnAddEmail, btnRcpAction })
+            foreach (Bunifu.Framework.UI.BunifuFlatButton button in new[] { btnApply, btnRcpAction })
             {
                 SettingUi.StyleButton(button);
             }
@@ -176,6 +176,20 @@ namespace EdataManagement.Views.Setting
             _specSql = new SettingSpecSQLFactory();
             _emailSql = new SettingEmailSQLFactory();
 
+            using (SettingBusy.Begin(this, SettingBusy.LOADING))
+            {
+                FirstLoad();
+            }
+        }
+
+        /// <summary>Run a database call under the loading sheet (the call must not touch a control).</summary>
+        private T Busy<T>(Func<T> work)
+        {
+            return SettingBusy.Run(this, SettingBusy.LOADING, work);
+        }
+
+        private void FirstLoad()
+        {
             _loading = true;
 
             SetupSpecGrid();
@@ -197,7 +211,7 @@ namespace EdataManagement.Views.Setting
             cbCustomer.Leave += delegate { CommitCustomerText(); };
 
             // 1480 / 980 / 980Dual / 1480VE with their product database (info_db_name)
-            cbProduct.DataSource = _mainCon.getProduct();
+            cbProduct.DataSource = Busy(() => _mainCon.getProduct());
             cbProduct.DisplayMember = "PRODUCT_NAME";
             cbProduct.ValueMember = "PRODUCT_ID";
 
@@ -216,40 +230,27 @@ namespace EdataManagement.Views.Setting
         public void SavePage()
         {
             int specCount = ChangedSpecCount();
-            int recipientCount = RecipientChangeCount();
-            int nameCount = GroupNameChangeCount();
 
-            if (specCount + recipientCount + nameCount == 0)
+            if (specCount == 0)
             {
                 SetAlert(SettingUi.ALERT_NONE_BACK, SettingUi.ALERT_NONE_TEXT, "i", "Nothing has changed.");
                 return;
             }
 
-            // a new group with nobody on TO would send the mail to no one
-            List<int> noTo = NewGroupsWithoutTo();
-            if (noTo.Count > 0)
-            {
-                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine +
-                    string.Join(", ", noTo.Select(id => "Group #" + id + " (ใหม่)")) + " ยังไม่มีผู้รับ TO" +
-                    Environment.NewLine + "เพิ่ม TO อย่างน้อย 1 อีเมล หรือกด Cancel เพื่อยกเลิก group ใหม่");
-                return;
-            }
-
-            if (!frmConfirm.Ask(this, SaveQuestion(specCount, recipientCount, nameCount), "บันทึก", "ยกเลิก")) return;
+            if (!frmConfirm.Ask(this, SaveQuestion(specCount), "บันทึก", "ยกเลิก")) return;
 
             WriteChanges();
         }
 
         /// <summary>Where it goes and what it does to sending, before anything is written.</summary>
-        private string SaveQuestion(int specCount, int recipientCount, int nameCount)
+        private string SaveQuestion(int specCount)
         {
             List<DataRow> changed = ChangedRows();
             int start = changed.Count(r => ToInt(r[ORIG + COL_SEND]) == SEND_DONT_SEND && ToInt(r[COL_SEND]) != SEND_DONT_SEND);
             int stop = changed.Count(r => ToInt(r[ORIG + COL_SEND]) != SEND_DONT_SEND && ToInt(r[COL_SEND]) == SEND_DONT_SEND);
 
             string text = "บันทึกลง " + MailSafety.ConfigDatabase + "?" + Environment.NewLine +
-                          SelectedCustomerName() + ": แก้ spec " + specCount + " รายการ, แก้ผู้รับ " + recipientCount + " รายการ";
-            if (nameCount > 0) text += Environment.NewLine + "ตั้งชื่อ group: " + nameCount + " รายการ";
+                          SelectedCustomerName() + ": แก้ spec " + specCount + " รายการ";
             if (start > 0) text += Environment.NewLine + "เริ่มส่ง: " + start + " spec";
             if (stop > 0) text += Environment.NewLine + "หยุดส่ง: " + stop + " spec";
             return text;
@@ -262,8 +263,6 @@ namespace EdataManagement.Views.Setting
         private bool WriteChanges()
         {
             int specCount = ChangedSpecCount();
-            int recipientCount = RecipientChangeCount();
-            int nameCount = GroupNameChangeCount();
             string user = SettingUi.CurrentUserCode();
             List<string> batch = new List<string>();
 
@@ -271,12 +270,7 @@ namespace EdataManagement.Views.Setting
             {
                 // one connection for the whole Save: the audit triggers pick up who is saving from @app_user
                 batch.Add(_emailSql.setAppUser(user));
-
-                Dictionary<int, int> groupIds;
-                if (!AddRecipientStatements(batch, user, out groupIds)) return false;
-                AddGroupNameStatements(batch, user, groupIds);
-                AddSpecStatements(batch, groupIds);
-
+                AddSpecStatements(batch);
                 batch.Add(_emailSql.clearAppUser());
             }
             catch (Exception ex)
@@ -285,19 +279,22 @@ namespace EdataManagement.Views.Setting
                 return false;
             }
 
-            if (!_emailCon.saveChanges(batch))
+            // one sheet for the write and the reload after it
+            using (SettingBusy.Begin(this, SettingBusy.SAVING))
             {
-                frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
-                return false;
-            }
+                if (!SettingBusy.Run(this, SettingBusy.SAVING, () => _emailCon.saveChanges(batch)))
+                {
+                    frmError.ShowError(this, SAVE_STOPPED + Environment.NewLine + _emailCon.lastError);
+                    return false;
+                }
 
-            ReloadAfterSave("บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว: แก้ spec " + specCount + " รายการ, แก้ผู้รับ " +
-                recipientCount + " รายการ" + (nameCount > 0 ? ", ตั้งชื่อ group " + nameCount + " รายการ" : ""));
+                ReloadAfterSave("บันทึกลง " + MailSafety.ConfigDatabase + " แล้ว: แก้ spec " + specCount + " รายการ");
+            }
             return true;
         }
 
-        /// <summary>One upsert per changed field; a group made on this screen gets the id taken at Save.</summary>
-        private void AddSpecStatements(List<string> batch, Dictionary<int, int> groupIds)
+        /// <summary>One upsert per changed field.</summary>
+        private void AddSpecStatements(List<string> batch)
         {
             string product = SelectedProductName();
 
@@ -310,10 +307,7 @@ namespace EdataManagement.Views.Setting
                     if (!IsFieldChanged(row, field)) continue;
                     if (EMAIL_ONLY && field != COL_GROUP) continue;
 
-                    int value = ToInt(row[field]);
-                    if (field == COL_GROUP) value = MapGroup(groupIds, value);
-
-                    batch.Add(_specSql.saveSpecValue(product, field, keyId, value));
+                    batch.Add(_specSql.saveSpecValue(product, field, keyId, ToInt(row[field])));
                 }
             }
         }
@@ -321,9 +315,12 @@ namespace EdataManagement.Views.Setting
         /// <summary>Everything is read again, so the screen shows what the database now holds.</summary>
         private void ReloadAfterSave(string message)
         {
-            ResetRecipients();   // before the lists are rebuilt: it takes the staged groups out of them
-            LoadLookups();       // member counts / the new groups
-            LoadSpecs();
+            using (SettingBusy.Begin(this, SettingBusy.LOADING))
+            {
+                ClearRecipientCache();
+                LoadLookups();       // member counts / names / new groups
+                LoadSpecs();
+            }
 
             SetAlert(SettingUi.ALERT_OK_BACK, SettingUi.ALERT_OK_TEXT, "v", message);
         }
@@ -341,10 +338,10 @@ namespace EdataManagement.Views.Setting
             return true;
         }
 
-        /// <summary>Changed specs + changed recipients (added / removed / TO-CC, new groups) + group names.</summary>
+        /// <summary>Changed specs (recipients are saved by Manage by Email itself).</summary>
         private int PendingCount()
         {
-            return ChangedSpecCount() + RecipientChangeCount() + GroupNameChangeCount();
+            return ChangedSpecCount();
         }
 
         private int ChangedSpecCount()
@@ -389,7 +386,6 @@ namespace EdataManagement.Views.Setting
                 EvaluateRow(row);
             }
 
-            ResetRecipients();
             RefreshAll();
         }
 
@@ -502,10 +498,19 @@ namespace EdataManagement.Views.Setting
 
         private void LoadCustomers()
         {
+            using (SettingBusy.Begin(this, SettingBusy.LOADING))
+            {
+                LoadCustomersOfProduct();
+            }
+        }
+
+        private void LoadCustomersOfProduct()
+        {
             string product = SelectedProductName();
             if (product == "") return;
 
-            DataTable customers = _specCon.searchCustomers(BuildProperty(""));
+            SettingSpecProperty prop = BuildProperty("");
+            DataTable customers = Busy(() => _specCon.searchCustomers(prop));
             string error = _specCon.lastError;
 
             _loading = true;
@@ -533,6 +538,15 @@ namespace EdataManagement.Views.Setting
 
         private void LoadSpecs()
         {
+            // the specs and, right after, the members of the group they use
+            using (SettingBusy.Begin(this, SettingBusy.LOADING))
+            {
+                LoadSpecsOfCustomer();
+            }
+        }
+
+        private void LoadSpecsOfCustomer()
+        {
             string customer = SelectedCustomerName();
             if (customer == "")
             {
@@ -540,7 +554,8 @@ namespace EdataManagement.Views.Setting
                 return;
             }
 
-            DataTable specs = _specCon.searchSpecs(BuildProperty(customer));
+            SettingSpecProperty prop = BuildProperty(customer);
+            DataTable specs = Busy(() => _specCon.searchSpecs(prop));
             if (_specCon.lastError != "")
             {
                 ShowSpecs(null);
@@ -569,11 +584,23 @@ namespace EdataManagement.Views.Setting
         /// <summary>Read the five lists and give every row the text of the list (LIST) and of the grid (SHORT).</summary>
         private void LoadLookups()
         {
+            // everything is read first, then the lists are rebuilt in one go (the grid may repaint while reading)
+            DataTable sendMethods, fileFormats, subjects, bodies, groups;
+            using (SettingBusy.Begin(this, SettingBusy.LOADING))
+            {
+                sendMethods = ReadList(Busy(() => _specCon.searchSendMethods()));
+                fileFormats = ReadList(Busy(() => _specCon.searchFileFormats()));
+                subjects = ReadList(Busy(() => _specCon.searchSubjects()));
+                bodies = ReadList(Busy(() => _specCon.searchBodies()));
+                LoadGroupNames();   // the group list shows them
+                groups = ReadList(Busy(() => _specCon.searchSpecGroups()));
+            }
+
             bool wasLoading = _loading;
             _loading = true;
 
             _sendMethods = NewLookup();
-            foreach (DataRow row in ReadList(_specCon.searchSendMethods()).Rows)
+            foreach (DataRow row in sendMethods.Rows)
             {
                 // "Email,Attach File(s)" -> list "Email, Attach File(s)", grid "Email"
                 string name = Convert.ToString(row["NAME"]).Trim();
@@ -581,7 +608,7 @@ namespace EdataManagement.Views.Setting
             }
 
             _fileFormats = NewLookup();
-            foreach (DataRow row in ReadList(_specCon.searchFileFormats()).Rows)
+            foreach (DataRow row in fileFormats.Rows)
             {
                 int id = ToInt(row["ID"]);
                 string name = Convert.ToString(row["NAME"]).Trim();
@@ -590,12 +617,11 @@ namespace EdataManagement.Views.Setting
                 _fileFormats.Rows.Add(id, list, id + " - " + name);
             }
 
-            _subjects = TextLookup(ReadList(_specCon.searchSubjects()));
-            _bodies = TextLookup(ReadList(_specCon.searchBodies()));
+            _subjects = TextLookup(subjects);
+            _bodies = TextLookup(bodies);
 
-            LoadGroupNames();   // the group list shows them
             _groups = NewLookup();
-            foreach (DataRow row in ReadList(_specCon.searchSpecGroups()).Rows)
+            foreach (DataRow row in groups.Rows)
             {
                 int id = ToInt(row["ID"]);
                 _groups.Rows.Add(id, GroupListText(id, ToInt(row["MEMBERS"])), "#" + id);
@@ -650,8 +676,7 @@ namespace EdataManagement.Views.Setting
         {
             _specs = null;
 
-            // staged recipient edits belong to the customer being left (the switch was confirmed)
-            ResetRecipients();
+            ClearRecipientCache();
 
             if (loaded != null)
             {
@@ -678,8 +703,7 @@ namespace EdataManagement.Views.Setting
                 _specs = loaded;
             }
 
-            LoadConfiguredMailTypes();
-            _view = _specs == null ? null : new DataView(_specs);
+            _view =_specs == null ? null : new DataView(_specs);
             dtgSpecs.DataSource = _view;
             ApplyFilter();
 

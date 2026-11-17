@@ -80,6 +80,24 @@ namespace EdataManagement.Models
             return _resultData;
         }
 
+        public OutputOnDbProperty searchEmailList()
+        {
+            _resultData = _services.searchEmailList();
+            return _resultData;
+        }
+
+        public OutputOnDbProperty searchGroupsOfAddress(SettingEmailProperty dataItem)
+        {
+            _resultData = _services.searchGroupsOfAddress(dataItem);
+            return _resultData;
+        }
+
+        public OutputOnDbProperty searchAllDocumentGroups()
+        {
+            _resultData = _services.searchAllDocumentGroups();
+            return _resultData;
+        }
+
         public OutputOnDbProperty maxEmailId()
         {
             _resultData = _services.maxEmailId();

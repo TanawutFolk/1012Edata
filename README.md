@@ -31,7 +31,7 @@ EdataManagement.sln
    │  ├─ ftpUserControl   อัปโหลด SFTP + เตรียม zip สำหรับ DUC
    │  ├─ frmLogin         ประตูเข้า Setting
    │  ├─ frmConfirm / frmError
-   │  └─ Setting\         frmSetting, ucSpecSetting (+ .Recipients), ucLoginSetting, GroupOverviewDialog, SettingShared
+   │  └─ Setting\         frmSetting, ucSpecSetting (+ .Recipients), ucLoginSetting, EmailGroupsDialog, SettingShared
    ├─ Controllers\        เรียกจาก View
    ├─ Models\             Controller → Services
    ├─ Services\           เลือก connection + รัน SQL ผ่าน BusinessData
@@ -108,7 +108,9 @@ yyMMdd-Shipping Data\
 
 - **Login**: รหัสพนักงานต้องอยู่ใน `mfg.info_employees`, ไม่ลาออก, และอยู่ใน `user_setting_edata` (INUSE = 1) → ได้ ROLE (`ADMIN` / `USER`)
   - การเช็ครหัสผ่าน portal (Security Center API) **ปิดอยู่** – ช่อง Password ไม่ถูกอ่าน (`frmLogin.btnLoginn_Click`)
-- **Spec** (`ucSpecSetting`): send method / file format / group / subject / body ของแต่ละ spec และผู้รับของ group (`info_group_email`, ชื่อ group ใน `info_group_name`)
+- **Spec** (`ucSpecSetting`): send method / file format / group / subject / body ของแต่ละ spec; กรอบ Recipients ทางขวาแสดงผู้รับของ group (ดูอย่างเดียว)
+- **Manage by Email** (`EmailGroupsDialog`, ปุ่มในกรอบ Recipients หรือดับเบิลคลิกอีเมล): ที่เดียวที่แก้ผู้รับ – เปิดอีเมลหนึ่ง ติ๊ก group / สลับ TO-CC หลาย group แล้ว Save ครั้งเดียว (`info_group_email`), ตั้งชื่อ group (`info_group_name`), ADMIN สร้าง group ใหม่ได้; log ใช้ `PRODUCT = 'BY EMAIL'`
+  - group ของ Serial List / Wafer (`key_group_email_document`) แก้ผู้รับได้ที่นี่ แต่การผูก group ใหม่ให้ลูกค้าต้องใช้ SQL script
 - **Login Permission** (`ucLoginSetting`): เห็นเฉพาะ ADMIN
 - **Database selector**: สลับ `qa_oc_test` ↔ `qa_oc` – เขียนลง `.exe.config` แล้วเปิดโปรแกรมใหม่ (`DatabaseSelection`)
 - ทุกการแก้บันทึกลง `log_setting_edata`

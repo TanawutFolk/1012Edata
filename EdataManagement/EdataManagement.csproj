@@ -217,7 +217,9 @@
       <DependentUpon>ucSpecSetting.cs</DependentUpon>
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Setting\GroupOverviewDialog.cs" />
+    <Compile Include="Views\Setting\EmailGroupsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="Views\emailUserControl.resx">
       <DependentUpon>emailUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -37,6 +37,8 @@ namespace EdataManagement.Views
         /// <summary>Returns true when the left (confirm) button was pressed.</summary>
         public static bool Ask(IWin32Window owner, string message, string okText, string cancelText)
         {
+            Setting.SettingBusy.Pause();   // never under the loading sheet
+
             using (frmConfirm dialog = new frmConfirm())
             {
                 dialog.Setup(message, okText, cancelText);

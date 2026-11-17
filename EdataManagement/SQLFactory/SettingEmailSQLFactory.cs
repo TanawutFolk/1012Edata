@@ -184,14 +184,17 @@ namespace EdataManagement.SQLFactory
             return sql;
         }
 
-        /// <summary>All groups with member counts - for the "All Group Details" button.</summary>
+        /// <summary>All groups with member counts and who is on them - the group list of "Manage by Email".</summary>
         public string searchAllGroups()
         {
             sql = "SELECT ge.GROUP_ID " +
                   ", COUNT(*) AS `MEMBER_COUNT` " +
                   ", SUM(CASE WHEN ge.RECIPIENT_ID = 1 THEN 1 ELSE 0 END) AS `TO_COUNT` " +
                   ", SUM(CASE WHEN ge.RECIPIENT_ID = 2 THEN 1 ELSE 0 END) AS `CC_COUNT` " +
+                  ", GROUP_CONCAT(CASE WHEN ge.RECIPIENT_ID = 1 THEN e.EMAIL_ADDRESS END ORDER BY e.EMAIL_ADDRESS SEPARATOR ', ') AS `TO_LIST` " +
+                  ", GROUP_CONCAT(CASE WHEN ge.RECIPIENT_ID = 2 THEN e.EMAIL_ADDRESS END ORDER BY e.EMAIL_ADDRESS SEPARATOR ', ') AS `CC_LIST` " +
                   "FROM info_group_email ge " +
+                  "LEFT JOIN info_email e ON (e.EMAIL_ID = ge.EMAIL_ID) " +
                   "GROUP BY ge.GROUP_ID " +
                   "ORDER BY ge.GROUP_ID ASC ";
 
@@ -263,6 +266,45 @@ namespace EdataManagement.SQLFactory
                   "   GROUP BY ge.GROUP_ID " +
                   ") m ON (m.GROUP_ID = x.GROUP_ID) " +
                   "ORDER BY x.`PRODUCT` ASC, x.`SPEC_COUNT` DESC, x.`CUSTOMER_NAME` ASC ";
+
+            return sql;
+        }
+
+        /// <summary>Every address of the master list and on how many groups it is - the picker of "Manage by Email".</summary>
+        public string searchEmailList()
+        {
+            sql = "SELECT e.EMAIL_ID, e.EMAIL_ADDRESS, e.INUSE, COUNT(ge.GROUP_ID) AS `GROUP_COUNT` " +
+                  "FROM info_email e " +
+                  "LEFT JOIN info_group_email ge ON (ge.EMAIL_ID = e.EMAIL_ID) " +
+                  "GROUP BY e.EMAIL_ID, e.EMAIL_ADDRESS, e.INUSE " +
+                  "ORDER BY e.EMAIL_ADDRESS ASC ";
+
+            return sql;
+        }
+
+        /// <summary>
+        /// Every group one address is on, matched by the address (info_email holds a few addresses twice,
+        /// each row brings the EMAIL_ID that is really on that group).
+        /// </summary>
+        public string searchGroupsOfAddress(SettingEmailProperty dataItem)
+        {
+            sql = "SELECT ge.GROUP_ID, ge.RECIPIENT_ID, ge.EMAIL_ID " +
+                  "FROM info_group_email ge " +
+                  "INNER JOIN info_email e ON (e.EMAIL_ID = ge.EMAIL_ID) " +
+                  "WHERE e.EMAIL_ADDRESS = '" + Esc(dataItem.emailAddress) + "' " +
+                  "ORDER BY ge.GROUP_ID ASC ";
+
+            return sql;
+        }
+
+        /// <summary>Every Serial List / Wafer group with its product + customer (who a group's mail goes to).</summary>
+        public string searchAllDocumentGroups()
+        {
+            sql = "SELECT d.GROUP_ID, d.PRODUCT_NAME AS `PRODUCT`, d.CUSTOMER AS `CUSTOMER_NAME` " +
+                  ", IFNULL(doc.DOCUMENT_NAME, CONCAT('Document ', d.DOCUMENT_ID)) AS `DOCUMENT_NAME` " +
+                  "FROM key_group_email_document d " +
+                  "LEFT JOIN info_document doc ON (doc.DOCUMENT_ID = d.DOCUMENT_ID) " +
+                  "ORDER BY d.GROUP_ID ASC, d.PRODUCT_NAME ASC, d.CUSTOMER ASC ";
 
             return sql;
         }

@@ -36,17 +36,12 @@
             this.cbFilter = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSearch = new Bunifu.Framework.UI.BunifuMetroTextbox();
-            this.btnAllGroups = new Bunifu.Framework.UI.BunifuFlatButton();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnRecipients = new System.Windows.Forms.Panel();
-            this.btnAddEmail = new Bunifu.Framework.UI.BunifuFlatButton();
-            this.cbToOrCC = new System.Windows.Forms.ComboBox();
-            this.txtAddEmail = new Bunifu.Framework.UI.BunifuMetroTextbox();
             this.lbRcpEmpty = new System.Windows.Forms.Label();
             this.dtgRecipients = new Bunifu.Framework.UI.BunifuCustomDataGrid();
             this.btnRcpAction = new Bunifu.Framework.UI.BunifuFlatButton();
             this.lbRcpNote = new System.Windows.Forms.Label();
-            this.cbMailType = new System.Windows.Forms.ComboBox();
             this.lbRcpTitle = new System.Windows.Forms.Label();
             this.pnEditor = new System.Windows.Forms.Panel();
             this.btnApply = new Bunifu.Framework.UI.BunifuFlatButton();
@@ -157,40 +152,6 @@
             this.txtSearch.Size = new System.Drawing.Size(271, 30);
             this.txtSearch.TabIndex = 7;
             this.txtSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            //
-            // btnAllGroups
-            //
-            this.btnAllGroups.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.btnAllGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.btnAllGroups.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAllGroups.BorderRadius = 0;
-            this.btnAllGroups.ButtonText = "All Groups";
-            this.btnAllGroups.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAllGroups.DisabledColor = System.Drawing.Color.Gray;
-            this.btnAllGroups.Iconcolor = System.Drawing.Color.Transparent;
-            this.btnAllGroups.Iconimage = null;
-            this.btnAllGroups.Iconimage_right = null;
-            this.btnAllGroups.Iconimage_right_Selected = null;
-            this.btnAllGroups.Iconimage_Selected = null;
-            this.btnAllGroups.IconMarginLeft = 0;
-            this.btnAllGroups.IconMarginRight = 0;
-            this.btnAllGroups.IconRightVisible = true;
-            this.btnAllGroups.IconRightZoom = 0D;
-            this.btnAllGroups.IconVisible = true;
-            this.btnAllGroups.IconZoom = 90D;
-            this.btnAllGroups.IsTab = false;
-            this.btnAllGroups.Location = new System.Drawing.Point(1234, 31);
-            this.btnAllGroups.Name = "btnAllGroups";
-            this.btnAllGroups.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.btnAllGroups.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(90)))), ((int)(((byte)(229)))));
-            this.btnAllGroups.OnHoverTextColor = System.Drawing.Color.White;
-            this.btnAllGroups.selected = false;
-            this.btnAllGroups.Size = new System.Drawing.Size(150, 30);
-            this.btnAllGroups.TabIndex = 8;
-            this.btnAllGroups.Text = "All Groups";
-            this.btnAllGroups.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnAllGroups.Textcolor = System.Drawing.Color.White;
-            this.btnAllGroups.TextFont = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             //
             // panel3
             //
@@ -428,14 +389,10 @@
             // pnRecipients
             //
             this.pnRecipients.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
-            this.pnRecipients.Controls.Add(this.btnAddEmail);
-            this.pnRecipients.Controls.Add(this.cbToOrCC);
-            this.pnRecipients.Controls.Add(this.txtAddEmail);
             this.pnRecipients.Controls.Add(this.lbRcpEmpty);
             this.pnRecipients.Controls.Add(this.dtgRecipients);
             this.pnRecipients.Controls.Add(this.btnRcpAction);
             this.pnRecipients.Controls.Add(this.lbRcpNote);
-            this.pnRecipients.Controls.Add(this.cbMailType);
             this.pnRecipients.Controls.Add(this.lbRcpTitle);
             this.pnRecipients.Location = new System.Drawing.Point(953, 66);
             this.pnRecipients.Name = "pnRecipients";
@@ -452,15 +409,6 @@
             this.lbRcpTitle.Size = new System.Drawing.Size(236, 22);
             this.lbRcpTitle.TabIndex = 0;
             this.lbRcpTitle.Text = "Recipients";
-            //
-            // cbMailType
-            //
-            this.cbMailType.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMailType.FormattingEnabled = true;
-            this.cbMailType.Location = new System.Drawing.Point(254, 8);
-            this.cbMailType.Name = "cbMailType";
-            this.cbMailType.Size = new System.Drawing.Size(128, 25);
-            this.cbMailType.TabIndex = 1;
             //
             // lbRcpNote
             //
@@ -536,71 +484,10 @@
             this.lbRcpEmpty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lbRcpEmpty.Visible = false;
             //
-            // txtAddEmail
-            //
-            this.txtAddEmail.BorderColorFocused = System.Drawing.Color.Blue;
-            this.txtAddEmail.BorderColorIdle = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtAddEmail.BorderColorMouseHover = System.Drawing.Color.Blue;
-            this.txtAddEmail.BorderThickness = 2;
-            this.txtAddEmail.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtAddEmail.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtAddEmail.isPassword = false;
-            this.txtAddEmail.Location = new System.Drawing.Point(12, 316);
-            this.txtAddEmail.Margin = new System.Windows.Forms.Padding(5);
-            this.txtAddEmail.Name = "txtAddEmail";
-            this.txtAddEmail.Size = new System.Drawing.Size(206, 32);
-            this.txtAddEmail.TabIndex = 6;
-            this.txtAddEmail.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            //
-            // cbToOrCC
-            //
-            this.cbToOrCC.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbToOrCC.FormattingEnabled = true;
-            this.cbToOrCC.Location = new System.Drawing.Point(224, 320);
-            this.cbToOrCC.Name = "cbToOrCC";
-            this.cbToOrCC.Size = new System.Drawing.Size(60, 25);
-            this.cbToOrCC.TabIndex = 7;
-            //
-            // btnAddEmail
-            //
-            this.btnAddEmail.Activecolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
-            this.btnAddEmail.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
-            this.btnAddEmail.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAddEmail.BorderRadius = 0;
-            this.btnAddEmail.ButtonText = "Add";
-            this.btnAddEmail.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddEmail.DisabledColor = System.Drawing.Color.Gray;
-            this.btnAddEmail.Iconcolor = System.Drawing.Color.Transparent;
-            this.btnAddEmail.Iconimage = null;
-            this.btnAddEmail.Iconimage_right = null;
-            this.btnAddEmail.Iconimage_right_Selected = null;
-            this.btnAddEmail.Iconimage_Selected = null;
-            this.btnAddEmail.IconMarginLeft = 0;
-            this.btnAddEmail.IconMarginRight = 0;
-            this.btnAddEmail.IconRightVisible = true;
-            this.btnAddEmail.IconRightZoom = 0D;
-            this.btnAddEmail.IconVisible = true;
-            this.btnAddEmail.IconZoom = 90D;
-            this.btnAddEmail.IsTab = false;
-            this.btnAddEmail.Location = new System.Drawing.Point(290, 316);
-            this.btnAddEmail.Name = "btnAddEmail";
-            this.btnAddEmail.Normalcolor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(153)))), ((int)(((byte)(0)))));
-            this.btnAddEmail.OnHovercolor = System.Drawing.Color.Silver;
-            this.btnAddEmail.OnHoverTextColor = System.Drawing.Color.White;
-            this.btnAddEmail.selected = false;
-            this.btnAddEmail.Size = new System.Drawing.Size(92, 32);
-            this.btnAddEmail.TabIndex = 8;
-            this.btnAddEmail.Text = "Add";
-            this.btnAddEmail.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.btnAddEmail.Textcolor = System.Drawing.Color.White;
-            this.btnAddEmail.TextFont = new System.Drawing.Font("Century Gothic", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            //
             // ucSpecSetting
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnAllGroups);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cbFilter);
@@ -635,7 +522,6 @@
         private System.Windows.Forms.ComboBox cbFilter;
         private System.Windows.Forms.Label label4;
         private Bunifu.Framework.UI.BunifuMetroTextbox txtSearch;
-        private Bunifu.Framework.UI.BunifuFlatButton btnAllGroups;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel pnAlert;
         private System.Windows.Forms.Label lbAlertText;
@@ -657,13 +543,9 @@
         private Bunifu.Framework.UI.BunifuFlatButton btnApply;
         private System.Windows.Forms.Panel pnRecipients;
         private System.Windows.Forms.Label lbRcpTitle;
-        private System.Windows.Forms.ComboBox cbMailType;
         private System.Windows.Forms.Label lbRcpNote;
         private Bunifu.Framework.UI.BunifuFlatButton btnRcpAction;
         private Bunifu.Framework.UI.BunifuCustomDataGrid dtgRecipients;
         private System.Windows.Forms.Label lbRcpEmpty;
-        private Bunifu.Framework.UI.BunifuMetroTextbox txtAddEmail;
-        private System.Windows.Forms.ComboBox cbToOrCC;
-        private Bunifu.Framework.UI.BunifuFlatButton btnAddEmail;
     }
 }

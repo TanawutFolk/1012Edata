@@ -158,7 +158,7 @@ user แจ้งว่า Molex ของ 1480Dual ใช้ flow เดีย�
 
 ## 5. ข้อมูลเทส (`\\office_SRV\C06_Shipping-Data\Test\1480DUAL` + `1480dual_test_tanawut`)
 
-สคริปต์สร้างใหม่ได้ (รันซ้ำได้ ลบแถวของตัวเองก่อน): `EdataManagement\DatabaseScripts\test_data\make_1480dual_format13_test.ps1`, `make_1480dual_format14_test.ps1` (ต้องใส่ `-SqlOut <ไฟล์.sql>` แล้วเอา SQL ไปรันเอง)
+สคริปต์สร้างใหม่ได้ (รันซ้ำได้ ลบแถวของตัวเองก่อน): `EdataManagement\DatabaseScripts\test_data\make_1480dual_format13_test.ps1`, `make_1480dual_format14_test.ps1`, `make_1480dual_format14_split_test.ps1` (ต้องใส่ `-SqlOut <ไฟล์.sql>` แล้วเอา SQL ไปรันเอง)
 
 | วันที่ | ลูกค้า | เคส | ผลที่ควรได้ |
 |---|---|---|---|
@@ -173,11 +173,19 @@ user แจ้งว่า Molex ของ 1480Dual ใช้ flow เดีย�
 | 260924 | COHERENT | DB 3 / txt 2 | จำนวนไฟล์ txt ไม่ตรง |
 | 260925 | COHERENT | ไม่มีโฟลเดอร์ order | ไม่พบเทสรีพอตหมายเลข |
 | 260926 | INFINERA | 300 ไฟล์เล็ก | 2 เมล (256/44) |
+| 260512 | MOLEX (OPLINK) | **ของจริง** order 3012359006-10-001, 10PCS, TR 26-MCG-0001, KEY 7 | 1 zip / 1 เมล |
+| 260804 | COHERENT | **ของจริง** order 3013140112-10-001, 1PCS (AW261AAE04), TR 26-MCG-0002, KEY 8 | 1 เมล |
+| 260512 (+3 order) | MOLEX | 2026-11-12: user ใส่ txt 10 MiB พอดีไว้ 4 order (10-001..004) บน share, เพิ่มแถว DB 10-002..004 (TST14S-0512B/C/D) — txt บีบเหลือ ~10 KB | 4 zip (1 order ต่อ zip) / **1 เมล** |
+| 260927 | MOLEX | 3 order × 10PCS, txt 11.43 MiB ที่บีบได้น้อย (zip 3.89 MiB) — `make_1480dual_format14_split_test.ps1` | 3 zip → **2 เมล: (1/2) 2 zip, (2/2) 1 zip** |
+
+ของจริง 260512 / 260804 (ใส่ 2026-10-30 ตามที่พี่ขอเทส): `1480dual.shipping` จริง**ว่าง (0 แถว)** และ `db_check_sheet` จริงไม่มี 2 order นี้ → สร้างแถวจาก serial/sublot ใน `1480dual.db_module_status` + `shipment_schedule` + Cover.xls, โฟลเดอร์มีอยู่แล้วใน share เทส
+- serial 260512 ใน production เป็น KEY 5 (Y-3ER4002B, send 0) — ใส่เป็น KEY 7 (Y-3ER4002C) เพื่อเทส format 14
 
 ล้างข้อมูลเทสใน DB:
 ```sql
-DELETE FROM `1480dual_test_tanawut`.shipping WHERE Note IN ('TEST 1012 format13', 'TEST 1012 format14');
-DELETE FROM `1480dual_test_tanawut`.db_check_sheet WHERE TestReportNo LIKE 'TST13-%' OR TestReportNo LIKE 'TST14-%';
+DELETE FROM `1480dual_test_tanawut`.shipping WHERE Note IN ('TEST 1012 format13', 'TEST 1012 format14', 'TEST 1012 format14 split', 'TEST 1012 from real 260512', 'TEST 1012 from real 260804');
+DELETE FROM `1480dual_test_tanawut`.db_check_sheet WHERE TestReportNo LIKE 'TST13-%' OR TestReportNo LIKE 'TST14-%' OR TestReportNo LIKE 'TST14S-%'
+    OR (TestReportNo IN ('26-MCG-0001', '26-MCG-0002') AND OperatorID = 'TEST');
 ```
 
 ---

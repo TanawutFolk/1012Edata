@@ -24,6 +24,8 @@ namespace EdataManagement.Views
 
         public static void ShowError(IWin32Window owner, string message)
         {
+            Setting.SettingBusy.Pause();   // never under the loading sheet
+
             using (frmError dialog = new frmError())
             {
                 dialog.Setup(message);

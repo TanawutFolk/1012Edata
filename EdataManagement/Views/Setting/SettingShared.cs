@@ -1,7 +1,11 @@
 using Bunifu.Framework.UI;
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.Runtime.ExceptionServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EdataManagement.Views.Setting
@@ -251,6 +255,171 @@ namespace EdataManagement.Views.Setting
         public static string CurrentUserCode()
         {
             return frmLogin.CurrentUser == null ? Environment.UserName : frmLogin.CurrentUser.empCode;
+        }
+    }
+
+    /// <summary>
+    /// "กำลังโหลด..." over the Setting window while it talks to the database, so the window never sits frozen.
+    /// Run does the database call on another thread and keeps the screen alive meanwhile; the work must not touch
+    /// a control (read what it needs from the screen before, put the result on the screen after).
+    ///   * nothing is shown for the first SHOW_AFTER_MS - a quick read does not flash
+    ///   * the sheet covers the whole window and takes the keyboard, so nothing can be clicked twice
+    ///   * Begin ... Dispose keeps one sheet up over several Run calls (a Save and the reload after it)
+    ///   * frmError / frmConfirm call Pause first, so a message is never hidden under the sheet
+    /// UI thread only.
+    /// </summary>
+    internal static class SettingBusy
+    {
+        public const string LOADING = "กำลังโหลด...";
+        public const string SAVING = "กำลังบันทึก...";
+
+        private const int SHOW_AFTER_MS = 300;
+
+        private static Scope _current;
+
+        /// <summary>One sheet for everything until Dispose. Inside another Begin it does nothing (the outer one stays).</summary>
+        public static IDisposable Begin(Control owner, string text)
+        {
+            if (_current != null)
+            {
+                _current.SetText(text);
+                return new Nested();
+            }
+
+            _current = new Scope(owner, text);
+            return _current;
+        }
+
+        public static T Run<T>(Control owner, string text, Func<T> work)
+        {
+            using (Begin(owner, text))
+            {
+                Task<T> task = Task.Run(work);
+                _current.WaitFor(task);
+
+                try
+                {
+                    return task.Result;
+                }
+                catch (AggregateException ex)
+                {
+                    // the caller sees what the work threw, not the wrapper
+                    ExceptionDispatchInfo.Capture(ex.InnerException ?? ex).Throw();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>Take the sheet away for a message box; the next Run puts it back if it is still slow.</summary>
+        public static void Pause()
+        {
+            if (_current != null) _current.Hide();
+        }
+
+        private sealed class Nested : IDisposable
+        {
+            public void Dispose() { }
+        }
+
+        private sealed class Scope : IDisposable
+        {
+            private readonly Control _owner;
+            private readonly Stopwatch _clock = Stopwatch.StartNew();
+            private string _text;
+            private Form _sheet;
+            private Label _label;
+
+            public Scope(Control owner, string text)
+            {
+                _owner = owner;
+                _text = text;
+            }
+
+            public void SetText(string text)
+            {
+                _text = text;
+                if (_label != null) _label.Text = text;
+            }
+
+            public void WaitFor(Task task)
+            {
+                // not shown yet: wait without handling input, so nothing else can be clicked in the gap
+                int left = SHOW_AFTER_MS - (int)_clock.ElapsedMilliseconds;
+                if (_sheet == null && left > 0 && ((IAsyncResult)task).AsyncWaitHandle.WaitOne(left)) return;
+
+                Show();
+                while (!task.IsCompleted)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(15);
+                }
+            }
+
+            private void Show()
+            {
+                if (_sheet != null) return;
+
+                Form window = _owner == null ? null : _owner.FindForm();
+                bool cover = window != null && window.Visible && window.WindowState != FormWindowState.Minimized;
+
+                _sheet = new Form();
+                _sheet.FormBorderStyle = FormBorderStyle.None;
+                _sheet.ShowInTaskbar = false;
+                _sheet.StartPosition = FormStartPosition.Manual;
+                _sheet.BackColor = Color.White;
+                _sheet.Opacity = cover ? 0.88 : 1;
+                _sheet.Cursor = Cursors.WaitCursor;
+
+                if (cover)
+                {
+                    _sheet.Bounds = window.Bounds;
+                }
+                else
+                {
+                    // the window is not on screen yet (first load): a small box in the middle of the screen
+                    Rectangle screen = Screen.FromPoint(Cursor.Position).WorkingArea;
+                    _sheet.Bounds = new Rectangle(screen.Left + (screen.Width - 360) / 2, screen.Top + (screen.Height - 120) / 2, 360, 120);
+                }
+
+                _label = new Label();
+                _label.AutoSize = false;
+                _label.Text = _text;
+                _label.Font = new Font(SettingUi.FONT_NAME, 13F, FontStyle.Bold);
+                _label.ForeColor = SettingUi.GRID_TEXT;
+                _label.TextAlign = ContentAlignment.MiddleCenter;
+                _label.SetBounds(0, _sheet.Height / 2 - 44, _sheet.Width, 36);
+
+                ProgressBar bar = new ProgressBar();
+                bar.Style = ProgressBarStyle.Marquee;
+                bar.MarqueeAnimationSpeed = 25;
+                bar.SetBounds((_sheet.Width - 260) / 2, _sheet.Height / 2 + 2, 260, 10);
+
+                _sheet.Controls.Add(_label);
+                _sheet.Controls.Add(bar);
+
+                if (cover) _sheet.Show(window);
+                else _sheet.Show();
+                _sheet.Update();
+            }
+
+            public void Hide()
+            {
+                if (_sheet == null) return;
+
+                Form window = _sheet.Owner;
+                _sheet.Dispose();
+                _sheet = null;
+                _label = null;
+                _clock.Restart();
+
+                if (window != null && window.Visible) window.Activate();
+            }
+
+            public void Dispose()
+            {
+                Hide();
+                if (_current == this) _current = null;
+            }
         }
     }
 }

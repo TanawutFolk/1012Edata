@@ -114,6 +114,30 @@ namespace EdataManagement.Services
             return resultData;
         }
 
+        public OutputOnDbProperty searchEmailList()
+        {
+            UseSettingConnection();
+            sql = sqlFactory.searchEmailList();
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
+        public OutputOnDbProperty searchGroupsOfAddress(SettingEmailProperty dataItem)
+        {
+            UseSettingConnection();
+            sql = sqlFactory.searchGroupsOfAddress(dataItem);
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
+        public OutputOnDbProperty searchAllDocumentGroups()
+        {
+            UseSettingConnection();
+            sql = sqlFactory.searchAllDocumentGroups();
+            resultData = base.SearchBySql(sql);
+            return resultData;
+        }
+
         public OutputOnDbProperty maxEmailId()
         {
             UseSettingConnection();
