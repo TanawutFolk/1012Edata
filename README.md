@@ -70,7 +70,7 @@ Product DB ที่ 1012 อ่าน: `info_cus_condition`, `shipping`, `db_ch
 | 1–8 | format เดิมของ 1012 | case 6 / 7 / 8 มีเมล Serial List / Wafer แยก (ผู้รับจาก `key_group_email_document`) |
 | 3 (MOLEX, MOLEX-SG, OPLINK, OPLINK-SUBMARINE) | 1480, 980Dual | `prepareCase3PrepareZip` – ดูข้อ 4.1 |
 | 10 | XTERA-INC, SMTC-CORP | ชื่อไฟล์ `yyMMdd-{Shipping-PO-all คอลัมน์ V}(short Part No).xls` อ่าน PO จาก `Case10SpecialPOAllPath` |
-| 13 | 1480Dual COHERENT / INFINERA | `prepareCase13TxtEdata` – แนบ txt ใน `_Edata`, 1 เมล = 1 เทสรีพอต (ห้ามปน), เทสรีพอตเกิน 10 MiB / 250 ไฟล์ แบ่งเป็นหลายเมล `(i/N)`, เนื้อเมลบอกชื่อเทสรีพอต |
+| 13 | 1480Dual COHERENT / INFINERA | `prepareCase13TxtEdata` – แนบ txt ใน `_Edata`, 1 เมล = 1 เทสรีพอต (ห้ามปน), เทสรีพอตเกิน 10 MiB / 245 ไฟล์ แบ่งเป็นหลายเมล `(i/N)` (Exchange Online จำกัด 250 part ต่อเมลรวมเนื้อเมล), เนื้อเมลบอกชื่อเทสรีพอต |
 | 14 | 1480Dual MOLEX | `prepareCase14TxtZip` – ดูข้อ 4.2 |
 
 ### 4.1 Format 3 – MOLEX / OPLINK ของ 1480, 980Dual

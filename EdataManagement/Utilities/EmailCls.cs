@@ -19,6 +19,7 @@ using SevenZipExtractor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using System.Security.Cryptography.Xml;
 using EdataManagement.Controllers;
+using EdataManagement.Views.Setting;
 using System.ComponentModel;
 using System.Windows.Controls;
 using Renci.SshNet.Messages;
@@ -733,11 +734,22 @@ namespace EdataManagement.Utilities
         //    }
         //}
 
+        /// <summary>The Outlook call running now - shown with an error, so a failure points at its step.</summary>
+        private sealed class SendStep
+        {
+            public string Text = "เปิด Outlook";
+        }
+
+        /// <summary>
+        /// Send one mail through classic Outlook (test mode: MailSafety - a draft, or a real send only to the test groups).
+        /// Every Outlook call runs on one single-threaded-apartment thread of its own (SettingBusy.RunSta) while the window
+        /// stays alive under the loading sheet: no call crosses threads (the old separate send thread made
+        /// _MailItem.Send fail with TargetException after 250 attachments) and a busy Outlook is retried
+        /// (OutlookMessageFilter). Inside a counted Send (SettingBusy.StartCount) the sheet moves to the next mail.
+        /// </summary>
         public bool SendEmail(EmailProperty prop, EmailProperty.replaceWord itemData)
         {
-            bool _result = false;
-            Outlook.Application app = null;
-            Outlook.MailItem mail = null;
+            SettingBusy.NextCount();
 
             // not on the production database -> never send, see MailSafety
             bool testMode = MailSafety.IsTestMode;
@@ -760,131 +772,20 @@ namespace EdataManagement.Utilities
                                                        internalTestAddresses, externalTestAddresses);
             bool addRecipients = !testMode || testSend;
 
-            // which Outlook call is running - shown with the error, so a failure points at its step
-            string step = "เปิด Outlook";
-            int attachTotal = prop.attachmentFilePaths == null ? 0 : prop.attachmentFilePaths.Count;
+            // a mail to the test group looks exactly like the real one; only the draft is marked
+            bool draftOnly = testMode && !testSend;
 
+            SendStep step = new SendStep();
             try
             {
-                // 1. สร้าง Object Outlook Application
-                app = new Outlook.Application();
-                step = "สร้างเมล";
-                mail = (Outlook.MailItem)app.CreateItem(Outlook.OlItemType.olMailItem);
-                step = "ใส่ผู้รับ";
-
-
-                // 2. จัดการผู้รับ (To)
-                if (prop.toEmailAddresses != null && addRecipients)
+                // inside a Send the sheet keeps its "กำลังส่งเมล 2/3"; alone it says SENDING
+                SettingBusy.RunSta(Form.ActiveForm, SettingBusy.IsActive ? null : SettingBusy.SENDING, () =>
                 {
-                    foreach (string toAddress in prop.toEmailAddresses)
-                    {
-                        if (!string.IsNullOrWhiteSpace(toAddress))
-                        {
-                            Outlook.Recipient dest = mail.Recipients.Add(toAddress);
-                            dest.Type = (int)Outlook.OlMailRecipientType.olTo;
-                        }
-                    }
-                }
+                    SendWithOutlook(prop, itemData, addRecipients, draftOnly, step);
+                    return true;
+                }, "ถ้าค้างนาน ให้ดูว่า Outlook มีหน้าต่างให้กดยืนยันหรือไม่");
 
-                // 3. จัดการผู้รับสำเนา (CC)
-                if (prop.ccEmailAddresses != null && addRecipients)
-                {
-                    foreach (string ccAddress in prop.ccEmailAddresses)
-                    {
-                        if (!string.IsNullOrWhiteSpace(ccAddress))
-                        {
-                            Outlook.Recipient cc = mail.Recipients.Add(ccAddress);
-                            cc.Type = (int)Outlook.OlMailRecipientType.olCC;
-                        }
-                    }
-                }
-
-                // 4. สั่งตรวจสอบรายชื่อผู้รับทั้งหมด
-                step = "ตรวจรายชื่อผู้รับ (ResolveAll)";
-                mail.Recipients.ResolveAll();
-                step = "ใส่หัวเรื่อง / เนื้อเมล";
-
-                // 5. กำหนดเรื่อง (Subject)
-                // a mail to the test group looks exactly like the real one; only the draft is marked
-                bool draftOnly = testMode && !testSend;
-                mail.Subject = draftOnly ? MailSafety.TEST_SUBJECT_PREFIX + itemData.subject : itemData.subject;
-
-                // 6. กำหนดเนื้อหา (ต้องใช้ HTMLBody)
-                mail.BodyFormat = Outlook.OlBodyFormat.olFormatHTML;
-                // เติม <html> tag เพื่อความสมบูรณ์
-                // draft: the recipients it would have gone to are listed on top instead of being added
-                string testNotice = draftOnly ? MailSafety.IntendedRecipientsHtml(prop.toEmailAddresses, prop.ccEmailAddresses) : "";
-                mail.HTMLBody = "<html><body>" + testNotice + "Dear Sir/Madam <br><br>" + itemData.body + "</body></html>";
-
-                
-
-                // 7. การแนบไฟล์
-                if (prop.attachmentFilePaths != null)
-                {
-                    int attachIndex = 0;
-                    foreach (string strAtt in prop.attachmentFilePaths)
-                    {
-                        attachIndex++;
-                        step = "แนบไฟล์ " + attachIndex + "/" + attachTotal + ": " + Path.GetFileName(strAtt);
-
-                        // เช็คว่าไฟล์มีจริงไหม เพื่อกัน Error
-                        if (System.IO.File.Exists(strAtt))
-                        {
-                            // Type 1 = olByValue (แนบไฟล์ไปกับเมล)
-                            mail.Attachments.Add(strAtt, Outlook.OlAttachmentType.olByValue);
-                        }
-                    }
-                }
-
-                // 8. test mode: keep it as a draft without recipients - nothing leaves Outlook
-                if (testMode && !testSend)
-                {
-                    step = "บันทึก draft";
-                    mail.Save();
-                    return true;   // finally still releases the COM objects
-                }
-
-                // 8. ส่งอีเมล
-                step = "สั่งส่ง (mail.Send, ไฟล์แนบ " + attachTotal + " ไฟล์)";
-                bool sendSuccess = false;
-                Exception sendException = null;
-                var sendThread = new System.Threading.Thread(() =>
-                {
-                    try
-                    {
-                        mail.Send(); // ส่งตรงเลย ไม่มี .Display(false)
-                        sendSuccess = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        sendException = ex;
-                    }
-                });
-                sendThread.Start();
-                bool finished = sendThread.Join(30000); // รอสูงสุด 30 วินาที (ปรับได้)
-                if (!finished)
-                {
-                    sendThread.Abort(); // บังคับหยุดถ้ายังค้าง
-                    throw new TimeoutException("การส่งอีเมลค้างเกิน 30 วินาที (น่าจะมี security prompt เด้ง background)");
-                }
-                if (sendException != null)
-                    System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(sendException).Throw();   // keeps the stack of the send thread
-
-                step = "sync Outlook (SyncObjects)";
-
-                // (Optional) บังคับ Sync ทันทีถ้าต้องการ (แทนเช็ค Sent Items, ไม่ trigger prompt เพิ่ม)
-                if (app.Session.SyncObjects.Count >= 1)
-                {
-                    app.Session.SyncObjects.Item(1).Start();
-                }
-                else
-                {
-                    // Handle case ที่ไม่มี sync object (เช่น throw error หรือ skip)
-                }
-
-                _result = true; // *** ส่งสำเร็จ ให้เป็น true ***
-
-
+                return true;
             }
             catch (Exception ex)
             {
@@ -896,30 +797,124 @@ namespace EdataManagement.Utilities
                 }
 
                 // where it stopped and what kind of error, so the cause can be traced (Ctrl+C copies this box)
-                string logPath = WriteSendErrorLog(step, prop, itemData, ex);
+                string logPath = WriteSendErrorLog(step.Text, prop, itemData, ex);
+                SettingBusy.Pause();
                 MessageBox.Show("เกิดข้อผิดพลาดในการส่งอีเมล์ (Outlook): " + errorMsg +
-                                "\n\nตอน: " + step +
+                                "\n\nตอน: " + step.Text +
                                 "\n" + ex.GetType().FullName + " (HRESULT 0x" + ex.HResult.ToString("X8") + ")" +
                                 (logPath == "" ? "" : "\nรายละเอียด: " + logPath),
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _result = false; // *** เกิด Error ให้เป็น false ***
+                return false;
             }
-            finally
-            {
-                // (Optional) คืนค่า Resource
-                if (mail != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(mail);
-                if (app != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(app);
-
-                // เคลียร์ตัวแปร
-                mail = null;
-                app = null;
-
-            }
-
-            return _result;
-
         }
 
+        /// <summary>
+        /// Every Outlook call of one mail, in order, on the calling thread - which must be the STA thread SettingBusy.RunSta
+        /// starts. Throws on any failure; step.Text says where it was.
+        /// </summary>
+        private static void SendWithOutlook(EmailProperty prop, EmailProperty.replaceWord itemData, bool addRecipients,
+                                            bool draftOnly, SendStep step)
+        {
+            int attachTotal = prop.attachmentFilePaths == null ? 0 : prop.attachmentFilePaths.Count;
+            Outlook.Application app = null;
+            Outlook.MailItem mail = null;
+
+            using (OutlookMessageFilter.Register())
+            {
+                try
+                {
+                    // 1. สร้าง Object Outlook Application
+                    step.Text = "เปิด Outlook";
+                    app = new Outlook.Application();
+                    step.Text = "สร้างเมล";
+                    mail = (Outlook.MailItem)app.CreateItem(Outlook.OlItemType.olMailItem);
+                    step.Text = "ใส่ผู้รับ";
+
+                    // 2. จัดการผู้รับ (To)
+                    if (prop.toEmailAddresses != null && addRecipients)
+                    {
+                        foreach (string toAddress in prop.toEmailAddresses)
+                        {
+                            if (!string.IsNullOrWhiteSpace(toAddress))
+                            {
+                                Outlook.Recipient dest = mail.Recipients.Add(toAddress);
+                                dest.Type = (int)Outlook.OlMailRecipientType.olTo;
+                            }
+                        }
+                    }
+
+                    // 3. จัดการผู้รับสำเนา (CC)
+                    if (prop.ccEmailAddresses != null && addRecipients)
+                    {
+                        foreach (string ccAddress in prop.ccEmailAddresses)
+                        {
+                            if (!string.IsNullOrWhiteSpace(ccAddress))
+                            {
+                                Outlook.Recipient cc = mail.Recipients.Add(ccAddress);
+                                cc.Type = (int)Outlook.OlMailRecipientType.olCC;
+                            }
+                        }
+                    }
+
+                    // 4. สั่งตรวจสอบรายชื่อผู้รับทั้งหมด
+                    step.Text = "ตรวจรายชื่อผู้รับ (ResolveAll)";
+                    mail.Recipients.ResolveAll();
+                    step.Text = "ใส่หัวเรื่อง / เนื้อเมล";
+
+                    // 5. กำหนดเรื่อง (Subject)
+                    mail.Subject = draftOnly ? MailSafety.TEST_SUBJECT_PREFIX + itemData.subject : itemData.subject;
+
+                    // 6. กำหนดเนื้อหา (ต้องใช้ HTMLBody)
+                    mail.BodyFormat = Outlook.OlBodyFormat.olFormatHTML;
+                    // draft: the recipients it would have gone to are listed on top instead of being added
+                    string testNotice = draftOnly ? MailSafety.IntendedRecipientsHtml(prop.toEmailAddresses, prop.ccEmailAddresses) : "";
+                    mail.HTMLBody = "<html><body>" + testNotice + "Dear Sir/Madam <br><br>" + itemData.body + "</body></html>";
+
+                    // 7. การแนบไฟล์
+                    if (prop.attachmentFilePaths != null)
+                    {
+                        int attachIndex = 0;
+                        foreach (string strAtt in prop.attachmentFilePaths)
+                        {
+                            attachIndex++;
+                            step.Text = "แนบไฟล์ " + attachIndex + "/" + attachTotal + ": " + Path.GetFileName(strAtt);
+
+                            // เช็คว่าไฟล์มีจริงไหม เพื่อกัน Error
+                            if (System.IO.File.Exists(strAtt))
+                            {
+                                // Type 1 = olByValue (แนบไฟล์ไปกับเมล)
+                                mail.Attachments.Add(strAtt, Outlook.OlAttachmentType.olByValue);
+                            }
+                        }
+                    }
+
+                    // 8. test mode: keep it as a draft without recipients - nothing leaves Outlook
+                    if (draftOnly)
+                    {
+                        step.Text = "บันทึก draft";
+                        mail.Save();
+                        return;   // finally still releases the COM objects
+                    }
+
+                    // 9. ส่งอีเมล - on this thread, where the mail was made
+                    step.Text = "สั่งส่ง (mail.Send, ไฟล์แนบ " + attachTotal + " ไฟล์)";
+                    mail.Send();
+
+                    // บังคับ Sync ทันที (แทนเช็ค Sent Items, ไม่ trigger prompt เพิ่ม)
+                    step.Text = "sync Outlook (SyncObjects)";
+                    if (app.Session.SyncObjects.Count >= 1)
+                    {
+                        app.Session.SyncObjects.Item(1).Start();
+                    }
+                }
+                finally
+                {
+                    // คืนค่า Resource
+                    if (mail != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(mail);
+                    if (app != null) System.Runtime.InteropServices.Marshal.ReleaseComObject(app);
+                }
+            }
+        }
         /// <summary>
         /// The whole exception of a failed send (stack included) appended to %LOCALAPPDATA%\1012 Send E-data\send_error.log;
         /// the path, or "" when it could not be written.
@@ -2423,8 +2418,10 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         private const long CASE13_MAX_MAIL_BYTES = 10L * 1024 * 1024;
         private const int CASE13_MAX_MAIL_FILES = 256;
 
-        // Format 13 (1480Dual COHERENT / INFINERA): 250 txt a mail (customer request 2026-11-17).
-        private const int DUAL1480_MAX_MAIL_FILES = 250;
+        // Format 13 (1480Dual COHERENT / INFINERA): the customer asked for at most 250 txt a mail (2026-11-17), but Exchange Online
+        // allows 250 MIME parts a message and counts the body too - a mail with 250 attachments was refused (2026-11-18).
+        // The body takes up to 4 parts (text, html, their alternative block, the mixed block): 245 keeps a margin.
+        private const int DUAL1480_MAX_MAIL_FILES = 245;
 
         // Format 13 (1480Dual txt per serial). For every order row (= one test report):
         //   1. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
@@ -2433,9 +2430,10 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         // Mails (customer request 2026-11-17): the txt names are serials, so nobody can tell which test report a file
         // belongs to -
         //   * a mail carries the files of ONE test report, never mixed with another
-        //   * a test report over 10 MB or 250 files is split into several mails; its files are then copied into
+        //   * a test report over 10 MB or DUAL1480_MAX_MAIL_FILES (245) files is split into several mails; its files are then copied into
         //     {customer folder}\{test report folder}_Edata-1, -2, ... (one sub-folder = one mail)
-        //   * "FolderName" in the body = the test report name yyMMdd-{FEC order}(full Part No)
+        //   * "FolderName" in the body = the test report folder as it is on the share, yyMMdd-{FEC order}(full Part No)-{sub}
+        //     (with -{sub} when the folder has it: two test reports of one FEC order stay apart - user 2026-11-18)
         //   * subject ends with (i/N) when the day has more than one mail
         private EmailProperty prepareCase13TxtEdata(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows,
                                                     EmailProperty.replaceWord rpWord,
@@ -2445,12 +2443,15 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             string datePrefix = emailProp.shipDate.ToString("yyMMdd");
 
             // one per test report, in the order of the grid
-            List<string> reportNames = new List<string>();        // yyMMdd-{FEC order}(Part No) - what the mail body names
-            List<string> reportFolderNames = new List<string>();  // the folder really found (with -{sub} when it has one)
+            List<string> reportFolderNames = new List<string>();  // the folder really found (with -{sub} when it has one) - also what the mail body names
             List<string> reportOrders = new List<string>();
             List<string> reportCustomerPNs = new List<string>();
             List<string> reportTestReportNos = new List<string>();
             List<string[]> reportFiles = new List<string[]>();
+
+            // the loading sheet counts the test reports (Select stays on the UI thread: it shows messages, fills grids)
+            int reportTotal = shipRows.Count(r => !r.IsNewRow);
+            int reportIndex = 0;
 
             if (!Directory.Exists(emailProp.folderCustomer))
             {
@@ -2474,6 +2475,9 @@ emailProp = _emailCon.getEmailAddress(emailProp);
 
                 string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
                 string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
+
+                reportIndex++;
+                SettingBusy.Progress("ตรวจเทสรีพอต " + reportIndex + "/" + reportTotal + ": " + testReportNo);
 
                 // 1. order folder
                 string orderFolder = Path.Combine(emailProp.folderCustomer, orderFolderName);
@@ -2524,7 +2528,6 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 if (txtInOrder.Length == 0)
                     continue;
 
-                reportNames.Add(orderName);
                 reportFolderNames.Add(Path.GetFileName(orderFolder));
                 reportOrders.Add(fecOrderNo);
                 reportCustomerPNs.Add(customerPN);
@@ -2553,7 +2556,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 return emailProp;
             }
 
-            // 4. mails: one test report each, split when it is over 10 MB or 250 files
+            // 4. mails: one test report each, split when it is over 10 MB or 245 files
             List<List<string>> mails = new List<List<string>>();
             List<int> mailReport = new List<int>();   // index of the test report of each mail
 
@@ -2594,6 +2597,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                         List<string> copies = new List<string>();
                         foreach (string file in parts[p])
                         {
+                            SettingBusy.Progress("คัดลอกไฟล์ เทสรีพอต " + (r + 1) + "/" + reportFiles.Count + " ชุดที่ " + (p + 1) + "/" + parts.Count +
+                                                 ": " + (copies.Count + 1) + "/" + parts[p].Count + " ไฟล์");
                             string target = Path.Combine(splitFolder, Path.GetFileName(file));
                             File.Copy(file, target, true);
                             copies.Add(target);
@@ -2624,8 +2629,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 rpWord.customerPN = reportCustomerPNs[r];
                 rpWord.testReportNo = reportTestReportNos[r];
                 rpWord.Qty = mails[m].Count.ToString();
-                // "FolderName" in the body: the test report this mail belongs to
-                rpWord.folderName = reportNames[r];
+                // "FolderName" in the body: the test report folder this mail belongs to
+                rpWord.folderName = reportFolderNames[r];
                 rpWord.subject = _emailCon.getSubject(emailProp);
                 rpWord.body = _emailCon.getBody(emailProp);
                 rpWord.subject = strProcessSubject(rpWord);
@@ -2661,7 +2666,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         // One test report = one -n = one zip = one mail (user 2026-11-18; until then the zips of a day shared a mail up to 10 MB):
         // its txt (only the txt) is copied into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report
         // folder name}\ and zipped next to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout; subject (i/N) when the day has more;
-        // "FolderName" in the body = the test report name yyMMdd-{FEC order}(full Part No).
+        // "FolderName" in the body = the test report folder as it is on the share (and in the zip), with its -{sub}.
         private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
                                                   EmailProperty.replaceWord rpWord,
                                                   DataTable dtFile, DataTable dtInfoEmail,
@@ -2714,6 +2719,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
                 string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
 
+                SettingBusy.Progress("ตรวจเทสรีพอต " + (rows.IndexOf(dtShipRow) + 1) + "/" + rows.Count + ": " + testReportNo);
+
                 // 2. test report folder
                 string orderFolder = Path.Combine(emailProp.folderCustomer, orderFolderName);
                 if (!Directory.Exists(orderFolder))
@@ -2758,7 +2765,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 orderByFile[txtPath] = fecOrderNo;
                 customerPNByFile[txtPath] = customerPN;
                 testReportByFile[txtPath] = testReportNo;
-                reportNameByFile[txtPath] = orderName;
+                reportNameByFile[txtPath] = Path.GetFileName(orderFolder);
             }
 
             if (txtFiles.Count == 0)
@@ -2779,6 +2786,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             List<string> zipPaths = new List<string>();
             for (int g = 0; g < groups.Count; g++)
             {
+                SettingBusy.Progress("กำลังทำ zip " + (g + 1) + "/" + groups.Count + ": " + Path.GetFileName(Path.GetDirectoryName(groups[g][0])));
+
                 string folder = Path.Combine(outerFolder, $"{baseName}-{g + 1}");
                 string zipPath = folder + ".zip";
                 Directory.CreateDirectory(folder);
@@ -2844,7 +2853,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 rpWord.customerPN = customerPNByFile[reportTxt];
                 rpWord.testReportNo = testReportByFile[reportTxt];
                 rpWord.Qty = mails[m].SelectMany(g => groups[g]).Sum(f => qtyByFile[f]).ToString();
-                // "FolderName" in the body: the test report of this mail, yyMMdd-{FEC order}(full Part No) - like format 13
+                // "FolderName" in the body: the test report folder of this mail, as in its zip - like format 13
                 rpWord.folderName = reportNameByFile[reportTxt];
                 rpWord.subject = _emailCon.getSubject(emailProp);
                 rpWord.body = _emailCon.getBody(emailProp);
@@ -2931,6 +2940,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             // 1. every order has its test report folder
             foreach (DataGridViewRow dtShipRow in rows)
             {
+                SettingBusy.Progress("ตรวจเทสรีพอต " + (rows.IndexOf(dtShipRow) + 1) + "/" + rows.Count);
+
                 string fecOrderNo = dtShipRow.Cells["manuFactureNo"].Value?.ToString()?.Trim() ?? "";
                 string partNo = dtShipRow.Cells["Part_No"].Value?.ToString()?.Trim() ?? "";
                 string subFolder = dtShipRow.Cells["subFolder"].Value?.ToString()?.Trim() ?? "";
@@ -2982,6 +2993,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             Dictionary<string, List<string>> filesByFolder = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
             foreach (string reportFolder in reportFolders)
             {
+                SettingBusy.Progress("อ่านไฟล์ในโฟลเดอร์เทสรีพอต " + (reportFolders.IndexOf(reportFolder) + 1) + "/" + reportFolders.Count);
                 List<string> files = Directory.GetFiles(reportFolder, "*", SearchOption.AllDirectories)
                     .Where(f => !f.Substring(reportFolder.Length).TrimStart('\\').Split('\\')
                                   .Any(part => part.Equals("For QA check", StringComparison.OrdinalIgnoreCase)))
@@ -3039,6 +3051,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                         string reportFolderName = Path.GetFileName(reportFolder);
                         foreach (string file in filesByFolder[reportFolder])
                         {
+                            SettingBusy.Progress("กำลังทำ zip " + (g + 1) + "/" + groups.Count + ": ไฟล์ที่ " + (expectedFiles + 1));
                             string relative = file.Substring(reportFolder.Length).TrimStart('\\');
                             string copy = Path.Combine(folder, reportFolderName, relative);
                             Directory.CreateDirectory(Path.GetDirectoryName(copy));

@@ -1,4 +1,5 @@
 ﻿using EdataManagement.Controllers;
+using EdataManagement.Views.Setting;
 using EdataManagement.Property;
 using EdataManagement.Utilities;
 using Renci.SshNet.Messages.Authentication;
@@ -146,6 +147,16 @@ namespace EdataManagement.Views
 
         private void bt_sendEmail_Click(object sender, EventArgs e)
         {
+            // each mail drives Outlook on a thread of its own (EmailCls.SendEmail); one sheet stays up over all of them,
+            // counting "กำลังส่งเมล 2/3" - nothing can be clicked twice meanwhile
+            using (SettingBusy.Begin(this, SettingBusy.SENDING))
+            {
+                SendMails();
+            }
+        }
+
+        private void SendMails()
+        {
             // Unsubscribe event ก่อน
             this.dataGridViewDocs.RowsAdded -= DataGridViewDocs_RowsChanged;
             this.dataGridViewDocs.RowsRemoved -= DataGridViewDocs_RowsChanged;
@@ -179,6 +190,9 @@ namespace EdataManagement.Views
             if (dt != null)
             {
                 prop.fileFormatsId = dt.Rows[0]["FILE_FORMATS_ID"].ToString();
+
+                // every branch below sends one mail per row of dt
+                SettingBusy.StartCount("กำลังส่งเมล {0}/{1}", dt.Rows.Count);
             }
 
             if (prop.fileFormatsId == "4")

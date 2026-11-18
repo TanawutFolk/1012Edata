@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +19,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using EdataManagement.Controllers;
 using EdataManagement.Property;
 using EdataManagement.Utilities;
+using EdataManagement.Views.Setting;
 using System.Configuration;
 using Microsoft.Office.Interop.Excel;
 using DataTable = System.Data.DataTable;
@@ -266,7 +267,11 @@ namespace EdataManagement
             emailProp.dgvShip = dataGridViewShipping;
             emailProp.selectedRowProduct = (DataRowView)cb_product.SelectedItem;
             emailProp.selectedRowCustomer = (DataRowView)cb_customer.SelectedItem;
-            emailProp = emailCls.prepareFileInfoEmail(emailProp);
+            // file preparation stays on the UI thread (it shows messages, fills grids); the sheet counts its steps
+            using (SettingBusy.Begin(this, SettingBusy.PREPARING))
+            {
+                emailProp = emailCls.prepareFileInfoEmail(emailProp);
+            }
 
             if (emailProp.isValid == false)
             {
@@ -891,7 +896,10 @@ namespace EdataManagement
             emailProp.dgvShip = dataGridViewShipping;
             emailProp.selectedRowProduct = (DataRowView)cb_product.SelectedItem;
             emailProp.selectedRowCustomer = (DataRowView)cb_customer.SelectedItem;
-            emailProp = emailCls.prepareFileInfoEmailSelection(emailProp);
+            using (SettingBusy.Begin(this, SettingBusy.PREPARING))
+            {
+                emailProp = emailCls.prepareFileInfoEmailSelection(emailProp);
+            }
 
             if (emailProp.isValid == false)
             {

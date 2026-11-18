@@ -4,8 +4,8 @@
 -- Customer request 2026-11-17 (COHERENT / INFINERA): the txt names are serials, so the mail must say which
 -- test report it carries. Body 8 ("We attached file(s) of electric data in this e-mail.") has no FolderName
 -- and is used by 154 specs of 1480, so it is left alone. Body 12 = body 8 + a FolderName line:
---   format 13 (prepareCase13TxtEdata): FolderName = the test report  yyMMdd-{FEC order}(full Part No)
---   format 14 (prepareCase14TxtZip)  : FolderName = the test report of the mail (one test report a mail since 2026-11-18)
+--   format 13 (prepareCase13TxtEdata): FolderName = the test report folder  yyMMdd-{FEC order}(full Part No)-{sub}
+--   format 14 (prepareCase14TxtZip)  : the same (one test report a mail since 2026-11-18)
 -- Every 1480Dual spec whose file format is 13 or 14 gets body 12. Re-runnable: run it again after a
 -- spec is set to format 13 / 14 (the Email Body list of the Spec page is locked).
 --

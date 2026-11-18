@@ -1,4 +1,4 @@
-using Bunifu.Framework.UI;
+﻿using Bunifu.Framework.UI;
 
 using System;
 using System.Diagnostics;
@@ -292,12 +292,16 @@ namespace EdataManagement.Views.Setting
     }
 
     /// <summary>
-    /// "กำลังโหลด..." over the Setting window while it talks to the database, so the window never sits frozen.
-    /// Run does the database call on another thread and keeps the screen alive meanwhile; the work must not touch
-    /// a control (read what it needs from the screen before, put the result on the screen after).
-    ///   * nothing is shown for the first SHOW_AFTER_MS - a quick read does not flash
+    /// "กำลังโหลด..." over a window while slow work runs, so the window never sits frozen: the Setting pages
+    /// (database calls), Select on the main screen (file preparation) and Send (Outlook).
+    ///   Run     the work runs on a pool thread; it must not touch a control (read the screen before, show the result after)
+    ///   RunSta  the same on a thread of its own in a single-threaded apartment - for Outlook / Office COM
+    ///   Progress  for work that has to stay on the UI thread (it shows message boxes, fills grids): call it between
+    ///           steps; it updates the text and keeps the window painted
+    ///   StartCount / NextCount  "กำลังส่งเมล 2/3": a counted job, NextCount moves it on
+    ///   * nothing is shown for the first SHOW_AFTER_MS - a quick job does not flash
     ///   * the sheet covers the whole window and takes the keyboard, so nothing can be clicked twice
-    ///   * Begin ... Dispose keeps one sheet up over several Run calls (a Save and the reload after it)
+    ///   * Begin ... Dispose keeps one sheet up over several calls (a Save and the reload after it, every mail of a Send)
     ///   * frmError / frmConfirm call Pause first, so a message is never hidden under the sheet
     /// UI thread only.
     /// </summary>
@@ -305,21 +309,35 @@ namespace EdataManagement.Views.Setting
     {
         public const string LOADING = "กำลังโหลด...";
         public const string SAVING = "กำลังบันทึก...";
+        public const string PREPARING = "กำลังเตรียมไฟล์...";
+        public const string SENDING = "กำลังส่งเมล...";
 
         private const int SHOW_AFTER_MS = 300;
 
+        /// <summary>A RunSta job still running after this long gets its slow hint under the text.</summary>
+        private const int SLOW_AFTER_MS = 30000;
+
         private static Scope _current;
 
-        /// <summary>One sheet for everything until Dispose. Inside another Begin it does nothing (the outer one stays).</summary>
+        /// <summary>True while a Begin is open (a sheet is up or may come up).</summary>
+        public static bool IsActive
+        {
+            get { return _current != null; }
+        }
+
+        /// <summary>
+        /// One sheet for everything until Dispose. Inside another Begin nothing new opens: text replaces the outer text,
+        /// null keeps it.
+        /// </summary>
         public static IDisposable Begin(Control owner, string text)
         {
             if (_current != null)
             {
-                _current.SetText(text);
+                if (text != null) _current.SetText(text);
                 return new Nested();
             }
 
-            _current = new Scope(owner, text);
+            _current = new Scope(owner, text ?? LOADING);
             return _current;
         }
 
@@ -328,19 +346,78 @@ namespace EdataManagement.Views.Setting
             using (Begin(owner, text))
             {
                 Task<T> task = Task.Run(work);
-                _current.WaitFor(task);
-
-                try
-                {
-                    return task.Result;
-                }
-                catch (AggregateException ex)
-                {
-                    // the caller sees what the work threw, not the wrapper
-                    ExceptionDispatchInfo.Capture(ex.InnerException ?? ex).Throw();
-                    throw;
-                }
+                _current.WaitFor(task, null);
+                return ResultOf(task);
             }
+        }
+
+        /// <summary>
+        /// Run on a new single-threaded-apartment thread (Outlook / Office COM must be driven from one STA thread).
+        /// slowHint: added under the text when the job is still running after SLOW_AFTER_MS (null = none).
+        /// </summary>
+        public static T RunSta<T>(Control owner, string text, Func<T> work, string slowHint)
+        {
+            using (Begin(owner, text))
+            {
+                TaskCompletionSource<T> done = new TaskCompletionSource<T>();
+                Thread thread = new Thread(() =>
+                {
+                    try
+                    {
+                        done.SetResult(work());
+                    }
+                    catch (Exception ex)
+                    {
+                        done.SetException(ex);
+                    }
+                });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.IsBackground = true;
+                thread.Start();
+
+                _current.WaitFor(done.Task, slowHint);
+                return ResultOf(done.Task);
+            }
+        }
+
+        /// <summary>The result of a finished job; the caller sees what the work threw, not the wrapper.</summary>
+        private static T ResultOf<T>(Task<T> task)
+        {
+            try
+            {
+                return task.Result;
+            }
+            catch (AggregateException ex)
+            {
+                ExceptionDispatchInfo.Capture(ex.InnerException ?? ex).Throw();
+                throw;
+            }
+        }
+
+        /// <summary>Change the text of the open sheet (no Begin open = nothing happens).</summary>
+        public static void SetText(string text)
+        {
+            if (_current != null && text != null) _current.SetText(text);
+        }
+
+        /// <summary>
+        /// Work on the UI thread, between two steps: show text (null = keep), put the sheet up once the job has taken
+        /// SHOW_AFTER_MS, and let the window paint. No Begin open = nothing happens.
+        /// </summary>
+        public static void Progress(string text)
+        {
+            if (_current != null) _current.Progress(text);
+        }
+
+        /// <summary>A counted job, e.g. format "กำลังส่งเมล {0}/{1}"; NextCount shows 1/total, 2/total ...</summary>
+        public static void StartCount(string format, int total)
+        {
+            if (_current != null) _current.StartCount(format, total);
+        }
+
+        public static void NextCount()
+        {
+            if (_current != null) _current.NextCount();
         }
 
         /// <summary>Take the sheet away for a message box; the next Run puts it back if it is still slow.</summary>
@@ -359,6 +436,10 @@ namespace EdataManagement.Views.Setting
             private readonly Control _owner;
             private readonly Stopwatch _clock = Stopwatch.StartNew();
             private string _text;
+            private string _hint = "";
+            private string _countFormat;
+            private int _countTotal;
+            private int _countDone;
             private Form _sheet;
             private Label _label;
 
@@ -371,18 +452,49 @@ namespace EdataManagement.Views.Setting
             public void SetText(string text)
             {
                 _text = text;
+                _hint = "";
                 if (_label != null) _label.Text = text;
             }
 
-            public void WaitFor(Task task)
+            public void StartCount(string format, int total)
+            {
+                _countFormat = format;
+                _countTotal = total;
+                _countDone = 0;
+            }
+
+            public void NextCount()
+            {
+                if (_countFormat == null) return;
+
+                _countDone++;
+                SetText(string.Format(_countFormat, _countDone, _countTotal));
+            }
+
+            public void Progress(string text)
+            {
+                if (text != null) SetText(text);
+
+                if (_sheet == null && _clock.ElapsedMilliseconds >= SHOW_AFTER_MS) Show();
+                if (_sheet != null) Application.DoEvents();
+            }
+
+            public void WaitFor(Task task, string slowHint)
             {
                 // not shown yet: wait without handling input, so nothing else can be clicked in the gap
                 int left = SHOW_AFTER_MS - (int)_clock.ElapsedMilliseconds;
                 if (_sheet == null && left > 0 && ((IAsyncResult)task).AsyncWaitHandle.WaitOne(left)) return;
 
                 Show();
+                Stopwatch waited = Stopwatch.StartNew();
                 while (!task.IsCompleted)
                 {
+                    if (slowHint != null && _hint == "" && waited.ElapsedMilliseconds >= SLOW_AFTER_MS)
+                    {
+                        _hint = slowHint;
+                        if (_label != null) _label.Text = _text + Environment.NewLine + _hint;
+                    }
+
                     Application.DoEvents();
                     Thread.Sleep(15);
                 }
@@ -409,18 +521,20 @@ namespace EdataManagement.Views.Setting
                 }
                 else
                 {
-                    // the window is not on screen yet (first load): a small box in the middle of the screen
+                    // the window is not on screen yet (first load): a box in the middle of the screen
                     Rectangle screen = Screen.FromPoint(Cursor.Position).WorkingArea;
-                    _sheet.Bounds = new Rectangle(screen.Left + (screen.Width - 360) / 2, screen.Top + (screen.Height - 120) / 2, 360, 120);
+                    _sheet.Bounds = new Rectangle(screen.Left + (screen.Width - 460) / 2, screen.Top + (screen.Height - 150) / 2, 460, 150);
                 }
 
+                // two lines: the text, and the slow hint or the second line of a long text
                 _label = new Label();
                 _label.AutoSize = false;
-                _label.Text = _text;
+                _label.AutoEllipsis = true;
+                _label.Text = _hint == "" ? _text : _text + Environment.NewLine + _hint;
                 _label.Font = new Font(SettingUi.FONT_NAME, 13F, FontStyle.Bold);
                 _label.ForeColor = SettingUi.GRID_TEXT;
-                _label.TextAlign = ContentAlignment.MiddleCenter;
-                _label.SetBounds(0, _sheet.Height / 2 - 44, _sheet.Width, 36);
+                _label.TextAlign = ContentAlignment.BottomCenter;
+                _label.SetBounds(16, _sheet.Height / 2 - 66, _sheet.Width - 32, 58);
 
                 ProgressBar bar = new ProgressBar();
                 bar.Style = ProgressBarStyle.Marquee;
