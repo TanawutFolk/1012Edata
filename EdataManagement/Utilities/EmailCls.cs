@@ -760,11 +760,17 @@ namespace EdataManagement.Utilities
                                                        internalTestAddresses, externalTestAddresses);
             bool addRecipients = !testMode || testSend;
 
+            // which Outlook call is running - shown with the error, so a failure points at its step
+            string step = "เปิด Outlook";
+            int attachTotal = prop.attachmentFilePaths == null ? 0 : prop.attachmentFilePaths.Count;
+
             try
             {
                 // 1. สร้าง Object Outlook Application
                 app = new Outlook.Application();
+                step = "สร้างเมล";
                 mail = (Outlook.MailItem)app.CreateItem(Outlook.OlItemType.olMailItem);
+                step = "ใส่ผู้รับ";
 
 
                 // 2. จัดการผู้รับ (To)
@@ -794,7 +800,9 @@ namespace EdataManagement.Utilities
                 }
 
                 // 4. สั่งตรวจสอบรายชื่อผู้รับทั้งหมด
+                step = "ตรวจรายชื่อผู้รับ (ResolveAll)";
                 mail.Recipients.ResolveAll();
+                step = "ใส่หัวเรื่อง / เนื้อเมล";
 
                 // 5. กำหนดเรื่อง (Subject)
                 // a mail to the test group looks exactly like the real one; only the draft is marked
@@ -813,8 +821,12 @@ namespace EdataManagement.Utilities
                 // 7. การแนบไฟล์
                 if (prop.attachmentFilePaths != null)
                 {
+                    int attachIndex = 0;
                     foreach (string strAtt in prop.attachmentFilePaths)
                     {
+                        attachIndex++;
+                        step = "แนบไฟล์ " + attachIndex + "/" + attachTotal + ": " + Path.GetFileName(strAtt);
+
                         // เช็คว่าไฟล์มีจริงไหม เพื่อกัน Error
                         if (System.IO.File.Exists(strAtt))
                         {
@@ -827,11 +839,13 @@ namespace EdataManagement.Utilities
                 // 8. test mode: keep it as a draft without recipients - nothing leaves Outlook
                 if (testMode && !testSend)
                 {
+                    step = "บันทึก draft";
                     mail.Save();
                     return true;   // finally still releases the COM objects
                 }
 
                 // 8. ส่งอีเมล
+                step = "สั่งส่ง (mail.Send, ไฟล์แนบ " + attachTotal + " ไฟล์)";
                 bool sendSuccess = false;
                 Exception sendException = null;
                 var sendThread = new System.Threading.Thread(() =>
@@ -854,7 +868,9 @@ namespace EdataManagement.Utilities
                     throw new TimeoutException("การส่งอีเมลค้างเกิน 30 วินาที (น่าจะมี security prompt เด้ง background)");
                 }
                 if (sendException != null)
-                    throw sendException;
+                    System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(sendException).Throw();   // keeps the stack of the send thread
+
+                step = "sync Outlook (SyncObjects)";
 
                 // (Optional) บังคับ Sync ทันทีถ้าต้องการ (แทนเช็ค Sent Items, ไม่ trigger prompt เพิ่ม)
                 if (app.Session.SyncObjects.Count >= 1)
@@ -879,7 +895,13 @@ namespace EdataManagement.Utilities
                     errorMsg += "\nInner: " + ex.InnerException.Message;
                 }
 
-                MessageBox.Show("เกิดข้อผิดพลาดในการส่งอีเมล์ (Outlook): " + errorMsg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // where it stopped and what kind of error, so the cause can be traced (Ctrl+C copies this box)
+                string logPath = WriteSendErrorLog(step, prop, itemData, ex);
+                MessageBox.Show("เกิดข้อผิดพลาดในการส่งอีเมล์ (Outlook): " + errorMsg +
+                                "\n\nตอน: " + step +
+                                "\n" + ex.GetType().FullName + " (HRESULT 0x" + ex.HResult.ToString("X8") + ")" +
+                                (logPath == "" ? "" : "\nรายละเอียด: " + logPath),
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _result = false; // *** เกิด Error ให้เป็น false ***
             }
             finally
@@ -896,6 +918,36 @@ namespace EdataManagement.Utilities
 
             return _result;
 
+        }
+
+        /// <summary>
+        /// The whole exception of a failed send (stack included) appended to %LOCALAPPDATA%\1012 Send E-data\send_error.log;
+        /// the path, or "" when it could not be written.
+        /// </summary>
+        private static string WriteSendErrorLog(string step, EmailProperty prop, EmailProperty.replaceWord itemData, Exception ex)
+        {
+            try
+            {
+                string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "1012 Send E-data");
+                Directory.CreateDirectory(folder);
+                string path = Path.Combine(folder, "send_error.log");
+
+                StringBuilder text = new StringBuilder();
+                text.AppendLine("==== " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  DB: " + MailSafety.ConfigDatabase);
+                text.AppendLine("step       : " + step);
+                text.AppendLine("subject    : " + (itemData == null ? "" : itemData.subject));
+                text.AppendLine("product/key: " + prop.productName + " / " + prop.key);
+                text.AppendLine("attachments: " + (prop.attachmentFilePaths == null ? 0 : prop.attachmentFilePaths.Count));
+                text.AppendLine(ex.ToString());
+                text.AppendLine();
+
+                File.AppendAllText(path, text.ToString(), Encoding.UTF8);
+                return path;
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         public EmailProperty prepareFileInfoEmail(EmailProperty emailProp)
@@ -2371,7 +2423,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         private const long CASE13_MAX_MAIL_BYTES = 10L * 1024 * 1024;
         private const int CASE13_MAX_MAIL_FILES = 256;
 
-        // 1480Dual formats 13 and 14: 250 files (customer request 2026-11-17).
+        // Format 13 (1480Dual COHERENT / INFINERA): 250 txt a mail (customer request 2026-11-17).
         private const int DUAL1480_MAX_MAIL_FILES = 250;
 
         // Format 13 (1480Dual txt per serial). For every order row (= one test report):
@@ -2606,10 +2658,10 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         //   2. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
         //   3. {Customer PN}_{FEC order without '-'}_{Qty}PCS_{Part No up to the first '-'}_{yyMMdd}-{sub}.txt in it
         //      e.g. NA_301235900610001_10PCS_FRL1441D4045_260512-1.txt
-        // Each txt is copied (only the txt) into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report folder name}\ -
-        // a new -n whenever the next file would pass 10 MB / 250 files (size before zip) - and each -n is zipped next
-        // to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout. The zips go out together in one mail (like case 10
-        // attaches every file); a second mail only when the zips together would pass 10 MB.
+        // One test report = one -n = one zip = one mail (user 2026-11-18; until then the zips of a day shared a mail up to 10 MB):
+        // its txt (only the txt) is copied into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report
+        // folder name}\ and zipped next to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout; subject (i/N) when the day has more;
+        // "FolderName" in the body = the test report name yyMMdd-{FEC order}(full Part No).
         private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
                                                   EmailProperty.replaceWord rpWord,
                                                   DataTable dtFile, DataTable dtInfoEmail,
@@ -2619,7 +2671,12 @@ emailProp = _emailCon.getEmailAddress(emailProp);
             List<DataGridViewRow> rows = shipRows.Where(r => !r.IsNewRow).ToList();
             List<string> txtFiles = new List<string>();
             Dictionary<string, int> qtyByFile = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-            List<string> orderNos = new List<string>();
+
+            // the order / test report each txt belongs to, for the mail of that test report
+            Dictionary<string, string> orderByFile = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> customerPNByFile = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> testReportByFile = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, string> reportNameByFile = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             if (!Directory.Exists(emailProp.folderCustomer))
             {
@@ -2653,10 +2710,6 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 string testReportNo = dtShipRow.Cells["TestReportNo"].Value?.ToString()?.Trim() ?? "";
                 string qtyText = dtShipRow.Cells["Qty"].Value?.ToString()?.Trim() ?? "";
                 string customerPN = dtShipRow.Cells["customerPN"].Value?.ToString()?.Trim() ?? "";
-
-                rpWord.customerPN = customerPN;
-                if (string.IsNullOrEmpty(rpWord.testReportNo))
-                    rpWord.testReportNo = testReportNo;
 
                 string orderName = $"{datePrefix}-{fecOrderNo}({partNo})";
                 string orderFolderName = string.IsNullOrEmpty(subFolder) ? orderName : $"{orderName}-{subFolder}";
@@ -2702,8 +2755,10 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 int.TryParse(qtyText, out qty);
                 txtFiles.Add(txtPath);
                 qtyByFile[txtPath] = qty;
-                if (!orderNos.Contains(fecOrderNo))
-                    orderNos.Add(fecOrderNo);
+                orderByFile[txtPath] = fecOrderNo;
+                customerPNByFile[txtPath] = customerPN;
+                testReportByFile[txtPath] = testReportNo;
+                reportNameByFile[txtPath] = orderName;
             }
 
             if (txtFiles.Count == 0)
@@ -2713,24 +2768,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 return emailProp;
             }
 
-            // 4. split by size before zip (same limits as format 13); a file bigger than the limit goes alone
-            List<List<string>> groups = new List<List<string>>();
-            List<string> current = new List<string>();
-            long currentBytes = 0;
-            foreach (string file in txtFiles)
-            {
-                long size = new FileInfo(file).Length;
-                if (current.Count > 0 &&
-                    (currentBytes + size > CASE13_MAX_MAIL_BYTES || current.Count >= DUAL1480_MAX_MAIL_FILES))
-                {
-                    groups.Add(current);
-                    current = new List<string>();
-                    currentBytes = 0;
-                }
-                current.Add(file);
-                currentBytes += size;
-            }
-            groups.Add(current);
+            // 4. one -n per test report (one txt each), in the order of the grid - never two test reports in one zip
+            List<List<string>> groups = txtFiles.Select(file => new List<string> { file }).ToList();
 
             // 5. MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{test report folder}\{txt} + ...\yyMMdd-MOLEX(48Dual)-n.zip
             //    the order folder keeps its name, only its txt goes in - and the zip gets exactly that layout from this list
@@ -2781,24 +2820,9 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 zipPaths.Add(zipPath);
             }
 
-            // 6. as many zips per mail as fit in 10 MB (zip size, what is attached); a zip bigger than that goes alone.
+            // 6. one mail per zip (= per test report).
             //    The folder of a file row names its mail - emailUserControl attaches the rows of one folder together.
-            List<List<int>> mails = new List<List<int>>();
-            List<int> mailZips = new List<int>();
-            long mailBytes = 0;
-            for (int g = 0; g < zipPaths.Count; g++)
-            {
-                long size = new FileInfo(zipPaths[g]).Length;
-                if (mailZips.Count > 0 && mailBytes + size > CASE13_MAX_MAIL_BYTES)
-                {
-                    mails.Add(mailZips);
-                    mailZips = new List<int>();
-                    mailBytes = 0;
-                }
-                mailZips.Add(g);
-                mailBytes += size;
-            }
-            mails.Add(mailZips);
+            List<List<int>> mails = Enumerable.Range(0, zipPaths.Count).Select(g => new List<int> { g }).ToList();
 
             foreach (List<int> mail in mails)
             {
@@ -2809,15 +2833,19 @@ emailProp = _emailCon.getEmailAddress(emailProp);
 
             emailProp = _emailCon.getEmailAddress(emailProp);
 
-            rpWord.manuFactureNo = string.Join(", ", orderNos);
             rpWord.shipDate = emailProp.shipDate;
             rpWord.formatDate = _emailCon.allFormatDate();
             rpWord.signature = _emailCon.getSignature(emailProp);
 
             for (int m = 0; m < mails.Count; m++)
             {
+                string reportTxt = groups[mails[m][0]][0];
+                rpWord.manuFactureNo = orderByFile[reportTxt];
+                rpWord.customerPN = customerPNByFile[reportTxt];
+                rpWord.testReportNo = testReportByFile[reportTxt];
                 rpWord.Qty = mails[m].SelectMany(g => groups[g]).Sum(f => qtyByFile[f]).ToString();
-                rpWord.folderName = string.Join(", ", mails[m].Select(g => Path.GetFileNameWithoutExtension(zipPaths[g])));
+                // "FolderName" in the body: the test report of this mail, yyMMdd-{FEC order}(full Part No) - like format 13
+                rpWord.folderName = reportNameByFile[reportTxt];
                 rpWord.subject = _emailCon.getSubject(emailProp);
                 rpWord.body = _emailCon.getBody(emailProp);
                 rpWord.subject = strProcessSubject(rpWord);

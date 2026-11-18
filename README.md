@@ -97,7 +97,7 @@ yyMMdd-Shipping Data\
       yyMMdd-MOLEX(48Dual)-n.zip
 ```
 - copy เฉพาะ txt (`{Customer PN}_{FEC order ตัด '-'}_{Qty}PCS_{Part No ก่อน '-'}_{yyMMdd}-{sub}.txt`)
-- แบ่ง `-n` ตาม 10 MB / 250 ไฟล์ (ขนาดก่อน zip)
+- 1 เทสรีพอต = 1 `-n` = 1 zip = 1 เมล (ตั้งแต่ 2026-11-18)
 - หลาย zip รวมในเมลเดียวจนกว่าขนาด zip รวมจะเกิน 10 MiB
 
 รายละเอียดและงานค้างของ 1480Dual: [`PENDING_1480Dual.md`](PENDING_1480Dual.md)
@@ -146,7 +146,7 @@ yyMMdd-Shipping Data\
 | `key_group_email_document.sql` (+ `_import_20260924.sql`) | ผู้รับเมล Serial List / Wafer ต่อ product + ลูกค้า (แทน `EmailSetting.ini` ที่เลิกใช้แล้ว) |
 | `info_group_name.sql` | ชื่อ group ผู้รับ |
 | `1480dual_prepare_qa_oc.sql` | เตรียมตาราง `*_1480dual` ใน config DB |
-| `1480dual_body_test_report_name.sql` | body 12 (= body 8 + บรรทัด `FolderName`) ให้ทุก spec 1480Dual format 13 / 14 – ชื่อเทสรีพอต (13) / ชื่อ zip (14) ในเนื้อเมล; รันซ้ำได้ |
+| `1480dual_body_test_report_name.sql` | body 12 (= body 8 + บรรทัด `FolderName`) ให้ทุก spec 1480Dual format 13 / 14 – ชื่อเทสรีพอตในเนื้อเมล (1 เมลมี 1 เทสรีพอตทั้ง 13 และ 14); รันซ้ำได้ |
 | `audit_key_tables.sql` | audit trigger ของตาราง key |
 | `test_data\make_1480dual_format1{3,4}_test.ps1` | สร้างข้อมูลเทส 1480Dual |
 
