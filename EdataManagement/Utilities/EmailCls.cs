@@ -2420,8 +2420,8 @@ emailProp = _emailCon.getEmailAddress(emailProp);
 
         // Format 13 (1480Dual COHERENT / INFINERA): the customer asked for at most 250 txt a mail (2026-11-17), but Exchange Online
         // allows 250 MIME parts a message and counts the body too - a mail with 250 attachments was refused (2026-11-18).
-        // The body takes up to 4 parts (text, html, their alternative block, the mixed block): 245 keeps a margin.
-        private const int DUAL1480_MAX_MAIL_FILES = 245;
+        // 249 = 250 less one part for the body (user 2026-11-18, to be confirmed by a real send; 245 if it is refused again).
+        private const int DUAL1480_MAX_MAIL_FILES = 249;
 
         // Format 13 (1480Dual txt per serial). For every order row (= one test report):
         //   1. {customer folder}\yyMMdd-{FEC order}(full Part No)-{sub}   (or without -{sub})
@@ -2430,7 +2430,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         // Mails (customer request 2026-11-17): the txt names are serials, so nobody can tell which test report a file
         // belongs to -
         //   * a mail carries the files of ONE test report, never mixed with another
-        //   * a test report over 10 MB or DUAL1480_MAX_MAIL_FILES (245) files is split into several mails; its files are then copied into
+        //   * a test report over 10 MB or DUAL1480_MAX_MAIL_FILES (249) files is split into several mails; its files are then copied into
         //     {customer folder}\{test report folder}_Edata-1, -2, ... (one sub-folder = one mail)
         //   * "FolderName" in the body = the test report folder as it is on the share, yyMMdd-{FEC order}(full Part No)-{sub}
         //     (with -{sub} when the folder has it: two test reports of one FEC order stay apart - user 2026-11-18)
@@ -2556,7 +2556,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                 return emailProp;
             }
 
-            // 4. mails: one test report each, split when it is over 10 MB or 245 files
+            // 4. mails: one test report each, split when it is over 10 MB or 249 files
             List<List<string>> mails = new List<List<string>>();
             List<int> mailReport = new List<int>();   // index of the test report of each mail
 
@@ -2667,6 +2667,7 @@ emailProp = _emailCon.getEmailAddress(emailProp);
         // its txt (only the txt) is copied into {Shipping Data}\MOLEX-Data for 1012 program\yyMMdd-MOLEX(48Dual)-n\{its test report
         // folder name}\ and zipped next to it as yyMMdd-MOLEX(48Dual)-n.zip with the same layout; subject (i/N) when the day has more;
         // "FolderName" in the body = the test report folder as it is on the share (and in the zip), with its -{sub}.
+        // A txt over 10 MB stops the send - checked before zipping (user 2026-11-23); no 249-file limit - one txt a mail.
         private EmailProperty prepareCase14TxtZip(EmailProperty emailProp, IEnumerable<DataGridViewRow> shipRows, bool checkFolderCount,
                                                   EmailProperty.replaceWord rpWord,
                                                   DataTable dtFile, DataTable dtInfoEmail,
@@ -2754,6 +2755,20 @@ emailProp = _emailCon.getEmailAddress(emailProp);
                                     $"ไฟล์ txt ที่มีอยู่: {(foundTxt.Length == 0 ? "-" : string.Join(", ", foundTxt))}\n" +
                                     $"โฟลเดอร์: {orderFolder}",
                                     "ไม่พบไฟล์ดาต้า", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    emailProp.isValid = false;
+                    return emailProp;
+                }
+
+                // 4. 10 MB is checked on the txt, before anything is zipped (user 2026-11-23): one test report = one txt = one mail,
+                //    and one txt cannot be split - over 10 MB stops the send. 249 files cannot happen here: one txt a mail.
+                long txtBytes = new FileInfo(txtPath).Length;
+                if (txtBytes > CASE13_MAX_MAIL_BYTES)
+                {
+                    MessageBox.Show($"ไฟล์ดาต้าใหญ่เกิน 10 MB\n" +
+                                    $"เทสรีพอตหมายเลข: {testReportNo}\n" +
+                                    $"ขนาดไฟล์: {txtBytes / 1048576.0:0.00} MB\n" +
+                                    $"ไฟล์: {txtPath}",
+                                    "ไฟล์ใหญ่เกิน - ยกเลิกการส่ง", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     emailProp.isValid = false;
                     return emailProp;
                 }
